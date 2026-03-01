@@ -85,11 +85,12 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
             { name: "F-150 (2024)", file: "ford/2024_ford_f-150_raptor_r.glb" },
         ],
     },
+
     {
             brand: "Ferrari",
         models: [
             { name: "SF90", file: "ferrari/ferrari_sf90_stradale.glb" },
-            { name: "GTC 4-lusso", file: "ferrari/ferrari_gtc4_lusso.glb" },
+            { name: "GTC4 - lusso", file: "ferrari/ferrari_gtc4_lusso.glb" },
         ],
     },
     {
