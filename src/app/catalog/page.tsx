@@ -134,15 +134,21 @@ export default function CatalogPage() {
                   className="cat-product-card"
                 >
                   <div className="cat-product-image-wrap">
-                    <img
+                    <Image
                       src={product.image}
                       alt={product.name}
+                      width={1200}
+                      height={1200}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       className="cat-product-img-default"
                       draggable={false}
                     />
-                    <img
+                    <Image
                       src={product.hoverImage}
                       alt={`${product.name} angle view`}
+                      width={1200}
+                      height={1200}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                       className="cat-product-img-hover"
                       draggable={false}
                     />

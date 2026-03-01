@@ -66,8 +66,6 @@ type Car3DGroupSource = {
     }>;
 };
 
-type CarPaintMaterial = THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial;
-
 const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
     {
         brand: "Mercedes-Benz",
@@ -195,48 +193,6 @@ const DEFAULT_CAR = CAR_3D_OPTIONS.find(
     (car) => car.modelPath === "/car-models/mercedes/2025_mercedes-benz_g-class_amg_g_63.glb"
 ) ?? CAR_3D_OPTIONS[0];
 
-const BODY_MATERIAL_HINTS = ["paint", "body", "ext_", "car_body", "metallic", "carpaints"];
-const BODY_MATERIAL_BLACKLIST = ["glass", "window", "mirror", "chrome", "light", "tire", "rubber", "transparent", "decal", "emit"];
-
-const MATERIAL_OVERRIDES: Record<string, string[]> = {
-    "Ghost V2": ["CarPaint_01"],
-    "G Class V1": ["Body_Metallic"],
-};
-
-const getOverrideList = (modelLabel: string) =>
-    MATERIAL_OVERRIDES[modelLabel] ?? MATERIAL_OVERRIDES[modelLabel.replace(/-/g, " ")];
-
-const isPaintCandidateMaterial = (material: THREE.Material): material is CarPaintMaterial => {
-    const standardLike =
-        (material as THREE.MeshStandardMaterial).isMeshStandardMaterial ||
-        (material as THREE.MeshPhysicalMaterial).isMeshPhysicalMaterial;
-
-    if (!standardLike) return false;
-
-    const materialName = (material.name || "").toLowerCase();
-    const blacklistedByName = BODY_MATERIAL_BLACKLIST.some((exclude) => materialName.includes(exclude));
-
-    const typedMaterial = material as THREE.MeshStandardMaterial & { transmission?: number };
-    const blockedByPhysicalProps =
-        typedMaterial.transparent === true ||
-        (typeof typedMaterial.transmission === "number" && typedMaterial.transmission > 0) ||
-        typedMaterial.opacity < 1;
-
-    return !blacklistedByName && !blockedByPhysicalProps;
-};
-
-const isBodyMaterialByName = (material: THREE.Material) => {
-    const materialName = (material.name || "").toLowerCase();
-    return BODY_MATERIAL_HINTS.some((hint) => materialName.includes(hint));
-};
-
-const applyPaintFinish = (material: CarPaintMaterial, hexColor: string) => {
-    material.color.set(hexColor);
-    material.metalness = 0.8;
-    material.roughness = 0.2;
-    material.needsUpdate = true;
-};
-
 const applyRimFinish = (material: THREE.Material, hexColor: string) => {
     const standard = material as THREE.MeshStandardMaterial;
     const physical = material as THREE.MeshPhysicalMaterial;
@@ -328,15 +284,13 @@ function RimInjector({
         baseRotation: THREE.Euler;
         isLeft: boolean;
         isFront: boolean;
-        isFR: boolean;
-        isRR: boolean;
         swapXZ: boolean;
     }>>([]);
 
     useFrame(() => {
         if (!isDev) return;
 
-        injectedRimsRef.current.forEach(({ mesh, baseScale, basePosition, baseRotation, isLeft, isFront, isFR, isRR, swapXZ }) => {
+        injectedRimsRef.current.forEach(({ mesh, baseScale, basePosition, baseRotation, isLeft, isFront, swapXZ }) => {
             const offsetX = isLeft ? rimCalibration.offsetXLeft : rimCalibration.offsetXRight;
             const rotY = isLeft ? rimCalibration.rotYLeft : rimCalibration.rotYRight;
             const offsetZ = isFront ? rimCalibration.offsetZFront : rimCalibration.offsetZRear;
@@ -459,7 +413,6 @@ function RimInjector({
             const isFL = position === "FL";
             const isFR = position === "FR";
             const isRL = position === "RL";
-            const isRR = position === "RR";
             const isLeftSide = isFL || isRL;
             const isFrontSide = isFL || isFR;
 
@@ -478,7 +431,7 @@ function RimInjector({
 
             let baseScaleFactor = 1;
             let basePosition = new THREE.Vector3();
-            let baseRotation = new THREE.Euler();
+            const baseRotation = new THREE.Euler();
             let attachParent: THREE.Object3D = modelScene;
 
             if (!forceFallback && factoryRim && factoryRim.parent) {
@@ -527,7 +480,6 @@ function RimInjector({
                     console.log(`[RimScale] ${fileName} ${position}: parentWorldScale=${parentWS_A.x.toFixed(4)} compensated baseScale=${baseScaleFactor.toFixed(4)}`);
                 }
 
-                baseRotation.set(0, 0, 0);
                 // NOTE: we do NOT copy factoryRim.rotation. Hub meshes in some models
                 // (e.g. G63) have non-zero X/Z local rotations that tilt the custom rim.
                 // Our calibration rotYLeft/rotYRight fully controls the Y orientation.
@@ -564,17 +516,7 @@ function RimInjector({
                 basePosition.z += pwc.z ?? 0;
             }
 
-            // Apply calibration offsets (additive on top of base position)
-            const offsetX = isLeftSide ? rimCalibration.offsetXLeft : rimCalibration.offsetXRight;
-            const offsetZ = isFrontSide ? rimCalibration.offsetZFront : rimCalibration.offsetZRear;
-            const rotY = isLeftSide ? rimCalibration.rotYLeft : rimCalibration.rotYRight;
-            const swapXZ = calibData?.swapFallbackXZ === true;
-
-            const finalPosition = new THREE.Vector3(
-                basePosition.x + (swapXZ ? offsetZ : offsetX),
-                basePosition.y + rimCalibration.offsetY,
-                basePosition.z + (swapXZ ? offsetX : offsetZ)
-            );
+            const finalPosition = basePosition.clone();
 
             if (IS_DEV) {
                 const path = (!forceFallback && factoryRim) ? "A" : "B";
@@ -586,9 +528,8 @@ function RimInjector({
             if (pwc?.scaleMul) {
                 effectiveBaseScale *= pwc.scaleMul;
             }
-            clonedCustomRim.scale.setScalar(effectiveBaseScale * rimCalibration.scale);
+            clonedCustomRim.scale.setScalar(effectiveBaseScale);
             clonedCustomRim.rotation.copy(baseRotation);
-            clonedCustomRim.rotation.y = THREE.MathUtils.degToRad(rotY);
             clonedCustomRim.position.copy(finalPosition);
 
             clonedCustomRim.traverse((c: THREE.Object3D) => {
@@ -603,7 +544,6 @@ function RimInjector({
                     if ((mat as THREE.MeshStandardMaterial).isMeshStandardMaterial) {
                         (mat as THREE.MeshStandardMaterial).envMapIntensity = 1.5;
                     }
-                    applyRimFinish(mat, rimColor);
                 });
             });
 
@@ -618,8 +558,6 @@ function RimInjector({
                 baseRotation: baseRotation.clone(),
                 isLeft: isLeftSide,
                 isFront: isFrontSide,
-                isFR,
-                isRR,
                 swapXZ: calibData?.swapFallbackXZ === true,
             });
 
@@ -628,8 +566,6 @@ function RimInjector({
                 isInjectedRim: true,
                 isLeft: isLeftSide,
                 isFront: isFrontSide,
-                isFR,
-                isRR,
                 basePosition: basePosition.clone(),
             };
         });
@@ -666,8 +602,6 @@ function RimInjector({
 
             injectedRimsRef.current = [];
         };
-    // REMOVED rimColor from deps — the separate recoloring useEffect handles it.
-    // Rebuilding all rims on color change caused position shifts.
     }, [modelScene, modelUrl, rimSourceScene]);
 
     useEffect(() => {
@@ -716,12 +650,10 @@ function ScrollCamera({
 /* ================================================================== */
 function CarModel({
     modelUrl,
-    modelLabel,
     rimColor,
     rimUrl,
 }: {
     modelUrl: string;
-    modelLabel: string;
     rimColor: string;
     rimUrl: string | null;
 }) {
@@ -1290,7 +1222,6 @@ export default function CarConfigurator() {
                 <Suspense fallback={<ModelLoadingFallback />}>
                     <CarModel
                         modelUrl={selectedCar.modelPath}
-                        modelLabel={selectedCar.label}
                         rimColor={selectedFinishColor}
                         rimUrl={selectedRimUrl}
                     />

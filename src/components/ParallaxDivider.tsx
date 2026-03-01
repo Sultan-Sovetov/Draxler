@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 import gsap from "gsap";
@@ -51,13 +52,15 @@ export default function ParallaxDivider({
 
     return (
         <section ref={sectionRef} className={`parallax-divider ${compact ? "parallax-divider--compact" : ""}`}>
-            <img
+            <Image
                 ref={imageRef}
                 src={src}
                 alt=""
+                width={2400}
+                height={1200}
+                sizes="100vw"
                 className="parallax-divider-img"
                 loading="lazy"
-                decoding="async"
                 draggable={false}
             />
             <div className="parallax-divider-overlay" aria-hidden="true" />

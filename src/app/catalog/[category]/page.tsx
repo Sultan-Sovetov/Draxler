@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { getCategoryBySlug } from "@/lib/catalog-data";
 
@@ -81,15 +82,21 @@ export default function CatalogCategoryPage() {
                         className="catalog-card"
                     >
                         <div className="catalog-card-image-wrap">
-                            <img
+                            <Image
                                 src={product.image}
                                 alt={product.name}
+                                width={1200}
+                                height={1200}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                                 className="catalog-img-default"
                                 draggable={false}
                             />
-                            <img
+                            <Image
                                 src={product.hoverImage}
                                 alt={product.name}
+                                width={1200}
+                                height={1200}
+                                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
                                 className="catalog-img-hover"
                                 draggable={false}
                             />

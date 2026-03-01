@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import gsap from "gsap";
 import { getProductBySlug } from "@/lib/catalog-data";
 import Footer from "@/components/Footer";
@@ -197,16 +198,22 @@ export default function ProductDetailPage() {
                 {/* Left — Stacked Product Images */}
                 <div className="pdp-image-stack">
                     <div className="pdp-img-wrap">
-                        <img
+                        <Image
                             src={product.image}
                             alt={`${product.name} — Front`}
+                            width={1400}
+                            height={1400}
+                            sizes="(max-width: 1024px) 100vw, 50vw"
                             draggable={false}
                         />
                     </div>
                     <div className="pdp-img-wrap">
-                        <img
+                        <Image
                             src={product.hoverImage}
                             alt={`${product.name} — Angle`}
+                            width={1400}
+                            height={1400}
+                            sizes="(max-width: 1024px) 100vw, 50vw"
                             draggable={false}
                         />
                     </div>
@@ -302,9 +309,12 @@ export default function ProductDetailPage() {
                                 onClick={() => setActiveGalleryImage(imageSrc)}
                                 aria-label={`Open gallery image ${index + 1}`}
                             >
-                                <img
+                                <Image
                                     src={imageSrc}
                                     alt={`${product.name} gallery ${index + 1}`}
+                                    width={1200}
+                                    height={900}
+                                    sizes="(max-width: 1024px) 100vw, 33vw"
                                     className="pdp-gallery-image"
                                     draggable={false}
                                 />
@@ -334,9 +344,12 @@ export default function ProductDetailPage() {
                         className="pdp-gallery-modal-inner"
                         onClick={(event) => event.stopPropagation()}
                     >
-                        <img
+                        <Image
                             src={activeGalleryImage}
                             alt={`${product.name} close-up view`}
+                            width={1800}
+                            height={1200}
+                            sizes="90vw"
                             className="pdp-gallery-modal-image"
                         />
                     </div>

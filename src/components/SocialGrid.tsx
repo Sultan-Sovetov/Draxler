@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -52,9 +53,12 @@ export default function SocialGrid() {
             <div className="social-grid">
                 {smmImages.map((item, index) => (
                     <div key={index} className="social-grid-item">
-                        <img
+                        <Image
                             src={item.src}
                             alt={item.name}
+                            width={900}
+                            height={900}
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                             loading="lazy"
                             className="social-grid-image"
                         />

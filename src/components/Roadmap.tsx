@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import gsap from "gsap";
@@ -334,12 +335,14 @@ export default function Roadmap() {
                             <div className="rm-reveal-grid">
                                 {/* Image side */}
                                 <div className="rm-reveal-image-wrap">
-                                    <img
+                                    <Image
                                         src={active.image}
                                         alt={active.title}
+                                        width={1200}
+                                        height={900}
+                                        sizes="(max-width: 900px) 100vw, 50vw"
                                         className="rm-reveal-image"
                                         loading="lazy"
-                                        decoding="async"
                                     />
                                 </div>
 
