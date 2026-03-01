@@ -43,9 +43,12 @@ public/media/manufacturing.jpg
 public/media/vossen disc.jpg
 public/media/rims-image-1.jpg
 public/car rims/
-
+public/car-models/backup
 # build artifacts and docs
 build_log.txt
 implementation_plan.md
 project_context.md
 task.md
+
+# backup assets
+backup/

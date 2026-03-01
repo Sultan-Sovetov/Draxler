@@ -7,6 +7,7 @@ import {
     useEffect,
     useMemo,
     useCallback,
+    useTransition,
 } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -16,12 +17,20 @@ import {
     MeshReflectorMaterial,
     SoftShadows,
     OrbitControls,
+    Html,
 } from "@react-three/drei";
+import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Check, LoaderCircle, X } from "lucide-react";
+import { Leva, useControls, button, folder } from "leva";
 import ConfiguratorHUD from "./ConfiguratorHUD";
+import AeroLoader from "./AeroLoader";
+import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
+import { CAR_PAINT_EXCLUSIONS } from "../data/car-paint-exclusions";
+import { CAR_CALIBRATION_DATA } from "../data/CarCalibrationData";
+import { applyMaterialFixes, logMeshInventory } from "../data/car-material-fixes";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -35,6 +44,645 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
+const IS_DEV = true;
+
+type Car3DOption = {
+    id: string;
+    label: string;
+    modelPath: string;
+    displayName: string;
+};
+
+type Car3DBrandGroup = {
+    brand: string;
+    models: Car3DOption[];
+};
+
+type Car3DGroupSource = {
+    brand: string;
+    models: Array<{
+        name: string;
+        file: string;
+    }>;
+};
+
+type CarPaintMaterial = THREE.MeshStandardMaterial | THREE.MeshPhysicalMaterial;
+
+const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
+    {
+        brand: "Mercedes-Benz",
+        models: [
+          //  { name: "G-Class AMG 63 V2 (2020)", file: "mercedes/2020_mercedes-benz_g-class_amg_g_63.glb" },
+                        { name: "G-Class AMG 63", file: "mercedes/2025_mercedes-benz_g-class_amg_g_63.glb" },
+          //  { name: "S-Class V1", file: "mercedes/Mercedes_Benz_S_class_V1.glb" },
+          //norm { name: "S-Class V2", file: "mercedes/Mercedes_Benz_S_class_V2.glb" },
+                 //       { name: "S-Class Brabus 850", file: "mercedes/s_brabus_850.glb" },
+                        { name: "S-Class W223", file: "mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb" },
+        ],
+    },
+    {
+        brand: "Ford",
+        models: [
+            { name: "Mustang RTR (2015)", file: "ford/2015_ford_mustang_rtr.glb" },
+            { name: "F-150 (2024)", file: "ford/2024_ford_f-150_raptor_r.glb" },
+        ],
+    },
+    {
+            brand: "Ferrari",
+        models: [
+            { name: "SF90", file: "ferrari/ferrari_sf90_stradale.glb" },
+            { name: "GTC 4-lusso", file: "ferrari/ferrari_gtc4_lusso.glb" },
+        ],
+    },
+    {
+        brand: "Chevrolet",
+        models: [
+            { name: "Camaro", file: "chevrolet/2019_chevrolet_camaro-v1.glb" },
+            { name: "Corvette C8 Stingray (2019)", file: "chevrolet/2019_chevrolet_corvette_c8_stingray.glb" },
+        ],
+    },
+    {
+        brand: "Dodge / RAM",
+        models: [
+           // { name: "Challenger 392 Scat Pack (2015)", file: "dodge/2015_dodge_challenger_392_hemi_scat_pack_shaker.glb" },
+            { name: "Challenger SRT Hellcat", file: "dodge/dodge_challenger_srt_hellcat__free.glb" },
+            { name: "RAM 1500 TRX (2021)", file: "dodge/2021_ram_1500_trx.glb" },
+            { name: "RAM 1500 TRX V2 (2021)", file: "dodge/2021_ram_1500_trx (1).glb" },
+        ],
+    },
+    {
+        brand: "Porsche",
+        models: [
+           // { name: "Cayenne Turbo GT (2022)", file: "porsche/2022_porsche_cayenne_turbo_gt.glb" },
+            { name: "Cayenne (2020)", file: "porsche/porsche_cayenne.glb" },
+          //  { name: "911 V1", file: "porsche/porsche_911_V1.glb" },
+           // { name: "911 V1 (Uncompressed)", file: "porsche/porsche_911_V1_(uncompressed).glb" },
+            { name: "911 V2 (Uncompressed)", file: "porsche/porsche_911_V2_(uncompressed).glb" },
+           // { name: "911 V2 Turbo S", file: "porsche/porsche_911_turbo_s.glb" },
+            { name: "911 Turbo S", file: "porsche/2021_porsche_911_turbo_s_992.glb" },
+        ],
+    },
+    {
+        brand: "BMW",
+        models: [
+          //  { name: "X5 M G05", file: "bmw/bmw_x5_m_g05.glb" },
+          //  { name: "5 Series V1", file: "bmw/bmw_5-v1.glb" },
+            { name: "M5", file: "bmw/bmw_m5_2024.glb" },
+          //  { name: "X5 (Uncompressed)", file: "bmw/bmw x5 new.glb" },
+           // { name: "X5 M (Uncompressed)", file: "bmw/bmw_X5_M_(uncompressed).glb" },
+        ],
+    },
+    {
+        brand: "Lamborghini",
+        models: [
+           // { name: "Huracán", file: "lamborghini/lamborghini_huracan.glb" },
+            { name: "Huracán EVO", file: "lamborghini/2019_lamborghini_huracan_evo.glb" },
+           // { name: "Urus (2019)", file: "lamborghini/2019_lamborghini_urus.glb" },
+           // { name: "Urus SE (2025)", file: "lamborghini/2025_lamborghini_urus_se.glb" },
+        ],
+    },
+    {
+        brand: "McLaren",
+        models: [
+            { name: "765LT", file: "mclaren/2022_mclaren_765lt.glb" },
+            { name: "720 (Uncompressed)", file: "mclaren/mclaren_720_(uncompressed).glb" },
+            { name: "720S udalit", file: "mclaren/2017_mclaren_720s.glb" },
+           // { name: "720S v2 udalit", file: "mclaren/2017_mclaren720.glb" },
+        ],
+    },
+    {
+        brand: "Lexus",
+        models: [
+            { name: "LC 500 (2017)", file: "lexus/2017_lexus_lc_500_model.glb" },
+            { name: "GX 550h Overtrail (2023)", file: "lexus/2023_lexus_gx_550_h_overtrail.glb" },
+            { name: "LX 700h", file: "lexus/2025_lexus_lx700h.glb" },
+        ],
+    },
+    {
+        brand: "Audi",
+        models: [
+            { name: "A6 C8 Limousine", file: "audi/audi_a6_c8_limousine.glb" },
+            { name: "A6 C8 Limousine V2", file: "audi/audi_a6_c8_limousine (1).glb" },
+            { name: "RS6", file: "audi/audi.glb" },
+           // { name: "RS5", file: "audi/2021_audi_rs5_sportback.glb" },
+            { name: "R8", file: "audi/2019_audi_r8_coupe.glb" },
+        ],
+    },
+    {
+        brand: "Cadillac",
+        models: [
+            { name: "Escalade Premium (2021)", file: "cadillac/2021_cadillac_escalade_premium.glb" },
+            { name: "Escalade Premium Luxury (2021)", file: "cadillac/2021_cadillac_escalade_premium_luxury.glb" },
+        ],
+    },
+
+];
+
+const CAR_3D_GROUPS: Car3DBrandGroup[] = CAR_3D_GROUP_SOURCES.map((group, groupIndex) => ({
+    brand: group.brand,
+    models: group.models.map((model, modelIndex) => ({
+        id: `car-${groupIndex + 1}-${modelIndex + 1}`,
+        label: model.name,
+        modelPath: `/car-models/${model.file}`,
+        displayName: model.name,
+    })),
+}));
+
+const CAR_3D_OPTIONS: Car3DOption[] = CAR_3D_GROUPS.flatMap((group) => group.models);
+
+// Hardcoded default: Mercedes G-Class AMG 63 (2025)
+const DEFAULT_CAR = CAR_3D_OPTIONS.find(
+    (car) => car.modelPath === "/car-models/mercedes/2025_mercedes-benz_g-class_amg_g_63.glb"
+) ?? CAR_3D_OPTIONS[0];
+
+const BODY_MATERIAL_HINTS = ["paint", "body", "ext_", "car_body", "metallic", "carpaints"];
+const BODY_MATERIAL_BLACKLIST = ["glass", "window", "mirror", "chrome", "light", "tire", "rubber", "transparent", "decal", "emit"];
+
+const MATERIAL_OVERRIDES: Record<string, string[]> = {
+    "Ghost V2": ["CarPaint_01"],
+    "G Class V1": ["Body_Metallic"],
+};
+
+const getOverrideList = (modelLabel: string) =>
+    MATERIAL_OVERRIDES[modelLabel] ?? MATERIAL_OVERRIDES[modelLabel.replace(/-/g, " ")];
+
+const isPaintCandidateMaterial = (material: THREE.Material): material is CarPaintMaterial => {
+    const standardLike =
+        (material as THREE.MeshStandardMaterial).isMeshStandardMaterial ||
+        (material as THREE.MeshPhysicalMaterial).isMeshPhysicalMaterial;
+
+    if (!standardLike) return false;
+
+    const materialName = (material.name || "").toLowerCase();
+    const blacklistedByName = BODY_MATERIAL_BLACKLIST.some((exclude) => materialName.includes(exclude));
+
+    const typedMaterial = material as THREE.MeshStandardMaterial & { transmission?: number };
+    const blockedByPhysicalProps =
+        typedMaterial.transparent === true ||
+        (typeof typedMaterial.transmission === "number" && typedMaterial.transmission > 0) ||
+        typedMaterial.opacity < 1;
+
+    return !blacklistedByName && !blockedByPhysicalProps;
+};
+
+const isBodyMaterialByName = (material: THREE.Material) => {
+    const materialName = (material.name || "").toLowerCase();
+    return BODY_MATERIAL_HINTS.some((hint) => materialName.includes(hint));
+};
+
+const applyPaintFinish = (material: CarPaintMaterial, hexColor: string) => {
+    material.color.set(hexColor);
+    material.metalness = 0.8;
+    material.roughness = 0.2;
+    material.needsUpdate = true;
+};
+
+const applyRimFinish = (material: THREE.Material, hexColor: string) => {
+    const standard = material as THREE.MeshStandardMaterial;
+    const physical = material as THREE.MeshPhysicalMaterial;
+    if (!standard.isMeshStandardMaterial && !physical.isMeshPhysicalMaterial) return;
+
+    standard.color?.set(hexColor);
+    standard.metalness = 0.8;
+    standard.roughness = 0.2;
+    material.needsUpdate = true;
+};
+
+type RimMapping = {
+    FL: string[];
+    RL: string[];
+    FR: string[];
+    RR: string[];
+};
+
+type RimCalibration = {
+    scale: number;
+    offsetY: number;
+    rotYLeft: number;
+    rotYRight: number;
+    offsetXLeft: number;
+    offsetXRight: number;
+    offsetZFront: number;
+    offsetZRear: number;
+    rimFile?: string | null;
+};
+
+// CAR_RIM_MAPPINGS is now imported from ../data/car-rims-mesh.js
+
+const DEFAULT_RIM_CALIBRATION: RimCalibration = {
+    scale: 0.88,
+    offsetY: 0,
+    rotYLeft: 180,
+    rotYRight: 0,
+    offsetXLeft: 0,
+    offsetXRight: 0,
+    offsetZFront: 0,
+    offsetZRear: 0,
+    rimFile: null,
+};
+
+export const CAR_RIM_CALIBRATION: Record<string, RimCalibration> = {
+    // "2025_mercedes-benz_g-class_amg_g_63.glb": {
+    //     rimFile: "vossen_1_front.glb",
+    //     scale: 0.88,
+    //     offsetY: 0,
+    //     rotYLeft: 180,
+    //     rotYRight: 0,
+    //     offsetXLeft: 0,
+    //     offsetXRight: 0,
+    //     offsetZFront: 0,
+    //     offsetZRear: 0,
+    // },
+};
+
+const CAR_MODEL_GROUND_Y_OFFSETS: Record<string, number> = {
+    "audi_a6_c8_limousine.glb": -2.75,
+    "audi_a6_c8_limousine (1).glb": -2.75,
+};
+
+const HUB_MESHES_TO_REMOVE = ["hub_lf_high", "hub_lf_medium", "hub_lf_low", "hub_lf_very_low"] as const;
+
+/* ================================================================== */
+/*  RimInjector – hides factory rims, attaches custom rim clones      */
+/* ================================================================== */
+function RimInjector({
+    rimUrl,
+    rimColor,
+    modelUrl,
+    modelScene,
+    rimCalibration,
+    isDev,
+}: {
+    rimUrl: string;
+    rimColor: string;
+    modelUrl: string;
+    modelScene: THREE.Object3D;
+    rimCalibration: RimCalibration;
+    isDev: boolean;
+}) {
+    const { scene: rimSourceScene } = useGLTF(rimUrl, true);
+    const injectedRimsRef = useRef<Array<{
+        mesh: THREE.Object3D;
+        baseScale: number;
+        basePosition: THREE.Vector3;
+        baseRotation: THREE.Euler;
+        isLeft: boolean;
+        isFront: boolean;
+        isFR: boolean;
+        isRR: boolean;
+        swapXZ: boolean;
+    }>>([]);
+
+    useFrame(() => {
+        if (!isDev) return;
+
+        injectedRimsRef.current.forEach(({ mesh, baseScale, basePosition, baseRotation, isLeft, isFront, isFR, isRR, swapXZ }) => {
+            const offsetX = isLeft ? rimCalibration.offsetXLeft : rimCalibration.offsetXRight;
+            const rotY = isLeft ? rimCalibration.rotYLeft : rimCalibration.rotYRight;
+            const offsetZ = isFront ? rimCalibration.offsetZFront : rimCalibration.offsetZRear;
+
+            mesh.scale.setScalar(baseScale * rimCalibration.scale);
+            // For swapXZ models, track-width slider (X) moves along Z and wheelbase slider (Z) moves along X
+            mesh.position.set(
+                basePosition.x + (swapXZ ? offsetZ : offsetX),
+                basePosition.y + rimCalibration.offsetY,
+                basePosition.z + (swapXZ ? offsetX : offsetZ)
+            );
+
+            mesh.rotation.copy(baseRotation);
+            mesh.rotation.y = THREE.MathUtils.degToRad(rotY);
+        });
+    });
+
+    useEffect(() => {
+        if (!rimSourceScene || !modelScene) return;
+
+        const fileName = modelUrl.split("/").pop() ?? "";
+        const targetRims = (CAR_RIM_MAPPINGS as Record<string, RimMapping>)[fileName];
+        const calibData = CAR_CALIBRATION_DATA[fileName];
+        const forceFallback = calibData?.forceBboxFallback === true;
+
+        // Ensure world matrices are current
+        modelScene.updateWorldMatrix(true, true);
+
+        // ── Compute car bounding box for fallback positioning + scale sanity ──
+        const carBox = new THREE.Box3().setFromObject(modelScene);
+        const carSize = new THREE.Vector3();
+        carBox.getSize(carSize);
+        const carCenter = new THREE.Vector3();
+        carBox.getCenter(carCenter);
+        const carMaxDim = Math.max(carSize.x, carSize.y, carSize.z);
+
+        // Bbox-derived fallback wheel positions (~42% track width, ~38% wheelbase)
+        // Some models are oriented 90° differently (Z = track width, X = wheelbase)
+        const swapXZ = calibData?.swapFallbackXZ === true;
+        const fbHalfTrack = (swapXZ ? carSize.z : carSize.x) * 0.42;
+        const fbHalfWheelbase = (swapXZ ? carSize.x : carSize.z) * 0.38;
+        const fbWheelY = carBox.min.y;
+        const fallbackPositions: Record<string, THREE.Vector3> = swapXZ ? {
+            FL: new THREE.Vector3(carCenter.x + fbHalfWheelbase, fbWheelY, carCenter.z - fbHalfTrack),
+            FR: new THREE.Vector3(carCenter.x + fbHalfWheelbase, fbWheelY, carCenter.z + fbHalfTrack),
+            RL: new THREE.Vector3(carCenter.x - fbHalfWheelbase, fbWheelY, carCenter.z - fbHalfTrack),
+            RR: new THREE.Vector3(carCenter.x - fbHalfWheelbase, fbWheelY, carCenter.z + fbHalfTrack),
+        } : {
+            FL: new THREE.Vector3(carCenter.x - fbHalfTrack, fbWheelY, carCenter.z + fbHalfWheelbase),
+            FR: new THREE.Vector3(carCenter.x + fbHalfTrack, fbWheelY, carCenter.z + fbHalfWheelbase),
+            RL: new THREE.Vector3(carCenter.x - fbHalfTrack, fbWheelY, carCenter.z - fbHalfWheelbase),
+            RR: new THREE.Vector3(carCenter.x + fbHalfTrack, fbWheelY, carCenter.z - fbHalfWheelbase),
+        };
+        // Heuristic rim diameter: ~15% of car's longest dimension
+        const heuristicWheelDiameter = carMaxDim * 0.15;
+
+        if (IS_DEV) {
+            console.log(`[RimInjector] ${fileName}: carSize(${carSize.x.toFixed(2)}, ${carSize.y.toFixed(2)}, ${carSize.z.toFixed(2)}) maxDim=${carMaxDim.toFixed(2)} heurWheel=${heuristicWheelDiameter.toFixed(3)} forceFallback=${forceFallback}`);
+        }
+
+        // Always iterate all 4 positions — even if mapping is empty/missing
+        const targets: Array<keyof RimMapping> = ["FL", "RL", "FR", "RR"];
+        const hiddenFactoryRims: THREE.Object3D[] = [];
+        injectedRimsRef.current = [];
+
+        // ── Per-car substring-based factory hiding (e.g. Lexus GX with unicode names) ──
+        // Sanitize both the scene name and patterns (strip colons + dots) before matching.
+        const hidePatterns = calibData?.hideFactoryBySubstrings;
+        if (hidePatterns?.length) {
+            const sanitizedPatterns = hidePatterns.map((p) => p.replace(/[:.]/g, ""));
+            modelScene.traverse((child: THREE.Object3D) => {
+                if (!child.name) return;
+                const sanitizedName = child.name.replace(/[:.]/g, "");
+                if (sanitizedPatterns.some((sub) => sanitizedName.includes(sub))) {
+                    child.visible = false;
+                    hiddenFactoryRims.push(child);
+                }
+            });
+            if (IS_DEV) {
+                console.log(`[RimHidePatterns] ${fileName}: hid ${hiddenFactoryRims.length} factory meshes by substring`);
+            }
+        }
+
+        // Helper: colon/dot-tolerant name lookup. Some GLB exporters (FBX→GLB) leave
+        // colons and dots in node names (e.g. "L:ALLgx.gltfScene...") while mappings
+        // may have them stripped.  Try exact match first, then fall back to sanitized comparison.
+        const findByName = (name: string): THREE.Object3D | null => {
+            const exact = modelScene.getObjectByName(name);
+            if (exact) return exact;
+
+            const sanitized = name.replace(/[:.]/g, "");
+            let found: THREE.Object3D | null = null;
+            modelScene.traverse((child: THREE.Object3D) => {
+                if (!found && child.name.replace(/[:.]/g, "") === sanitized) {
+                    found = child;
+                }
+            });
+            if (IS_DEV && found) {
+                console.log(`[RimName] "${name}" not found by exact match → matched "${(found as THREE.Object3D).name}" (sanitized)`);
+            }
+            return found;
+        };
+
+        targets.forEach((position) => {
+            const meshNames = targetRims?.[position] ?? [];
+
+            // 1. Hide ALL factory parts listed in the mapping
+            meshNames.forEach((name) => {
+                const part = findByName(name);
+                if (part) {
+                    part.visible = false;
+                    hiddenFactoryRims.push(part);
+                }
+            });
+
+            // 2. Try to find the anchor mesh (first element)
+            const anchorName = meshNames.length > 0 ? meshNames[0] : null;
+            const factoryRim = anchorName ? findByName(anchorName) : null;
+
+            const isFL = position === "FL";
+            const isFR = position === "FR";
+            const isRL = position === "RL";
+            const isRR = position === "RR";
+            const isLeftSide = isFL || isRL;
+            const isFrontSide = isFL || isFR;
+
+            // Clone the custom rim
+            const clonedCustomRim = clone(rimSourceScene);
+            clonedCustomRim.traverse((c: THREE.Object3D) => {
+                const mesh = c as THREE.Mesh;
+                if (!mesh.isMesh) return;
+                mesh.geometry.center();
+            });
+
+            // Measure custom rim (needed for both paths)
+            const customSize = new THREE.Vector3();
+            new THREE.Box3().setFromObject(clonedCustomRim).getSize(customSize);
+            const customDiameter = Math.max(customSize.y, customSize.z);
+
+            let baseScaleFactor = 1;
+            let basePosition = new THREE.Vector3();
+            let baseRotation = new THREE.Euler();
+            let attachParent: THREE.Object3D = modelScene;
+
+            if (!forceFallback && factoryRim && factoryRim.parent) {
+                /* ── PATH A: Anchor found — use factory rim position ── */
+                // Always attach to modelScene (not factoryRim.parent) so that all
+                // 4 rims share the same coordinate system. Some models (e.g. G63)
+                // have per-wheel parent groups with different rotations/mirroring,
+                // which causes Leva offsets to move in different world directions.
+                attachParent = modelScene;
+
+                const factoryBox = new THREE.Box3().setFromObject(factoryRim);
+                const worldCenter = new THREE.Vector3();
+                factoryBox.getCenter(worldCenter);
+                basePosition = modelScene.worldToLocal(worldCenter.clone());
+
+                const factorySize = new THREE.Vector3();
+                factoryBox.getSize(factorySize);
+                const factoryDiameter = Math.max(factorySize.y, factorySize.z);
+
+                // Scale sanity: if the anchor is unreasonably small (< 5% of car),
+                // it’s probably a logo/bolt/sub-component → use heuristic scale
+                if (factoryDiameter > 0 && factoryDiameter >= carMaxDim * 0.05 && customDiameter > 0) {
+                    baseScaleFactor = factoryDiameter / customDiameter;
+                } else if (customDiameter > 0 && heuristicWheelDiameter > 0) {
+                    baseScaleFactor = heuristicWheelDiameter / customDiameter;
+                    if (IS_DEV) {
+                        console.log(`[RimScale] ${fileName} ${position}: anchor too small (${factoryDiameter.toFixed(3)}), using heuristic scale`);
+                    }
+                }
+
+                if (IS_DEV) {
+                    console.log(`[RimAnchor] ${fileName} ${position}: factoryDiam=${factoryDiameter.toFixed(3)} customDiam=${customDiameter.toFixed(3)} baseScale=${baseScaleFactor.toFixed(3)} worldPos(${worldCenter.x.toFixed(3)},${worldCenter.y.toFixed(3)},${worldCenter.z.toFixed(3)})`);
+                }
+
+                // Compensate for attachment parent's world scale.
+                // factoryDiameter is in world space (includes the outer <group scale={s}> etc.),
+                // but when the rim is a child of attachParent it inherits that same scale chain.
+                // Dividing by the world scale avoids double-counting.
+                const parentWS_A = new THREE.Vector3();
+                attachParent.getWorldScale(parentWS_A);
+                if (parentWS_A.x > 0.0001) {
+                    baseScaleFactor /= parentWS_A.x;
+                }
+
+                if (IS_DEV) {
+                    console.log(`[RimScale] ${fileName} ${position}: parentWorldScale=${parentWS_A.x.toFixed(4)} compensated baseScale=${baseScaleFactor.toFixed(4)}`);
+                }
+
+                baseRotation.set(0, 0, 0);
+                // NOTE: we do NOT copy factoryRim.rotation. Hub meshes in some models
+                // (e.g. G63) have non-zero X/Z local rotations that tilt the custom rim.
+                // Our calibration rotYLeft/rotYRight fully controls the Y orientation.
+            } else {
+                /* ── PATH B: No anchor — bbox-derived fallback positions ── */
+                attachParent = modelScene;
+                // Convert world-space fallback position to modelScene's local space
+                basePosition = modelScene.worldToLocal(fallbackPositions[position].clone());
+
+                // Heuristic scale from bounding box
+                if (customDiameter > 0 && heuristicWheelDiameter > 0) {
+                    baseScaleFactor = heuristicWheelDiameter / customDiameter;
+                }
+
+                // Compensate for attachment parent's world scale (same as PATH A)
+                const parentWS_B = new THREE.Vector3();
+                attachParent.getWorldScale(parentWS_B);
+                if (parentWS_B.x > 0.0001) {
+                    baseScaleFactor /= parentWS_B.x;
+                }
+
+                if (IS_DEV) {
+                    console.log(
+                        `[RimFallback] ${fileName} ${position}: no anchor → bbox pos(${basePosition.x.toFixed(2)}, ${basePosition.y.toFixed(2)}, ${basePosition.z.toFixed(2)}) scale=${baseScaleFactor.toFixed(3)} parentWS=${parentWS_B.x.toFixed(4)}`
+                    );
+                }
+            }
+
+            // Apply per-wheel corrections (baked into basePosition for both paths)
+            const pwc = calibData?.perWheelCorrections?.[position];
+            if (pwc) {
+                basePosition.x += pwc.x ?? 0;
+                basePosition.y += pwc.y ?? 0;
+                basePosition.z += pwc.z ?? 0;
+            }
+
+            // Apply calibration offsets (additive on top of base position)
+            const offsetX = isLeftSide ? rimCalibration.offsetXLeft : rimCalibration.offsetXRight;
+            const offsetZ = isFrontSide ? rimCalibration.offsetZFront : rimCalibration.offsetZRear;
+            const rotY = isLeftSide ? rimCalibration.rotYLeft : rimCalibration.rotYRight;
+            const swapXZ = calibData?.swapFallbackXZ === true;
+
+            const finalPosition = new THREE.Vector3(
+                basePosition.x + (swapXZ ? offsetZ : offsetX),
+                basePosition.y + rimCalibration.offsetY,
+                basePosition.z + (swapXZ ? offsetX : offsetZ)
+            );
+
+            if (IS_DEV) {
+                const path = (!forceFallback && factoryRim) ? "A" : "B";
+                console.log(`[Rim] ${position}: path=${path} baseScaleFactor=${baseScaleFactor.toFixed(3)} pos(${finalPosition.x.toFixed(2)},${finalPosition.y.toFixed(2)},${finalPosition.z.toFixed(2)})`);
+            }
+
+            let effectiveBaseScale = calibData?.scaleOverride ?? baseScaleFactor;
+            // Per-wheel scale multiplier (e.g. front wheels slightly larger than rear)
+            if (pwc?.scaleMul) {
+                effectiveBaseScale *= pwc.scaleMul;
+            }
+            clonedCustomRim.scale.setScalar(effectiveBaseScale * rimCalibration.scale);
+            clonedCustomRim.rotation.copy(baseRotation);
+            clonedCustomRim.rotation.y = THREE.MathUtils.degToRad(rotY);
+            clonedCustomRim.position.copy(finalPosition);
+
+            clonedCustomRim.traverse((c: THREE.Object3D) => {
+                const mesh = c as THREE.Mesh;
+                if (!mesh.isMesh) return;
+                mesh.castShadow = true;
+                mesh.receiveShadow = true;
+                const mats = Array.isArray(mesh.material)
+                    ? mesh.material
+                    : [mesh.material];
+                mats.forEach((mat) => {
+                    if ((mat as THREE.MeshStandardMaterial).isMeshStandardMaterial) {
+                        (mat as THREE.MeshStandardMaterial).envMapIntensity = 1.5;
+                    }
+                    applyRimFinish(mat, rimColor);
+                });
+            });
+
+            clonedCustomRim.userData.isInjectedRim = true;
+            attachParent.add(clonedCustomRim);
+
+            // Store basePosition (WITHOUT offsets) so useFrame can recompute correctly
+            injectedRimsRef.current.push({
+                mesh: clonedCustomRim,
+                baseScale: effectiveBaseScale,
+                basePosition: basePosition.clone(),
+                baseRotation: baseRotation.clone(),
+                isLeft: isLeftSide,
+                isFront: isFrontSide,
+                isFR,
+                isRR,
+                swapXZ: calibData?.swapFallbackXZ === true,
+            });
+
+            clonedCustomRim.userData = {
+                ...clonedCustomRim.userData,
+                isInjectedRim: true,
+                isLeft: isLeftSide,
+                isFront: isFrontSide,
+                isFR,
+                isRR,
+                basePosition: basePosition.clone(),
+            };
+        });
+
+        /* Cleanup ───────────────────────────────────────────── */
+        return () => {
+            const injectedRims: THREE.Object3D[] = [];
+            modelScene.traverse((child: THREE.Object3D) => {
+                if (child.userData?.isInjectedRim) {
+                    injectedRims.push(child);
+                }
+            });
+
+            injectedRims.forEach((rim) => {
+                if (rim.parent) {
+                    rim.parent.remove(rim);
+                }
+
+                rim.traverse((c: THREE.Object3D) => {
+                    const mesh = c as THREE.Mesh;
+                    if (!mesh.isMesh) return;
+                    mesh.geometry?.dispose();
+                    if (Array.isArray(mesh.material)) {
+                        mesh.material.forEach((material) => material.dispose());
+                    } else {
+                        mesh.material?.dispose();
+                    }
+                });
+            });
+
+            hiddenFactoryRims.forEach((rim) => {
+                rim.visible = true;
+            });
+
+            injectedRimsRef.current = [];
+        };
+    // REMOVED rimColor from deps — the separate recoloring useEffect handles it.
+    // Rebuilding all rims on color change caused position shifts.
+    }, [modelScene, modelUrl, rimSourceScene]);
+
+    useEffect(() => {
+        injectedRimsRef.current.forEach(({ mesh }) => {
+            mesh.traverse((child: THREE.Object3D) => {
+                const m = child as THREE.Mesh;
+                if (!m.isMesh) return;
+                const mats = Array.isArray(m.material) ? m.material : [m.material];
+                mats.forEach((mat) => applyRimFinish(mat, rimColor));
+            });
+        });
+    }, [rimColor]);
+
+    return null;
+}
 
 /* ================================================================== */
 /*  ScrollCamera – GSAP-driven camera that animates from top to front */
@@ -66,37 +714,360 @@ function ScrollCamera({
 /* ================================================================== */
 /*  CarModel – loads the GLB, scales & centres it                     */
 /* ================================================================== */
-function CarModel() {
-    const { scene } = useGLTF("/car-models/2020_bmw_m340i_xdrive-v1.glb", true);
+function CarModel({
+    modelUrl,
+    modelLabel,
+    rimColor,
+    rimUrl,
+}: {
+    modelUrl: string;
+    modelLabel: string;
+    rimColor: string;
+    rimUrl: string | null;
+}) {
+    const { scene } = useGLTF(modelUrl, true);
     const groupRef = useRef<THREE.Group>(null);
+    const fileName = useMemo(() => modelUrl.split("/").pop() ?? "", [modelUrl]);
+    const rimFileName = useMemo(() => rimUrl?.split("/").pop() ?? null, [rimUrl]);
+
+    /* ── Clone scene & bake hard-fixes at creation time (runs ONCE per model) ── */
+    const modelScene = useMemo(() => {
+        const cloned = clone(scene);
+        const fName = modelUrl.split("/").pop() ?? "";
+
+        /* Phase 1 — Data-driven material fixes (chrome, glass, rubber, etc.) */
+        const fixCount = applyMaterialFixes(cloned, fName);
+        if (IS_DEV && fixCount > 0) {
+            console.log(`[MaterialFix] ${fName}: ${fixCount} material(s) fixed`);
+        }
+
+        /* Phase 2 — Isolate paint-excluded materials + remove hub meshes */
+        const exclusions = new Set(CAR_PAINT_EXCLUSIONS[fName] ?? []);
+        const hubsToRemove: THREE.Object3D[] = [];
+
+        cloned.traverse((child: THREE.Object3D) => {
+            const mesh = child as THREE.Mesh;
+
+            if (HUB_MESHES_TO_REMOVE.includes(child.name as (typeof HUB_MESHES_TO_REMOVE)[number])) {
+                hubsToRemove.push(child);
+            }
+
+            if (!mesh.isMesh) return;
+
+            // Skip meshes already fixed by the material fix system
+            if (mesh.userData.__materialFixed) return;
+
+            // Isolate excluded meshes: clone their materials so they no longer
+            // share instances with body meshes (prevents paint leak permanently)
+            if (exclusions.has(mesh.name)) {
+                if (Array.isArray(mesh.material)) {
+                    mesh.material = mesh.material.map((m) => m.clone());
+                } else if (mesh.material) {
+                    mesh.material = mesh.material.clone();
+                }
+                mesh.userData.__paintExcluded = true;
+            }
+        });
+
+        hubsToRemove.forEach((hub) => {
+            hub.removeFromParent();
+        });
+
+        /* Phase 3 — Nuclear hard-fix for Brabus tires (Object_356/Object_364)
+           These meshes share a glass/transmission material from the GLB that
+           survives cloning. We force-replace with a brand-new opaque material
+           and kill every transparency-related property. */
+        if (fName === "s_brabus_850.glb") {
+            const BRABUS_TIRE_NAMES = new Set(["Object_356", "Object_364"]);
+            const forceTireMaterial = () => {
+                const mat = new THREE.MeshStandardMaterial({
+                    color: new THREE.Color(0x0a0a0a),
+                    roughness: 0.85,
+                    metalness: 0.0,
+                    transparent: false,
+                    opacity: 1.0,
+                    depthWrite: true,
+                    side: THREE.FrontSide,
+                });
+                mat.needsUpdate = true;
+                return mat;
+            };
+
+            cloned.traverse((child: THREE.Object3D) => {
+                if (!BRABUS_TIRE_NAMES.has(child.name)) return;
+
+                // Fix the object itself if it's a mesh
+                const mesh = child as THREE.Mesh;
+                if (mesh.isMesh) {
+                    mesh.material = forceTireMaterial();
+                    mesh.visible = true;
+                    mesh.userData.__materialFixed = true;
+                    mesh.userData.__paintExcluded = true;
+                }
+
+                // Also fix any child meshes inside this object
+                child.traverse((sub: THREE.Object3D) => {
+                    const subMesh = sub as THREE.Mesh;
+                    if (!subMesh.isMesh) return;
+                    subMesh.material = forceTireMaterial();
+                    subMesh.visible = true;
+                    subMesh.userData.__materialFixed = true;
+                    subMesh.userData.__paintExcluded = true;
+                });
+            });
+
+            if (IS_DEV) {
+                console.log("[HardFix] Brabus tires Object_356/Object_364 forced to opaque black rubber");
+            }
+        }
+
+          /* Phase 3b — G-Class white tire fix (Object_601/615/643/629)
+           Same issue: tire meshes have a broken white material. Force black. */
+        if (fName === "mersedes-benz_s-class_w223_brabus_850 (1).glb") {
+            const SCLASS_TIRE_NAMES = new Set(["Object_601", "Object_615", "Object_643", "Object_629"]);
+            const forceTireMat = () => {
+                const mat = new THREE.MeshStandardMaterial({
+                    color: new THREE.Color(0x0a0a0a),
+                    roughness: 0.85,
+                    metalness: 0.0,
+                    transparent: false,
+                    opacity: 1.0,
+                    depthWrite: true,
+                    side: THREE.FrontSide,
+                });
+                mat.needsUpdate = true;
+                return mat;
+            };
+
+            cloned.traverse((child: THREE.Object3D) => {
+                if (!SCLASS_TIRE_NAMES.has(child.name)) return;
+                const mesh = child as THREE.Mesh;
+                if (mesh.isMesh) {
+                    mesh.material = forceTireMat();
+                    mesh.visible = true;
+                    mesh.userData.__materialFixed = true;
+                    mesh.userData.__paintExcluded = true;
+                }
+                child.traverse((sub: THREE.Object3D) => {
+                    const subMesh = sub as THREE.Mesh;
+                    if (!subMesh.isMesh) return;
+                    subMesh.material = forceTireMat();
+                    subMesh.visible = true;
+                    subMesh.userData.__materialFixed = true;
+                    subMesh.userData.__paintExcluded = true;
+                });
+            });
+
+            if (IS_DEV) {
+                console.log("[HardFix] G-Class tires Object_601/615/643/629 forced to opaque black rubber");
+            }
+        }
+
+        return cloned;
+    }, [scene, modelUrl]);
+    const defaultCalibration = useMemo(
+        () => CAR_CALIBRATION_DATA[fileName] ?? DEFAULT_RIM_CALIBRATION,
+        [fileName]
+    );
+
+    const [rimControls, setRimControls] = useControls(
+        "Rim Calibration",
+        () => ({
+            Global: folder({
+                scale: { value: defaultCalibration.scale, min: 0.1, max: 20.0, step: 0.01 },
+                offsetY: { value: defaultCalibration.offsetY, min: -20, max: 20, step: 0.001 },
+            }),
+            Rotation_Y: folder({
+                rotYLeft: { value: defaultCalibration.rotYLeft ?? 180, min: -360, max: 360, step: 1 },
+                rotYRight: { value: defaultCalibration.rotYRight ?? 0, min: -360, max: 360, step: 1 },
+            }),
+            Track_Width_X: folder({
+                offsetXLeft: { value: defaultCalibration.offsetXLeft ?? 0, min: -20, max: 20, step: 0.001 },
+                offsetXRight: { value: defaultCalibration.offsetXRight ?? 0, min: -20, max: 20, step: 0.001 },
+            }),
+            Wheelbase_Z: folder({
+                offsetZFront: { value: defaultCalibration.offsetZFront ?? 0, min: -20, max: 20, step: 0.001 },
+                offsetZRear: { value: defaultCalibration.offsetZRear ?? 0, min: -20, max: 20, step: 0.001 },
+            }),
+            Actions: folder({
+                "Copy Config": button((get) => {
+                    if (!IS_DEV) return;
+
+                    const carName = modelUrl.split("/").pop() ?? fileName;
+                    const rimName = rimUrl ? rimUrl.split("/").pop() ?? "unknown_rim" : null;
+                    const wheelPositions = (CAR_RIM_MAPPINGS as Record<string, RimMapping>)[carName] ?? null;
+
+                    const global = {
+                        scale: get("Rim Calibration.Global.scale") as number,
+                        offsetY: get("Rim Calibration.Global.offsetY") as number,
+                    };
+
+                    const rotationY = {
+                        rotYLeft: get("Rim Calibration.Rotation_Y.rotYLeft") as number,
+                        rotYRight: get("Rim Calibration.Rotation_Y.rotYRight") as number,
+                    };
+
+                    const trackWidthX = {
+                        offsetXLeft: get("Rim Calibration.Track_Width_X.offsetXLeft") as number,
+                        offsetXRight: get("Rim Calibration.Track_Width_X.offsetXRight") as number,
+                    };
+
+                    const wheelbaseZ = {
+                        offsetZFront: get("Rim Calibration.Wheelbase_Z.offsetZFront") as number,
+                        offsetZRear: get("Rim Calibration.Wheelbase_Z.offsetZRear") as number,
+                    };
+
+                    const config = {
+                        carModelFile: carName,
+                        carModelPath: modelUrl,
+                        rimFile: rimName,
+                        rimPath: rimUrl,
+                        wheelPositions,
+                        devMode: {
+                            Global: global,
+                            Rotation_Y: rotationY,
+                            Track_Width_X: trackWidthX,
+                            Wheelbase_Z: wheelbaseZ,
+                        },
+                        calibration: {
+                            rimFile: rimFileName,
+                            ...global,
+                            ...rotationY,
+                            ...trackWidthX,
+                            ...wheelbaseZ,
+                        },
+                    };
+
+                    const exportString = `"${carName}": ${JSON.stringify(config, null, 2)},`;
+
+                    navigator.clipboard.writeText(exportString).then(() => {
+                        alert("📋 Config copied to clipboard!");
+                        console.log("Copied:", exportString);
+                    }).catch((error) => {
+                        console.error("Failed to copy to clipboard:", error);
+                        alert("⚠️ Clipboard copy failed. Check console.");
+                    });
+                }),
+                "Log Meshes": button(() => {
+                    if (!IS_DEV) return;
+                    const entries = logMeshInventory(modelScene, fileName);
+                    alert(`📊 ${entries.length} meshes logged to console. Template copied to clipboard.`);
+                }),
+            }),
+        }),
+        [defaultCalibration, fileName, rimFileName]
+    );
+
+    const activeRimCalibration = useMemo<RimCalibration>(() => {
+        if (!IS_DEV) {
+            return defaultCalibration;
+        }
+
+        return {
+            rimFile: rimFileName,
+            scale: rimControls.scale,
+            offsetY: rimControls.offsetY,
+            rotYLeft: rimControls.rotYLeft,
+            rotYRight: rimControls.rotYRight,
+            offsetXLeft: rimControls.offsetXLeft,
+            offsetXRight: rimControls.offsetXRight,
+            offsetZFront: rimControls.offsetZFront,
+            offsetZRear: rimControls.offsetZRear,
+        };
+    }, [
+        defaultCalibration,
+        rimControls.offsetXLeft,
+        rimControls.offsetXRight,
+        rimControls.offsetY,
+        rimControls.offsetZFront,
+        rimControls.offsetZRear,
+        rimControls.rotYLeft,
+        rimControls.rotYRight,
+        rimControls.scale,
+        rimFileName,
+    ]);
+
+    useEffect(() => {
+        if (!IS_DEV) return;
+
+        setRimControls({
+            scale: defaultCalibration.scale,
+            offsetY: defaultCalibration.offsetY,
+            rotYLeft: defaultCalibration.rotYLeft,
+            rotYRight: defaultCalibration.rotYRight,
+            offsetXLeft: defaultCalibration.offsetXLeft,
+            offsetXRight: defaultCalibration.offsetXRight,
+            offsetZFront: defaultCalibration.offsetZFront,
+            offsetZRear: defaultCalibration.offsetZRear,
+        });
+    }, [defaultCalibration, fileName, setRimControls]);
 
     // Compute bounding-box based scale + centre offset once
     const { scale, center } = useMemo(() => {
-        const box = new THREE.Box3().setFromObject(scene);
+        const box = new THREE.Box3().setFromObject(modelScene);
         const size = box.getSize(new THREE.Vector3());
         const maxDim = Math.max(size.x, size.y, size.z);
         // Target ~6 units wide so it fills the viewport nicely
         const s = 6 / maxDim;
         const c = box.getCenter(new THREE.Vector3()).multiplyScalar(-s);
         // Sit on the floor: offset so bottom of bounding box == y:0
-        c.y = -box.min.y * s;
+        const modelGroundOffsetY = CAR_MODEL_GROUND_Y_OFFSETS[fileName] ?? 0;
+        c.y = -box.min.y * s + modelGroundOffsetY;
         return { scale: s, center: c };
-    }, [scene]);
+    }, [fileName, modelScene]);
 
+    /* ── Dispose Three.js GPU resources ONLY when the model changes or unmounts ── */
     useEffect(() => {
-        scene.traverse((child) => {
+        return () => {
+            modelScene.traverse((child: THREE.Object3D) => {
+                const mesh = child as THREE.Mesh;
+                if (!mesh.isMesh) return;
+                mesh.geometry?.dispose();
+                if (Array.isArray(mesh.material)) {
+                    mesh.material.forEach((m) => m.dispose());
+                } else {
+                    mesh.material?.dispose();
+                }
+            });
+        };
+    }, [modelScene]);
+
+    /* ── Car paint disabled for now: keep original materials, only set shadows ── */
+    useEffect(() => {
+        modelScene.traverse((child: THREE.Object3D) => {
             if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
             }
         });
-    }, [scene]);
+    }, [modelScene]);
 
     return (
         <group ref={groupRef} scale={scale} position={[center.x, center.y, center.z]}>
-            <primitive object={scene} />
+            <primitive object={modelScene} />
+            {rimUrl && (
+                <Suspense fallback={null}>
+                    <RimInjector
+                        key={rimUrl}
+                        rimUrl={rimUrl}
+                        rimColor={rimColor}
+                        modelUrl={modelUrl}
+                        modelScene={modelScene}
+                        rimCalibration={activeRimCalibration}
+                        isDev={IS_DEV}
+                    />
+                </Suspense>
+            )}
         </group>
+    );
+}
+
+function ModelLoadingFallback() {
+    return (
+        <Html center>
+            <AeroLoader inline={true} />
+        </Html>
     );
 }
 
@@ -133,8 +1104,10 @@ export default function CarConfigurator() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const scrollProgress = useRef(0);
     const [isActive, setIsActive] = useState(false);
+    const [isPreparing, setIsPreparing] = useState(false);
     const [showButton, setShowButton] = useState(false);
-    const [selectedModel, setSelectedModel] = useState("BMW M340i");
+    const [, startTransition] = useTransition();
+    const [selectedModel, setSelectedModel] = useState(DEFAULT_CAR.displayName);
     const [selectedWheelModel, setSelectedWheelModel] = useState("DRX-101");
     const [showFinalize, setShowFinalize] = useState(false);
     const [name, setName] = useState("");
@@ -142,7 +1115,9 @@ export default function CarConfigurator() {
     const [phone, setPhone] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
-    const [isShiftPressed, setIsShiftPressed] = useState(false);
+    const [selectedCar, setSelectedCar] = useState<Car3DOption>(DEFAULT_CAR);
+    const [selectedFinishColor, setSelectedFinishColor] = useState("#0F1115");
+    const [selectedRimUrl, setSelectedRimUrl] = useState<string | null>(null);
 
     /* ── GSAP: pin section + drive scrollProgress ── */
     useEffect(() => {
@@ -172,37 +1147,37 @@ export default function CarConfigurator() {
         return () => ctx.revert();
     }, [isActive]);
 
-    useEffect(() => {
-        const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Shift") setIsShiftPressed(true);
-        };
-
-        const onKeyUp = (event: KeyboardEvent) => {
-            if (event.key === "Shift") setIsShiftPressed(false);
-        };
-
-        const onBlur = () => setIsShiftPressed(false);
-
-        window.addEventListener("keydown", onKeyDown);
-        window.addEventListener("keyup", onKeyUp);
-        window.addEventListener("blur", onBlur);
-
-        return () => {
-            window.removeEventListener("keydown", onKeyDown);
-            window.removeEventListener("keyup", onKeyUp);
-            window.removeEventListener("blur", onBlur);
-        };
-    }, []);
-
     const handleEnter = useCallback(() => {
-        setIsActive(true);
+        setIsPreparing(true);
         setShowButton(false);
+
+        // Simulate brief environment preparation, then activate
+        setTimeout(() => {
+            setIsPreparing(false);
+            setIsActive(true);
+        }, 1200);
     }, []);
 
     const handleExit = useCallback(() => {
         setIsActive(false);
+        setIsPreparing(false);
         setShowFinalize(false);
     }, []);
+
+    /* ── Scroll lock when configurator is active ── */
+    useEffect(() => {
+        if (isActive) {
+            document.body.style.overflow = "hidden";
+            window.dispatchEvent(new CustomEvent("configurator-active", { detail: { active: true } }));
+        } else {
+            document.body.style.overflow = "auto";
+            window.dispatchEvent(new CustomEvent("configurator-active", { detail: { active: false } }));
+        }
+        return () => {
+            document.body.style.overflow = "auto";
+            window.dispatchEvent(new CustomEvent("configurator-active", { detail: { active: false } }));
+        };
+    }, [isActive]);
 
     const canShowActionButton = isActive || showButton;
 
@@ -250,6 +1225,8 @@ export default function CarConfigurator() {
 
     return (
         <section ref={sectionRef} className="car-configurator-section" id="configurator">
+            {IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
+
             {/* 3D Canvas */}
             <Canvas
                 dpr={[1, 2]}
@@ -300,7 +1277,7 @@ export default function CarConfigurator() {
                 {isActive && (
                     <OrbitControls
                         enablePan={false}
-                        enableZoom={isShiftPressed}
+                        enableZoom
                         minPolarAngle={0}
                         maxPolarAngle={Math.PI / 2 - 0.1}
                         minDistance={4}
@@ -310,8 +1287,13 @@ export default function CarConfigurator() {
                 )}
 
                 {/* Scene */}
-                <Suspense fallback={null}>
-                    <CarModel />
+                <Suspense fallback={<ModelLoadingFallback />}>
+                    <CarModel
+                        modelUrl={selectedCar.modelPath}
+                        modelLabel={selectedCar.label}
+                        rimColor={selectedFinishColor}
+                        rimUrl={selectedRimUrl}
+                    />
                     <ReflectiveFloor />
                 </Suspense>
             </Canvas>
@@ -321,7 +1303,7 @@ export default function CarConfigurator() {
                 <div className={`car-config-title ${isActive ? "car-config-title--hidden" : ""}`}>
                     <span className="car-config-label">Interactive Experience</span>
                     <h2 className="car-config-heading" style={{ fontWeight: 600, color: "#000000" }}>
-                        The BMW M340i
+                        The {selectedCar.displayName}
                     </h2>
                 </div>
 
@@ -376,9 +1358,20 @@ export default function CarConfigurator() {
 
             <ConfiguratorHUD
                 active={isActive}
-                onSelectModel={(label) => setSelectedModel(label)}
                 onSelectWheelModel={(wheel) => setSelectedWheelModel(wheel)}
                 onOpenFinalize={() => setShowFinalize(true)}
+                carGroups={CAR_3D_GROUPS}
+                selectedCarId={selectedCar.id}
+                onSelectCarModel={(car) => {
+                    startTransition(() => {
+                        setSelectedCar(car);
+                        setSelectedModel(car.displayName);
+                    });
+                }}
+                selectedFinishColor={selectedFinishColor}
+                onSelectFinishColor={(hex) => setSelectedFinishColor(hex)}
+                selectedRimUrl={selectedRimUrl}
+                onSelectRimUrl={(url) => setSelectedRimUrl(url)}
             />
 
             <AnimatePresence>
@@ -391,6 +1384,21 @@ export default function CarConfigurator() {
                     >
                         <span className="car-config-summary-label">Current Build</span>
                         <h4>Your {selectedModel} on {selectedWheelModel}</h4>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            {/* Preparing overlay – localized to this section */}
+            <AnimatePresence>
+                {isPreparing && (
+                    <motion.div
+                        className="car-config-preparing-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <AeroLoader inline={true} />
                     </motion.div>
                 )}
             </AnimatePresence>

@@ -43,7 +43,7 @@ const GALLERY_IMAGES = [
 ] as const;
 
 const GALLERY_SLUGS = new Set(["drx-102", "drx-202", "drx-302"]);
-const FOOTER_SLUGS  = new Set(["drx-101", "drx-102", "drx-201", "drx-202", "drx-301", "drx-302", "drx-303"]);
+const FOOTER_SLUGS  = new Set(["drx-101", "drx-102", "drx-201", "drx-202", "drx-301", "drx-302", "drx-303", "drx-291", "drx-292", "drx-293", "drx-294", "drx-295", "drx-296", "drx-297", "drx-298", "drx-299", "drx-391", "drx-393", "drx-394", "drx-395", "drx-397"]);
 
 /* ── Build 3D sphere CSS layers per finish ── */
 function sphereStyle(finish: MetalFinish): React.CSSProperties {

@@ -17,10 +17,20 @@ export default function Navbar() {
     const { theme, toggle } = useTheme();
     const [scrolled, setScrolled] = useState(false);
     const [hidden, setHidden] = useState(false);
+    const [forceHidden, setForceHidden] = useState(false);
     const [activeSection, setActiveSection] = useState<string>("");
     const lastScrollY = useRef(0);
     const pathname = usePathname();
     const isHome = pathname === "/";
+
+    // Listen for configurator-active event to force-hide navbar
+    useEffect(() => {
+        const handler = (e: Event) => {
+            setForceHidden((e as CustomEvent).detail?.active === true);
+        };
+        window.addEventListener("configurator-active", handler);
+        return () => window.removeEventListener("configurator-active", handler);
+    }, []);
 
     const smoothScrollTo = useCallback((targetY: number, duration = 1300) => {
         const startY = window.scrollY || window.pageYOffset;
@@ -124,7 +134,7 @@ export default function Navbar() {
     return (
         <nav
             ref={navRef}
-            className={`navbar ${(scrolled || !isHome) ? "navbar--glass" : ""} ${hidden ? "navbar--hidden" : ""}`}
+            className={`navbar ${(scrolled || !isHome) ? "navbar--glass" : ""} ${(hidden || forceHidden) ? "navbar--hidden" : ""}`}
         >
             <div className="navbar-inner">
                 <button className="navbar-logo navbar-logo-btn" onClick={handleLogoClick}>DRAXLER</button>

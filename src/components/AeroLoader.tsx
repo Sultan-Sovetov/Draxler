@@ -13,11 +13,14 @@ interface AeroLoaderProps {
 
 export default function AeroLoader({ onComplete, inline = false }: AeroLoaderProps) {
     const containerRef = useRef<HTMLDivElement>(null);
+    const BLINK_CYCLES = 5;
+    const BLINK_DURATION = 2.2;
 
     useEffect(() => {
         if (!onComplete) return; // inline loaders don't auto-dismiss
 
-        // Let the breathing animation play for ~2.5s, then curtain-reveal out
+        // Let blinking finish, then curtain-reveal out
+        const visibleDuration = BLINK_CYCLES * BLINK_DURATION * 1000;
         const timer = setTimeout(() => {
             if (!containerRef.current) return;
 
@@ -29,7 +32,9 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
                     onComplete();
                 },
             });
-        }, 2500);
+        }, visibleDuration);
+
+
 
         return () => clearTimeout(timer);
     }, [onComplete]);
@@ -37,11 +42,12 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
     // Breathing animation variants for the text
     const breathe = {
         animate: {
-            opacity: [1, 0.6, 1],
+            opacity: [0.14, 1, 0.14],
             transition: {
-                duration: 2,
+                duration: BLINK_DURATION,
+                times: [0, 0.5, 1],
                 ease: "easeInOut" as const,
-                repeat: Infinity,
+                repeat: onComplete ? BLINK_CYCLES - 1 : Infinity,
             },
         },
     };

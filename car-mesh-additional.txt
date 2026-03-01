@@ -1,0 +1,630 @@
+"2015_ford_mustang_rtr.glb": {
+  "carModelFile": "2015_ford_mustang_rtr.glb",
+  "carModelPath": "/car-models/ford/2015_ford_mustang_rtr.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "rimMesh"
+    ],
+    "RL": [
+      "Mesh1"
+    ],
+    "FR": [
+      "Mesh"
+    ],
+    "RR": [
+      "Mesh2"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": 270
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0,
+      "offsetXRight": 0
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 1,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": 0,
+    "offsetXRight": 0,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+
+"2019_chevrolet_corvette_c8_stingray.glb": {
+  "carModelFile": "2019_chevrolet_corvette_c8_stingray.glb",
+  "carModelPath": "/car-models/chevrolet/2019_chevrolet_corvette_c8_stingray.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "Front_Left_Wheel_Rim_0"
+    ],
+    "RL": [
+      "Rear_Left_Wheel_Rim_0"
+    ],
+    "FR": [
+      "Front_Right_Wheel_Rim_0"
+    ],
+    "RR": [
+      "Rear_Right_Wheel_Rim_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 270,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": -0.02,
+      "offsetXRight": 0.02
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": -0.02,
+    "offsetXRight": 0.02,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"dodge_challenger_srt_hellcat__free.glb": {
+  "carModelFile": "dodge_challenger_srt_hellcat__free.glb",
+  "carModelPath": "/car-models/dodge/dodge_challenger_srt_hellcat__free.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "DC_Rim_FL_16"
+    ],
+    "RL": [
+      "DC_Rim_BL_20"
+    ],
+    "FR": [
+      "DC_Rim_FR_24"
+    ],
+    "RR": [
+      "DC_Rim_BR_28"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1.02,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.01,
+      "offsetXRight": -0.01
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 1.02,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": 0.01,
+    "offsetXRight": -0.01,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2021_ram_1500_trx.glb": {
+  "carModelFile": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.58,
+      "offsetY": 0.0045
+    },
+    "Rotation_Y": {
+      "rotYLeft": 270,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.0009,
+      "offsetXRight": -0.0009
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": -0.003,
+      "offsetZRear": 0.0054
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 0.58,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0009,
+    "offsetXRight": -0.0009,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+},
+
+"2021_ram_1500_trx (1).glb": {
+  "carModelFile": "2021_ram_1500_trx (1).glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx (1).glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441_56"
+    ],
+    "RL": [
+      "polySurface8441_56"
+    ],
+    "FR": [
+      "polySurface8441_56"
+    ],
+    "RR": [
+      "polySurface8441_56"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.58,
+      "offsetY": 0.0045
+    },
+    "Rotation_Y": {
+      "rotYLeft": 270,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.0009,
+      "offsetXRight": -0.0009
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": -0.003,
+      "offsetZRear": 0.0054
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 0.58,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0009,
+    "offsetXRight": -0.0009,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+},
+
+"porsche_911_V2_(uncompressed).glb": {
+  "carModelFile": "porsche_911_V2_(uncompressed).glb",
+  "carModelPath": "/car-models/porsche/porsche_911_V2_(uncompressed).glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "Mesh_45",
+      "Mesh_46",
+      "Mesh_47",
+      "Mesh_48"
+    ],
+    "RL": [
+      "Mesh_59",
+      "Mesh_60",
+      "Mesh_61",
+      "Mesh_62"
+    ],
+    "FR": [
+      "Mesh_66",
+      "Mesh_68",
+      "Mesh_69",
+      "Mesh_67"
+    ],
+    "RR": [
+      "Mesh_52",
+      "Mesh_55",
+      "Mesh_54",
+      "Mesh_53"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.03,
+      "offsetXRight": -0.03
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 1,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": 0.03,
+    "offsetXRight": -0.03,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2019_lamborghini_huracan_evo.glb": {
+  "carModelFile": "2019_lamborghini_huracan_evo.glb",
+  "carModelPath": "/car-models/lamborghini/2019_lamborghini_huracan_evo.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface102_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "RL": [
+      "polySurface256_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "FR": [
+      "polySurface179_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "RR": [
+      "polySurface338_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": 270
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0,
+      "offsetXRight": 0
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": 0,
+    "offsetXRight": 0,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"audi_a6_c8_limousine.glb": {
+  "carModelFile": "audi_a6_c8_limousine.glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1.03,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": -90,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.11,
+      "offsetXRight": -0.1
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 1.03,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.11,
+    "offsetXRight": -0.1,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"audi_a6_c8_limousine (1).glb": {
+  "carModelFile": "audi_a6_c8_limousine (1).glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine (1).glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1.03,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": -90,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.11,
+      "offsetXRight": -0.11
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 1.03,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.11,
+    "offsetXRight": -0.11,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2021_cadillac_escalade_premium.glb": {
+  "carModelFile": "2021_cadillac_escalade_premium.glb",
+  "carModelPath": "/car-models/cadillac/2021_cadillac_escalade_premium.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "sgg_wheel1_sgg_wheel_Chrome_Bright_007_SILVER_CHROME_0",
+      "sgg_wheel1_sgg_wheel_Paint_Black_Gloss_007_WheelsPaint_Black_Gloss_008_0",
+      "sgg_wheel1_sgg_wheel_galvano_chrome2_SILVER_CHROME_0"
+    ],
+    "RL": [
+      "sgg_wheel1_sgg_wheel_Chrome_Bright_006_SILVER_CHROME_0",
+      "sgg_wheel1_sgg_wheel_Paint_Black_Gloss_006_WheelsPaint_Black_Gloss_008_0",
+      "sgg_wheel1_sgg_wheel_galvano_chrome1_SILVER_CHROME_0"
+    ],
+    "FR": [
+      "Wheelssgg_wheel1_sgg_wheel_Chrome_Bright_005_SILVER_CHROME_0",
+      "Wheelssgg_wheel1_sgg_wheel_Chrome_Bright_005_SILVER_CHROME_0",
+      "Wheelssgg_wheel1_sgg_wheel_galvano_chrome_SILVER_CHROME_0"
+    ],
+    "RR": [
+      "sgg_wheel1_sgg_wheel_Chrome_Bright_005_SILVER_CHROME_0",
+      "sgg_wheel1_sgg_wheel_Paint_Black_Gloss_005_WheelsPaint_Black_Gloss_008_0",
+      "sgg_wheel1_sgg_wheel_Paint_Black_Gloss_005_WheelsPaint_Black_Gloss_008_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": -0.001,
+      "offsetXRight": 0.001
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": -0.001,
+    "offsetXRight": 0.001,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2021_cadillac_escalade_premium_luxury.glb": {
+  "carModelFile": "2021_cadillac_escalade_premium_luxury.glb",
+  "carModelPath": "/car-models/cadillac/2021_cadillac_escalade_premium_luxury.glb",
+  "rimFile": "vossen_1_front.glb",
+  "rimPath": "/car-models/rims/vossen_1_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "Object_244",
+      "Object_256",
+      "Object_250"
+    ],
+    "RL": [
+      "Object_241",
+      "Object_253",
+      "Object_247"
+    ],
+    "FR": [
+      "Object_280",
+      "Object_286",
+      "Object_283"
+    ],
+    "RR": [
+      "Object_265",
+      "Object_271",
+      "Object_268"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": -0.18,
+      "offsetXRight": 0.18
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "vossen_1_front.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": -0.18,
+    "offsetXRight": 0.18,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+
+
+"2019_lamborghini_huracan_evo.glb": {
+  "carModelFile": "2019_lamborghini_huracan_evo.glb",
+  "carModelPath": "/car-models/lamborghini/2019_lamborghini_huracan_evo.glb",
+  "rimFile": "DRX_393_front.glb",
+  "rimPath": "/car-models/rims/DRX_393_front.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface102_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "RL": [
+      "polySurface256_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "FR": [
+      "polySurface179_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "RR": [
+      "polySurface338_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": 270
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0,
+      "offsetXRight": 0
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_393_front.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": 0,
+    "offsetXRight": 0,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
