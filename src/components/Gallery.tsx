@@ -11,15 +11,18 @@ if (typeof window !== "undefined") {
 const galleryItems = [
     {
         src: "/gallery/any%20style.mp4",
-        name: "Any Style"
+        name: "Any Style",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
     },
     {
         src: "/gallery/any%20design.mp4",
-        name: "Any Design"
+        name: "Any Design",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
     },
     {
         src: "/gallery/any%20wheels.mp4",
-        name: "Any Wheels"
+        name: "Any Wheels",
+        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
     },
 ];
 
@@ -146,8 +149,9 @@ export default function Gallery() {
                                 <div className="gallery-pillar-pause-dim" />
                             )}
                             <div className="gallery-pillar-overlay">
-                                <div>
+                                <div className="gallery-pillar-copy">
                                     <div className="gallery-pillar-name">{item.name}</div>
+                                    <p className="gallery-pillar-description">{item.description}</p>
                                 </div>
                             </div>
                         </div>

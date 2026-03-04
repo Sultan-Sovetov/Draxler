@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 
-type FeatureId = 1 | 2 | 3 | 4;
+type FeatureId = 1 | 2 | 3 | 4 | 5 | 6;
 
 type FeatureItem = {
   id: FeatureId;
@@ -20,10 +20,12 @@ type ConnectorGeometry = {
 };
 
 const HOTSPOTS: Record<FeatureId, { x: number; y: number }> = {
-  1: { x: 14, y: 35 },
-  2: { x: 19, y: 66 },
-  3: { x: 86, y: 35 },
-  4: { x: 81, y: 66 },
+  1: { x: 12, y: 24 },
+  2: { x: 16, y: 50 },
+  5: { x: 19, y: 76 },
+  3: { x: 88, y: 24 },
+  4: { x: 84, y: 50 },
+  6: { x: 81, y: 76 },
 };
 
 const FEATURES: FeatureItem[] = [
@@ -55,6 +57,20 @@ const FEATURES: FeatureItem[] = [
     description:
       "Utilizes proprietary 6061-T6 aluminum—an unmatched balance of low weight and ultimate tensile strength used in aerospace.",
   },
+  {
+    id: 5,
+    side: "left",
+    title: "PRECISION TOLERANCES",
+    description:
+      "Multi-axis CNC machining after forging achieves micron-level accuracy, ensuring perfect hub-centric fitment and flawless rotational balance.",
+  },
+  {
+    id: 6,
+    side: "right",
+    title: "THERMAL PERFORMANCE",
+    description:
+      "The dense crystalline structure of forged aluminum dissipates brake heat far more effectively, reducing fade and extending component lifespan.",
+  },
 ];
 
 export default function ForgingFeatures() {
@@ -69,6 +85,8 @@ export default function ForgingFeatures() {
     2: null,
     3: null,
     4: null,
+    5: null,
+    6: null,
   });
 
   const leftFeatures = FEATURES.filter((feature) => feature.side === "left");

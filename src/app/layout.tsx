@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import LenisProvider from "@/components/LenisProvider";
 import ThemeProvider from "@/components/ThemeProvider";
+import WhatsAppFloatingButton from "@/components/WhatsAppFloatingButton";
 
 export const metadata: Metadata = {
   title: "DRAXLER — Engineered Excellence | Premium Performance Wheels",
@@ -19,6 +20,7 @@ export default function RootLayout({
       <body className="bg-aero-dark text-aero-light antialiased">
         <ThemeProvider>
           <LenisProvider>{children}</LenisProvider>
+          <WhatsAppFloatingButton />
         </ThemeProvider>
       </body>
     </html>

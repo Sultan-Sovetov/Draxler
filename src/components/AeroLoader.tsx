@@ -13,8 +13,18 @@ interface AeroLoaderProps {
 
 export default function AeroLoader({ onComplete, inline = false }: AeroLoaderProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const BLINK_CYCLES = 5;
+    const BLINK_CYCLES = 3;
     const BLINK_DURATION = 2.2;
+
+    useEffect(() => {
+        if (inline) return;
+
+        document.body.classList.add("aero-loader-active");
+
+        return () => {
+            document.body.classList.remove("aero-loader-active");
+        };
+    }, [inline]);
 
     useEffect(() => {
         if (!onComplete) return; // inline loaders don't auto-dismiss

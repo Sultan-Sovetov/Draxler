@@ -20,11 +20,11 @@ export interface CatalogCategory {
 export const catalogCategories: CatalogCategory[] = [
   {
     slug: "vip",
-    name: "VIP Series",
-    displayTitle: "V I P \u00A0 S E R I E S",
+    name: "Luxury series",
+    displayTitle: "L U X U R Y\nS E R I E S",
     description:
       "Commanding presence for executive saloons and luxury SUVs. Designed for maximum visual impact, featuring intricate monoblock structures and elegant brushed finishes.",
-    headerImage: "/catalog/catalog_1_black.png",
+    headerImage: "/catalog/catalog_1_white.png",
     products: [
       {
         slug: "drx-101",
@@ -91,10 +91,10 @@ export const catalogCategories: CatalogCategory[] = [
   {
     slug: "offroad",
     name: "Off-Road Series",
-    displayTitle: "O F F - R O A D \u00A0 S E R I E S",
+    displayTitle: "O F F - R O A D\nS E R I E S",
     description:
       "Engineered for the extremes. Reinforced load ratings and bead-lock capabilities meet rugged aesthetics. Built to withstand the harshest terrains without compromising on style.",
-    headerImage: "/catalog/catalog_2_black.png",
+    headerImage: "/catalog/catalog_2_white.png",
     products: [
       {
         slug: "drx-201",
@@ -164,7 +164,7 @@ export const catalogCategories: CatalogCategory[] = [
     displayTitle: "S P O R T \u00A0 S E R I E S",
     description:
       "Performance driven. Focusing on weight reduction and brake cooling. These lightweight forged designs reduce unsprung mass for superior handling and track-ready dynamics.",
-    headerImage: "/catalog/catalog_3_black.png",
+    headerImage: "/catalog/catalog_3_white.png",
     products: [
       {
         slug: "drx-301",

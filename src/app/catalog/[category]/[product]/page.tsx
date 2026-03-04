@@ -21,45 +21,29 @@ interface MetalFinish {
 }
 
 const METAL_FINISHES: MetalFinish[] = [
-    { id: "graphite-alumochrome", label: "Graphite Alumochrome", hex: "#3a3a3a", type: "satin" },
-    { id: "polished-silver",      label: "Polished Silver",      hex: "#c0c0c0", type: "polished" },
-    { id: "satin-black",          label: "Satin Black",          hex: "#1a1a1a", type: "satin" },
-    { id: "brushed-titanium",     label: "Brushed Titanium",     hex: "#7a7a7a", type: "brushed" },
-    { id: "satin-bronze",         label: "Satin Bronze",         hex: "#8b6f47", type: "satin" },
-    { id: "polished-gold",        label: "Polished Gold",        hex: "#c9a84c", type: "polished" },
-    { id: "gunmetal",             label: "Gunmetal",             hex: "#4a4a4a", type: "satin" },
-    { id: "matte-white",          label: "Matte White",          hex: "#e8e8e8", type: "satin" },
-    { id: "cherry-red",           label: "Cherry Red",           hex: "#8b2020", type: "polished" },
-    { id: "midnight-blue",        label: "Midnight Blue",        hex: "#1e293b", type: "satin" },
-    { id: "teal",                 label: "Teal",                 hex: "#2a7a7a", type: "polished" },
-    { id: "rose-gold",            label: "Rose Gold",            hex: "#b76e79", type: "brushed" },
+    { id: "gloss-black", label: "Gloss Black", hex: "#151515", type: "polished" },
+    { id: "silver", label: "Silver", hex: "#97a0aa", type: "polished" },
+    { id: "gunmetal", label: "Gunmetal", hex: "#555d67", type: "satin" },
+    { id: "burgundy", label: "Burgundy", hex: "#6f1f2e", type: "polished" },
+    { id: "white", label: "White", hex: "#f2f2f2", type: "satin" },
 ];
-
-const GALLERY_IMAGES = [
-    "/catalog/bentley2.jpg",
-    "/catalog/bentley1.jpg",
-    "/catalog/bentley3.jpg",
-    "/catalog/porshce1.jpg",
-    "/catalog/porshce2.jpg",
-] as const;
-
-const GALLERY_SLUGS = new Set(["drx-102", "drx-202", "drx-302"]);
-const FOOTER_SLUGS  = new Set(["drx-101", "drx-102", "drx-201", "drx-202", "drx-301", "drx-302", "drx-303", "drx-291", "drx-292", "drx-293", "drx-294", "drx-295", "drx-296", "drx-297", "drx-298", "drx-299", "drx-391", "drx-393", "drx-394", "drx-395", "drx-397"]);
+const AVAILABLE_SIZES = ["16\"", "17\"", "18\"", "19\"", "20\"", "21\"", "22\"", "23\"", "24\"", "25\"", "26\""];
 
 /* ── Build 3D sphere CSS layers per finish ── */
 function sphereStyle(finish: MetalFinish): React.CSSProperties {
     const { hex, type } = finish;
 
-    const reflectionOpacity = type === "polished" ? 0.7 : type === "satin" ? 0.35 : 0.2;
-    const reflectionBlur    = type === "polished" ? 0   : type === "satin" ? 4     : 8;
-    const highlightSize     = type === "polished" ? "40% 40%" : type === "satin" ? "55% 55%" : "70% 70%";
+    const reflectionOpacity = type === "polished" ? 0.82 : type === "satin" ? 0.5 : 0.34;
+    const highlightSize = type === "polished" ? "34% 34%" : type === "satin" ? "46% 46%" : "58% 58%";
 
     const brushedOverlay =
         type === "brushed"
-            ? "repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 3px)"
+            ? "repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 3px)"
             : "";
 
     const darkenedHex = adjustBrightness(hex, -40);
+    const deeperHex = adjustBrightness(hex, -76);
+    const edgeHighlightHex = adjustBrightness(hex, 26);
 
     return {
         width: "100%",
@@ -67,17 +51,20 @@ function sphereStyle(finish: MetalFinish): React.CSSProperties {
         borderRadius: "50%",
         background: [
             brushedOverlay,
+            "radial-gradient(circle at 24% 20%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.2) 22%, transparent 40%)",
+            "radial-gradient(circle at 78% 78%, rgba(255,255,255,0.22) 0%, transparent 36%)",
             `radial-gradient(ellipse ${highlightSize} at 35% 25%, rgba(255,255,255,${reflectionOpacity}) 0%, transparent 60%)`,
-            `radial-gradient(ellipse 80% 80% at 50% 50%, ${hex} 0%, ${darkenedHex} 100%)`,
+            `radial-gradient(ellipse 96% 96% at 50% 50%, ${edgeHighlightHex} 0%, ${hex} 48%, ${darkenedHex} 78%, ${deeperHex} 100%)`,
         ]
             .filter(Boolean)
             .join(", "),
         boxShadow: `
-            inset -8px -10px 24px rgba(0,0,0,0.6),
-            inset 4px 6px 16px rgba(255,255,255,${reflectionOpacity * 0.4}),
-            0 8px 32px rgba(0,0,0,0.5)
+            inset -10px -12px 26px rgba(0,0,0,0.62),
+            inset 8px 10px 18px rgba(255,255,255,${reflectionOpacity * 0.48}),
+            inset 0 0 0 1px rgba(255,255,255,0.08),
+            0 10px 32px rgba(0,0,0,0.42)
         `,
-        filter: reflectionBlur ? `blur(${reflectionBlur * 0.15}px)` : "none",
+        filter: "none",
         transition: "all 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
     };
 }
@@ -100,7 +87,8 @@ export default function ProductDetailPage() {
     const result = getProductBySlug(categorySlug, productSlug);
 
     const [selectedFinish, setSelectedFinish] = useState<MetalFinish>(METAL_FINISHES[0]);
-    const [activeGalleryImage, setActiveGalleryImage] = useState<string | null>(null);
+    const [customColor, setCustomColor] = useState("#2f2f2f");
+    const [usingCustomColor, setUsingCustomColor] = useState(false);
     const heroRef = useRef<HTMLDivElement>(null);
 
     /* ── Entrance animations ── */
@@ -146,19 +134,6 @@ export default function ProductDetailPage() {
         return () => window.removeEventListener("scroll", onScroll);
     }, []);
 
-    useEffect(() => {
-        if (!activeGalleryImage) return;
-
-        const onKeyDown = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                setActiveGalleryImage(null);
-            }
-        };
-
-        window.addEventListener("keydown", onKeyDown);
-        return () => window.removeEventListener("keydown", onKeyDown);
-    }, [activeGalleryImage]);
-
     /* ── 404 guard ── */
     if (!result) {
         return (
@@ -170,8 +145,9 @@ export default function ProductDetailPage() {
     }
 
     const { product, category } = result;
-    const showGallery = GALLERY_SLUGS.has(product.slug);
-    const showFooter  = FOOTER_SLUGS.has(product.slug);
+    const previewFinish: MetalFinish = usingCustomColor
+        ? { id: "custom", label: "Custom", hex: customColor, type: "polished" }
+        : selectedFinish;
 
     return (
         <>
@@ -236,10 +212,10 @@ export default function ProductDetailPage() {
                     <div className="pdp-info-block">
                         <div className="pdp-sizes-label">Available Sizes</div>
                         <div className="pdp-sizes-list">
-                            {product.sizes.map((size, i) => (
+                            {AVAILABLE_SIZES.map((size, i) => (
                                 <span key={size}>
                                     <span className="pdp-size">{size}</span>
-                                    {i < product.sizes.length - 1 && (
+                                    {i < AVAILABLE_SIZES.length - 1 && (
                                         <span className="pdp-size-sep">|</span>
                                     )}
                                 </span>
@@ -252,13 +228,13 @@ export default function ProductDetailPage() {
                         <div className="pdp-cfg-header">
                             <span className="pdp-cfg-label">Finish</span>
                             <span className="pdp-cfg-value">
-                                Color: <strong>{selectedFinish.label}</strong>
+                                Color: <strong>{previewFinish.hex.toUpperCase()}</strong>
                             </span>
                         </div>
 
                         {/* Material Sample — 3D Sphere */}
                         <div className="pdp-sphere-wrap">
-                            <div className="pdp-sphere" style={sphereStyle(selectedFinish)} />
+                            <div className={`pdp-sphere ${usingCustomColor ? "is-custom" : ""}`} style={sphereStyle(previewFinish)} />
                         </div>
 
                         {/* Swatch Grid */}
@@ -266,14 +242,37 @@ export default function ProductDetailPage() {
                             {METAL_FINISHES.map((f) => (
                                 <button
                                     key={f.id}
-                                    className={`pdp-swatch ${selectedFinish.id === f.id ? "is-active" : ""}`}
+                                    className={`pdp-swatch ${!usingCustomColor && selectedFinish.id === f.id ? "is-active" : ""}`}
                                     aria-label={f.label}
-                                    onClick={() => setSelectedFinish(f)}
+                                    onClick={() => {
+                                        setSelectedFinish(f);
+                                        setUsingCustomColor(false);
+                                    }}
                                 >
                                     <span className="pdp-swatch-inner" style={sphereStyle(f)} />
                                 </button>
                             ))}
+                            <button
+                                className={`pdp-swatch pdp-swatch--custom ${usingCustomColor ? "is-active" : ""}`}
+                                aria-label="Custom color"
+                                onClick={() => setUsingCustomColor(true)}
+                            >
+                                <span className="pdp-swatch-inner pdp-swatch-inner--custom" style={sphereStyle({ id: "custom", label: "Custom", hex: customColor, type: "polished" })} />
+                            </button>
                         </div>
+
+                        {usingCustomColor && (
+                            <label className="pdp-custom-color-input-wrap" htmlFor="pdp-custom-color">
+                                <span className="pdp-custom-color-label">Custom HEX</span>
+                                <input
+                                    id="pdp-custom-color"
+                                    type="color"
+                                    value={customColor}
+                                    onChange={(event) => setCustomColor(event.target.value)}
+                                    className="pdp-custom-color-input"
+                                />
+                            </label>
+                        )}
                     </div>
 
                     {/* ===== TASK 4 — Purchase Actions ===== */}
@@ -288,7 +287,7 @@ export default function ProductDetailPage() {
                             ORDER CONFIGURATION
                         </button>
                         <a
-                            href={`mailto:info@draxler.com?subject=Fitment%20Advice%20—%20${encodeURIComponent(product.name)}&body=Finish:%20${encodeURIComponent(selectedFinish.label)}`}
+                            href={`mailto:info@draxler.com?subject=Fitment%20Advice%20—%20${encodeURIComponent(product.name)}&body=Finish:%20${encodeURIComponent(previewFinish.label)}%0AColor:%20${encodeURIComponent(previewFinish.hex.toUpperCase())}`}
                             className="pdp-btn-secondary"
                         >
                             REQUEST FITMENT ADVICE
@@ -297,66 +296,9 @@ export default function ProductDetailPage() {
                 </div>
             </div>
 
-            {showGallery && (
-                <section className="pdp-gallery-section" aria-label="Gallery">
-                    <h2 className="pdp-gallery-title">G A L L E R Y</h2>
-                    <div className="pdp-gallery-grid">
-                        {GALLERY_IMAGES.map((imageSrc, index) => (
-                            <button
-                                key={imageSrc}
-                                type="button"
-                                className={`pdp-gallery-item pdp-gallery-item--${index}`}
-                                onClick={() => setActiveGalleryImage(imageSrc)}
-                                aria-label={`Open gallery image ${index + 1}`}
-                            >
-                                <Image
-                                    src={imageSrc}
-                                    alt={`${product.name} gallery ${index + 1}`}
-                                    width={1200}
-                                    height={900}
-                                    sizes="(max-width: 1024px) 100vw, 33vw"
-                                    className="pdp-gallery-image"
-                                    draggable={false}
-                                />
-                            </button>
-                        ))}
-                    </div>
-                </section>
-            )}
-
-            {activeGalleryImage && (
-                <div
-                    className="pdp-gallery-modal"
-                    role="dialog"
-                    aria-modal="true"
-                    aria-label="Gallery image preview"
-                    onClick={() => setActiveGalleryImage(null)}
-                >
-                    <button
-                        type="button"
-                        className="pdp-gallery-close"
-                        onClick={() => setActiveGalleryImage(null)}
-                        aria-label="Close image preview"
-                    >
-                        ×
-                    </button>
-                    <div
-                        className="pdp-gallery-modal-inner"
-                        onClick={(event) => event.stopPropagation()}
-                    >
-                        <Image
-                            src={activeGalleryImage}
-                            alt={`${product.name} close-up view`}
-                            width={1800}
-                            height={1200}
-                            sizes="90vw"
-                            className="pdp-gallery-modal-image"
-                        />
-                    </div>
-                </div>
-            )}
-
-            {showFooter && <Footer />}
+            <div className="pdp-page-footer">
+                <Footer />
+            </div>
         </>
     );
 }

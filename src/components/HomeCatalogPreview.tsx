@@ -14,8 +14,8 @@ if (typeof window !== "undefined") {
 const previewItems = [
     {
         id: 1,
-        title: "VIP Series",
-        description: "VIP Series",
+        title: "Luxury series",
+        description: "Luxury series",
         slug: "vip",
     },
     {
