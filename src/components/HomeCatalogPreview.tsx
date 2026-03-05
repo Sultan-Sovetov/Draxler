@@ -5,7 +5,6 @@ import Link from "next/link";
 import Image from "next/image";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useTheme } from "./ThemeProvider";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -17,23 +16,25 @@ const previewItems = [
         title: "Luxury series",
         description: "Luxury series",
         slug: "vip",
+        image: "first.png",
     },
     {
         id: 2,
         title: "Off-Road",
         description: "Off-Road",
         slug: "offroad",
+        image: "second.png",
     },
     {
         id: 3,
         title: "Sport Series",
         description: "Sport Series",
         slug: "sport",
+        image: "third.png",
     },
 ];
 
 export default function HomeCatalogPreview() {
-    const { theme } = useTheme();
     const sectionRef = useRef<HTMLDivElement>(null);
     const gridRef = useRef<HTMLDivElement>(null);
 
@@ -62,8 +63,6 @@ export default function HomeCatalogPreview() {
         return () => ctx.revert();
     }, []);
 
-    const imageTone = theme === "dark" ? "black" : "white";
-
     return (
         <section ref={sectionRef} className="home-catalog-section" id="catalog">
             <div className="home-catalog-heading">E X P L O R E &nbsp; C A T A L O G</div>
@@ -75,7 +74,7 @@ export default function HomeCatalogPreview() {
                         className="home-catalog-card"
                     >
                         <Image
-                            src={`/catalog/catalog_${item.id}_${imageTone}.png`}
+                            src={`/catalog/${item.image}`}
                             alt={item.title}
                             fill
                             sizes="(max-width: 768px) 100vw, 33vw"

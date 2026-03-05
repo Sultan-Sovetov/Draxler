@@ -37,17 +37,17 @@ export default function Home() {
       <div>
         <Hero />
         <Gallery />
+        <CarConfigurator />
         <ParallaxDivider src="/media/background%202.png" compact>
           <ForgingFeatures />
         </ParallaxDivider>
         {/* <WheelShowcase /> */}
-        <Roadmap />
-        <ParallaxDivider>
+        <HomeCatalogPreview />
+        <ParallaxDivider reduced>
           <GlobalBespoke />
         </ParallaxDivider>
-        <HomeCatalogPreview />
+        <Roadmap />
         {/* <SocialGrid /> */}
-        <CarConfigurator />
         {/* <FlashlightReveal /> */}
         <Footer />
       </div>

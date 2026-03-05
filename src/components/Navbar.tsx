@@ -16,6 +16,7 @@ export default function Navbar() {
     const [scrolled, setScrolled] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [forceHidden, setForceHidden] = useState(false);
+    const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const [activeSection, setActiveSection] = useState<string>("");
     const lastScrollY = useRef(0);
     const pathname = usePathname();
@@ -51,6 +52,8 @@ export default function Navbar() {
     }, []);
 
     const scrollToTarget = useCallback((targetId: string) => {
+        setMobileMenuOpen(false);
+
         /* "Catalog" always navigates to /catalog page */
         if (targetId === "catalog") {
             window.location.href = "/catalog";
@@ -70,6 +73,8 @@ export default function Navbar() {
     }, [isHome, smoothScrollTo]);
 
     const handleLogoClick = useCallback(() => {
+        setMobileMenuOpen(false);
+
         if (!isHome) {
             window.location.href = "/";
             return;
@@ -129,6 +134,21 @@ export default function Navbar() {
         return () => observer.disconnect();
     }, [isHome]);
 
+    useEffect(() => {
+        setMobileMenuOpen(false);
+    }, [pathname]);
+
+    useEffect(() => {
+        const closeOnDesktop = () => {
+            if (window.innerWidth > 768) {
+                setMobileMenuOpen(false);
+            }
+        };
+
+        window.addEventListener("resize", closeOnDesktop);
+        return () => window.removeEventListener("resize", closeOnDesktop);
+    }, []);
+
     return (
         <nav
             ref={navRef}
@@ -149,7 +169,31 @@ export default function Navbar() {
                     ))}
                 </div>
 
-                <div className="navbar-theme-toggle-spacer" aria-hidden="true" />
+                <div className="navbar-right-slot">
+                    <div className="navbar-theme-toggle-spacer" aria-hidden="true" />
+                    <button
+                        className={`navbar-menu-toggle ${mobileMenuOpen ? "is-open" : ""}`}
+                        aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
+                        aria-expanded={mobileMenuOpen}
+                        onClick={() => setMobileMenuOpen((prev) => !prev)}
+                    >
+                        <span />
+                        <span />
+                        <span />
+                    </button>
+                </div>
+            </div>
+
+            <div className={`navbar-mobile-menu ${mobileMenuOpen ? "is-open" : ""}`}>
+                {NAV_ITEMS.map((item) => (
+                    <button
+                        key={`mobile-${item.target}`}
+                        className={`navbar-mobile-link ${activeSection === item.target ? "navbar-link--section-active" : ""}`}
+                        onClick={() => scrollToTarget(item.target)}
+                    >
+                        {item.label}
+                    </button>
+                ))}
             </div>
         </nav>
     );
