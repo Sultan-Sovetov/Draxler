@@ -10,17 +10,17 @@ if (typeof window !== "undefined") {
 
 const galleryItems = [
     {
-        src: "/gallery/any%20style.mp4",
+        src: "/gallery/any_style1.mp4",
         name: "Any Style",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
     },
     {
-        src: "/gallery/any%20design.mp4",
+        src: "/gallery/any_design1.mp4",
         name: "Any Design",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
     },
     {
-        src: "/gallery/any%20wheels.mp4",
+        src: "/gallery/any_wheels1.mp4",
         name: "Any Wheels",
         description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
     },
@@ -70,49 +70,87 @@ export default function Gallery() {
     };
 
     useEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const isMobile = window.matchMedia("(max-width: 900px)").matches;
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const shouldLighten = isMobile || prefersReducedMotion;
+        const profileStart = performance.now();
+
         const ctx = gsap.context(() => {
-            gsap.from(".gallery-section-label", {
+            gsap.from(section.querySelector(".gallery-section-label"), {
                 y: 30,
                 opacity: 0,
                 duration: 0.8,
                 ease: "power3.out",
                 scrollTrigger: {
-                    trigger: sectionRef.current,
+                    trigger: section,
                     start: "top 75%",
+                    once: true,
                 },
             });
 
-            gsap.from(".gallery-section-title", {
+            gsap.from(section.querySelector(".gallery-section-title"), {
                 y: 40,
                 opacity: 0,
                 duration: 0.8,
                 ease: "power3.out",
                 delay: 0.1,
                 scrollTrigger: {
-                    trigger: sectionRef.current,
+                    trigger: section,
                     start: "top 75%",
+                    once: true,
                 },
             });
 
-            // Clip-path mask reveal with stagger
-            const pillars = document.querySelectorAll(".gallery-pillar");
-            pillars.forEach((pillar, i) => {
+            const pillars = section.querySelectorAll(".gallery-pillar");
+            if (!pillars.length) return;
+
+            if (shouldLighten) {
                 gsap.fromTo(
-                    pillar,
-                    { clipPath: "inset(100% 0 0 0)" },
+                    pillars,
+                    { opacity: 0, y: 18 },
                     {
-                        clipPath: "inset(0% 0 0 0)",
-                        duration: 1.2,
-                        ease: "power3.inOut",
-                        delay: i * 0.1,
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.65,
+                        stagger: 0.08,
+                        ease: "power2.out",
                         scrollTrigger: {
-                            trigger: ".gallery-container",
-                            start: "top 80%",
+                            trigger: section.querySelector(".gallery-container"),
+                            start: "top 86%",
+                            once: true,
+                            invalidateOnRefresh: true,
                         },
                     }
                 );
-            });
+                return;
+            }
+
+            // Single batched trigger is cheaper than one trigger per pillar.
+            gsap.fromTo(
+                pillars,
+                { clipPath: "inset(100% 0 0 0)" },
+                {
+                    clipPath: "inset(0% 0 0 0)",
+                    duration: 1.1,
+                    stagger: 0.1,
+                    ease: "power3.inOut",
+                    scrollTrigger: {
+                        trigger: section.querySelector(".gallery-container"),
+                        start: "top 80%",
+                        once: true,
+                        invalidateOnRefresh: true,
+                    },
+                }
+            );
         });
+
+        if (process.env.NODE_ENV !== "production") {
+            const setupMs = Math.round(performance.now() - profileStart);
+            console.info(`[perf][Gallery] ScrollTrigger setup: ${setupMs}ms`);
+        }
 
         return () => ctx.revert();
     }, []);

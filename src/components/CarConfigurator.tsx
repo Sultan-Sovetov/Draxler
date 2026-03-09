@@ -25,12 +25,19 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Check, LoaderCircle, X } from "lucide-react";
 import { Leva, useControls, button, folder } from "leva";
+import { Familjen_Grotesk } from "next/font/google";
 import ConfiguratorHUD from "./ConfiguratorHUD";
 import AeroLoader from "./AeroLoader";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
 import { CAR_PAINT_EXCLUSIONS } from "../data/car-paint-exclusions";
 import { CAR_CALIBRATION_DATA } from "../data/CarCalibrationData";
 import { applyMaterialFixes, logMeshInventory } from "../data/car-material-fixes";
+
+const familjenGrotesk = Familjen_Grotesk({
+    subsets: ["latin"],
+    weight: ["700"],
+    style: ["italic"],
+});
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -71,7 +78,7 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
         brand: "Mercedes-Benz",
         models: [
           //  { name: "G-Class AMG 63 V2 (2020)", file: "mercedes/2020_mercedes-benz_g-class_amg_g_63.glb" },
-                        { name: "G-Class AMG 63", file: "mercedes/2025_mercedes-benz_g-class_amg_g_63.glb" },
+                        { name: "G-Class 63 AMG", file: "mercedes/2025_mercedes-benz_g-class_amg_g_63.glb" },
           //  { name: "S-Class V1", file: "mercedes/Mercedes_Benz_S_class_V1.glb" },
           //norm { name: "S-Class V2", file: "mercedes/Mercedes_Benz_S_class_V2.glb" },
                  //       { name: "S-Class Brabus 850", file: "mercedes/s_brabus_850.glb" },
@@ -965,16 +972,33 @@ function CarModel({
         };
     }, [modelScene]);
 
-    /* ── Car paint disabled for now: keep original materials, only set shadows ── */
+    /* ── Shadows + default paint for G-Class (Nardo Grey) ── */
     useEffect(() => {
+        const isGClass = fileName === "2025_mercedes-benz_g-class_amg_g_63.glb";
+        const nardoGrey = new THREE.Color("#6B6D6E");
+
         modelScene.traverse((child: THREE.Object3D) => {
             if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
+
+                // Apply Nardo Grey to G-Class body panels only
+                if (isGClass && !mesh.userData.__paintExcluded && !mesh.userData.__materialFixed) {
+                    const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+                    mats.forEach((mat) => {
+                        const std = mat as THREE.MeshStandardMaterial;
+                        if (std.isMeshStandardMaterial && std.metalness > 0.1) {
+                            std.color.copy(nardoGrey);
+                            std.metalness = 0.75;
+                            std.roughness = 0.22;
+                            std.needsUpdate = true;
+                        }
+                    });
+                }
             }
         });
-    }, [modelScene]);
+    }, [modelScene, fileName]);
 
     return (
         <group ref={groupRef} scale={scale} position={[center.x, center.y, center.z]}>
@@ -1036,6 +1060,9 @@ function ReflectiveFloor() {
 export default function CarConfigurator() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const scrollProgress = useRef(0);
+    const isSmallScreen = typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
+    const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const shouldLightenUi = isSmallScreen || prefersReducedMotion;
     const [isActive, setIsActive] = useState(false);
     const [isPreparing, setIsPreparing] = useState(false);
     const [showButton, setShowButton] = useState(false);
@@ -1057,13 +1084,20 @@ export default function CarConfigurator() {
         const section = sectionRef.current;
         if (!section) return;
 
+        const isMobile = window.matchMedia("(max-width: 900px)").matches;
+        const prefersReducedMotionLocal = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const profileStart = performance.now();
+
         const ctx = gsap.context(() => {
             ScrollTrigger.create({
                 trigger: section,
                 start: "top top",
-                end: "+=200%",
+                end: isMobile ? "+=170%" : "+=200%",
                 pin: true,
-                scrub: 1,
+                scrub: prefersReducedMotionLocal ? 0.6 : 1,
+                anticipatePin: 1,
+                fastScrollEnd: true,
+                invalidateOnRefresh: true,
                 onUpdate: (self) => {
                     scrollProgress.current = self.progress;
 
@@ -1076,6 +1110,11 @@ export default function CarConfigurator() {
                 },
             });
         });
+
+        if (process.env.NODE_ENV !== "production") {
+            const setupMs = Math.round(performance.now() - profileStart);
+            console.info(`[perf][CarConfigurator] ScrollTrigger setup: ${setupMs}ms`);
+        }
 
         return () => ctx.revert();
     }, [isActive]);
@@ -1234,9 +1273,6 @@ export default function CarConfigurator() {
             <div className="car-config-overlay">
                 <div className={`car-config-title ${isActive ? "car-config-title--hidden" : ""}`}>
                     <span className="car-config-label">Interactive Experience</span>
-                    <h2 className="car-config-heading" style={{ fontWeight: 600, color: "#000000" }}>
-                        The {selectedCar.displayName}
-                    </h2>
                 </div>
 
                 <AnimatePresence>
@@ -1261,9 +1297,9 @@ export default function CarConfigurator() {
                                         key="enter"
                                         className="car-config-action-btn"
                                         onClick={handleEnter}
-                                        initial={{ opacity: 0, scale: 0.94, filter: "blur(6px)" }}
-                                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                        exit={{ opacity: 0, scale: 1.03, filter: "blur(4px)" }}
+                                        initial={shouldLightenUi ? { opacity: 0, scale: 0.97 } : { opacity: 0, scale: 0.94, filter: "blur(6px)" }}
+                                        animate={shouldLightenUi ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                        exit={shouldLightenUi ? { opacity: 0, scale: 1.01 } : { opacity: 0, scale: 1.03, filter: "blur(4px)" }}
                                         transition={{ duration: 0.3 }}
                                     >
                                         Enter Configurator
@@ -1273,9 +1309,9 @@ export default function CarConfigurator() {
                                         key="exit"
                                         className="car-config-action-btn car-config-action-btn--exit"
                                         onClick={handleExit}
-                                        initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
-                                        animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                        exit={{ opacity: 0, scale: 1.03, filter: "blur(4px)" }}
+                                        initial={shouldLightenUi ? { opacity: 0, scale: 0.97 } : { opacity: 0, scale: 0.96, filter: "blur(6px)" }}
+                                        animate={shouldLightenUi ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
+                                        exit={shouldLightenUi ? { opacity: 0, scale: 1.01 } : { opacity: 0, scale: 1.03, filter: "blur(4px)" }}
                                         transition={{ duration: 0.3 }}
                                     >
                                         <X size={16} />

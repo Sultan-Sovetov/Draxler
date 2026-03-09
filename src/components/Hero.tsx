@@ -36,6 +36,8 @@ export default function Hero() {
     const scrollIndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const isSmallScreen = window.matchMedia("(max-width: 900px)").matches;
         const section = sectionRef.current;
         const video = videoRef.current;
         const content = contentRef.current;
@@ -45,34 +47,36 @@ export default function Hero() {
         if (!section || !video || !content || !title) return;
 
         const ctx = gsap.context(() => {
-            // ───── Parallax: video moves slower ─────
-            // scrub: 0.5 smooths out 1:1 jank; force3D promotes to GPU layer
-            gsap.to(video, {
-                yPercent: 30,
-                ease: "none",
-                force3D: true,
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top top",
-                    end: "bottom top",
-                    scrub: 0.5,
-                },
-            });
+            const enableScrollEffects = !prefersReducedMotion && !isSmallScreen;
 
-            // ───── Content fades out + SCALES DOWN on scroll ─────
-            gsap.to(content, {
-                opacity: 0,
-                y: -60,
-                scale: 0.7,
-                ease: "none",
-                force3D: true,
-                scrollTrigger: {
-                    trigger: section,
-                    start: "15% top",
-                    end: "55% top",
-                    scrub: 0.5,
-                },
-            });
+            if (enableScrollEffects) {
+                // Keep parallax subtle to reduce repaints on large images.
+                gsap.to(video, {
+                    yPercent: 16,
+                    ease: "none",
+                    force3D: true,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "top top",
+                        end: "bottom top",
+                        scrub: 0.8,
+                    },
+                });
+
+                // Avoid scale during scroll to prevent expensive texture resampling.
+                gsap.to(content, {
+                    opacity: 0,
+                    y: -70,
+                    ease: "none",
+                    force3D: true,
+                    scrollTrigger: {
+                        trigger: section,
+                        start: "10% top",
+                        end: "72% top",
+                        scrub: 1.2,
+                    },
+                });
+            }
 
             // ───── TYPEWRITER CHARACTER STAGGER ─────
             // Characters are pre-rendered in JSX — just animate them via ref
@@ -103,7 +107,7 @@ export default function Hero() {
                     opacity: 0,
                     duration: 1,
                     ease: "power3.out",
-                    delay: 3.8,
+                    delay: 3.55,
                 });
             }
 

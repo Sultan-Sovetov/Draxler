@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { Suspense, useRef, useState, useEffect, useCallback, useMemo } from "react";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
@@ -35,7 +35,7 @@ const TARGET_VIEWPORT_OCCUPANCY = 0.58;
 const CAMERA_FOV = 45;
 const WHEEL_MODEL_PATH = "/media/car%20rim.fbx";
 
-/* ── Parallax look-at constants ── */
+/* в”Ђв”Ђ Parallax look-at constants в”Ђв”Ђ */
 const MAX_TILT_X = THREE.MathUtils.degToRad(15);
 const MAX_TILT_Y = THREE.MathUtils.degToRad(20);
 const LERP_FACTOR = 0.05;
@@ -62,7 +62,7 @@ const hotspots: HotspotData[] = [
             title: "Ultra-Lightweight",
             value: "8.2 kg",
             description:
-                "Each wheel weighs just 8.2 kg — 40% lighter than cast equivalents. Less unsprung mass means sharper response.",
+                "Each wheel weighs just 8.2 kg вЂ” 40% lighter than cast equivalents. Less unsprung mass means sharper response.",
         },
     },
     {
@@ -84,7 +84,7 @@ const hotspots: HotspotData[] = [
         side: "right",
         info: {
             title: "CNC Precision Machining",
-            value: "±0.02 mm",
+            value: "В±0.02 mm",
             description:
                 "Five-axis CNC machining ensures perfect spoke symmetry and true rotational balance at high speed.",
         },
@@ -341,7 +341,7 @@ export default function WheelShowcase() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    /* ── Mouse tracking on entire window ── */
+    /* в”Ђв”Ђ Mouse tracking on entire window в”Ђв”Ђ */
     useEffect(() => {
         const onMove = (e: MouseEvent) => {
             mouseRef.current.x = (e.clientX / window.innerWidth) * 2 - 1;
@@ -411,7 +411,7 @@ export default function WheelShowcase() {
                     >
                         <div
                             style={{
-                                fontFamily: "'Manrope', sans-serif",
+                                fontFamily: "Helvetica, Arial, sans-serif",
                                 fontSize: "0.7rem",
                                 letterSpacing: "0.3em",
                                 textTransform: "uppercase" as const,
@@ -423,7 +423,7 @@ export default function WheelShowcase() {
                         </div>
                         <div
                             style={{
-                                fontFamily: "'Manrope', sans-serif",
+                                fontFamily: "Helvetica, Arial, sans-serif",
                                 fontSize: "1.8rem",
                                 fontWeight: 800,
                                 marginBottom: "0.5rem",
@@ -516,3 +516,4 @@ export default function WheelShowcase() {
         </section>
     );
 }
+

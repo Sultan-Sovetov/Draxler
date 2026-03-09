@@ -13,6 +13,7 @@ const NAV_ITEMS = [
 
 export default function Navbar() {
     const navRef = useRef<HTMLElement>(null);
+    const scrollRafRef = useRef<number | null>(null);
     const [scrolled, setScrolled] = useState(false);
     const [hidden, setHidden] = useState(false);
     const [forceHidden, setForceHidden] = useState(false);
@@ -32,6 +33,17 @@ export default function Navbar() {
     }, []);
 
     const smoothScrollTo = useCallback((targetY: number, duration = 1300) => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (prefersReducedMotion || duration <= 0) {
+            window.scrollTo(0, targetY);
+            return;
+        }
+
+        if (scrollRafRef.current) {
+            cancelAnimationFrame(scrollRafRef.current);
+            scrollRafRef.current = null;
+        }
+
         const startY = window.scrollY || window.pageYOffset;
         const distance = targetY - startY;
         const startTime = performance.now();
@@ -45,10 +57,22 @@ export default function Navbar() {
             const eased = easeInOutCubic(progress);
             window.scrollTo(0, startY + distance * eased);
 
-            if (progress < 1) requestAnimationFrame(stepFrame);
+            if (progress < 1) {
+                scrollRafRef.current = requestAnimationFrame(stepFrame);
+            } else {
+                scrollRafRef.current = null;
+            }
         };
 
-        requestAnimationFrame(stepFrame);
+        scrollRafRef.current = requestAnimationFrame(stepFrame);
+    }, []);
+
+    useEffect(() => {
+        return () => {
+            if (scrollRafRef.current) {
+                cancelAnimationFrame(scrollRafRef.current);
+            }
+        };
     }, []);
 
     const scrollToTarget = useCallback((targetId: string) => {

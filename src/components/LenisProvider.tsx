@@ -11,21 +11,40 @@ export default function LenisProvider({
     const lenisRef = useRef<Lenis | null>(null);
 
     useEffect(() => {
+        const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const lenis = new Lenis({
-            duration: 1.2,
+            duration: 0.95,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             orientation: "vertical",
-            smoothWheel: true,
+            smoothWheel: !prefersReducedMotion,
+            syncTouch: false,
         });
 
         lenisRef.current = lenis;
+        let rafId = 0;
+        let running = true;
 
         function raf(time: number) {
+            if (!running) return;
             lenis.raf(time);
-            requestAnimationFrame(raf);
+            rafId = requestAnimationFrame(raf);
         }
 
-        requestAnimationFrame(raf);
+        rafId = requestAnimationFrame(raf);
+
+        const handleVisibilityChange = () => {
+            if (document.hidden) {
+                running = false;
+                if (rafId) cancelAnimationFrame(rafId);
+                lenis.stop();
+                return;
+            }
+
+            running = true;
+            lenis.start();
+            rafId = requestAnimationFrame(raf);
+        };
+        document.addEventListener("visibilitychange", handleVisibilityChange);
 
         // Pause/resume Lenis when configurator is active
         const handler = (e: Event) => {
@@ -40,6 +59,9 @@ export default function LenisProvider({
 
         return () => {
             window.removeEventListener("configurator-active", handler);
+            document.removeEventListener("visibilitychange", handleVisibilityChange);
+            running = false;
+            cancelAnimationFrame(rafId);
             lenis.destroy();
         };
     }, []);
