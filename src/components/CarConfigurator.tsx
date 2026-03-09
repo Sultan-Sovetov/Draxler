@@ -25,19 +25,12 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Check, LoaderCircle, X } from "lucide-react";
 import { Leva, useControls, button, folder } from "leva";
-import { Familjen_Grotesk } from "next/font/google";
 import ConfiguratorHUD from "./ConfiguratorHUD";
 import AeroLoader from "./AeroLoader";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
 import { CAR_PAINT_EXCLUSIONS } from "../data/car-paint-exclusions";
 import { CAR_CALIBRATION_DATA } from "../data/CarCalibrationData";
 import { applyMaterialFixes, logMeshInventory } from "../data/car-material-fixes";
-
-const familjenGrotesk = Familjen_Grotesk({
-    subsets: ["latin"],
-    weight: ["700"],
-    style: ["italic"],
-});
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);

@@ -1,5 +1,7 @@
 ﻿"use client";
 
+import Image from "next/image";
+
 const sections = [
     {
         num: "01",
@@ -42,11 +44,12 @@ export default function Roadmap() {
                             <p className="rdm-desc">{s.desc}</p>
                         </div>
                         <div className="rdm-media">
-                            <img
+                            <Image
                                 src={s.image}
                                 alt={s.title}
                                 className="rdm-img"
-                                loading="lazy"
+                                fill
+                                sizes="(max-width: 768px) 100vw, 50vw"
                             />
                         </div>
                     </div>
