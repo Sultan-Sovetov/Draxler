@@ -630,11 +630,15 @@ function ScrollCamera({
     isActive: boolean;
 }) {
     const { camera } = useThree();
+    const lastT = useRef(-1);
 
     useFrame(() => {
         if (isActive) return; // OrbitControls take over
 
         const t = scrollProgress.current;
+        if (t === lastT.current) return;
+        lastT.current = t;
+
         camera.position.set(
             THREE.MathUtils.lerp(CAM_START[0], CAM_END[0], t),
             THREE.MathUtils.lerp(CAM_START[1], CAM_END[1], t),
@@ -1290,9 +1294,9 @@ export default function CarConfigurator() {
                                         key="enter"
                                         className="car-config-action-btn"
                                         onClick={handleEnter}
-                                        initial={shouldLightenUi ? { opacity: 0, scale: 0.97 } : { opacity: 0, scale: 0.94, filter: "blur(6px)" }}
-                                        animate={shouldLightenUi ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                        exit={shouldLightenUi ? { opacity: 0, scale: 1.01 } : { opacity: 0, scale: 1.03, filter: "blur(4px)" }}
+                                        initial={shouldLightenUi ? { opacity: 0, scale: 0.97 } : { opacity: 0, scale: 0.94 }}
+                                        animate={shouldLightenUi ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
+                                        exit={shouldLightenUi ? { opacity: 0, scale: 1.01 } : { opacity: 0, scale: 1.03 }}
                                         transition={{ duration: 0.3 }}
                                     >
                                         Enter Configurator
@@ -1302,9 +1306,9 @@ export default function CarConfigurator() {
                                         key="exit"
                                         className="car-config-action-btn car-config-action-btn--exit"
                                         onClick={handleExit}
-                                        initial={shouldLightenUi ? { opacity: 0, scale: 0.97 } : { opacity: 0, scale: 0.96, filter: "blur(6px)" }}
-                                        animate={shouldLightenUi ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1, filter: "blur(0px)" }}
-                                        exit={shouldLightenUi ? { opacity: 0, scale: 1.01 } : { opacity: 0, scale: 1.03, filter: "blur(4px)" }}
+                                        initial={shouldLightenUi ? { opacity: 0, scale: 0.97 } : { opacity: 0, scale: 0.96 }}
+                                        animate={shouldLightenUi ? { opacity: 1, scale: 1 } : { opacity: 1, scale: 1 }}
+                                        exit={shouldLightenUi ? { opacity: 0, scale: 1.01 } : { opacity: 0, scale: 1.03 }}
                                         transition={{ duration: 0.3 }}
                                     >
                                         <X size={16} />

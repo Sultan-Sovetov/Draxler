@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const HERO_IMAGES = [
@@ -86,24 +87,21 @@ export default function HeroSlider() {
         return clearFadeTimer;
     }, [clearFadeTimer]);
 
-    useEffect(() => {
-        // Preload only the next two slides to avoid decoding all hero images at once.
-        const preloadNearby = (index: number) => {
-            for (let step = 1; step <= 2; step += 1) {
-                const nextSrc = HERO_IMAGES[(index + step) % IMAGE_COUNT];
-                const img = new Image();
-                img.decoding = "async";
-                img.src = nextSrc;
-            }
-        };
-
-        const timeoutId = globalThis.setTimeout(() => preloadNearby(activeIndex), 250);
-        return () => globalThis.clearTimeout(timeoutId);
-    }, [activeIndex]);
+    // Only mount previous, active, and next slides
+    const mountedIndices = useMemo(() => {
+        const set = new Set<number>();
+        set.add(activeIndex);
+        set.add((activeIndex + 1) % IMAGE_COUNT);
+        set.add((activeIndex - 1 + IMAGE_COUNT) % IMAGE_COUNT);
+        if (previousIndex !== null) set.add(previousIndex);
+        return set;
+    }, [activeIndex, previousIndex]);
 
     return (
         <div className="hero-slider" aria-label="Hero background slider">
             {HERO_IMAGES.map((src, index) => {
+                if (!mountedIndices.has(index)) return null;
+
                 const isActive = index === activeIndex;
                 const isLeaving = index === previousIndex;
                 const slideClass = `hero-slide ${isActive ? "is-active" : ""} ${isLeaving ? "is-leaving" : ""}`;
@@ -114,14 +112,13 @@ export default function HeroSlider() {
                         className={slideClass.trim()}
                         aria-hidden={!isActive}
                     >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
+                        <Image
                             src={src}
                             alt="DRAXLER Hero"
                             className="hero-slide-image"
-                            loading={index === 0 ? "eager" : "lazy"}
-                            fetchPriority={index === 0 ? "high" : "auto"}
-                            decoding="async"
+                            fill
+                            sizes="100vw"
+                            priority={index === 0}
                             draggable={false}
                         />
                     </div>

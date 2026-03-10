@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 import gsap from "gsap";
 
 interface AeroLoaderProps {
@@ -44,35 +43,19 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
             });
         }, visibleDuration);
 
-
-
         return () => clearTimeout(timer);
     }, [onComplete]);
 
-    // Breathing animation variants for the text
-    const breathe = {
-        animate: {
-            opacity: [0.14, 1, 0.14],
-            transition: {
-                duration: BLINK_DURATION,
-                times: [0, 0.5, 1],
-                ease: "easeInOut" as const,
-                repeat: onComplete ? BLINK_CYCLES - 1 : Infinity,
-            },
-        },
+    const animationStyle = {
+        animation: `aero-breathe ${BLINK_DURATION}s ease-in-out ${onComplete ? BLINK_CYCLES : "infinite"}`,
     };
 
     if (inline) {
-        // Compact version for <Suspense> fallbacks inside canvases etc.
         return (
             <div className="aero-loader-inline">
-                <motion.div
-                    className="aero-loader-text-sm"
-                    variants={breathe}
-                    animate="animate"
-                >
+                <div className="aero-loader-text-sm" style={animationStyle}>
                     DRAXLER
-                </motion.div>
+                </div>
             </div>
         );
     }
@@ -80,13 +63,9 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
     // Full-page loader (replaces old Preloader)
     return (
         <div ref={containerRef} className="aero-loader">
-            <motion.div
-                className="aero-loader-text"
-                variants={breathe}
-                animate="animate"
-            >
+            <div className="aero-loader-text" style={animationStyle}>
                 DRAXLER
-            </motion.div>
+            </div>
         </div>
     );
 }

@@ -30,6 +30,26 @@ export default function Gallery() {
     const sectionRef = useRef<HTMLDivElement>(null);
     const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
     const [playingStates, setPlayingStates] = useState<boolean[]>([false, false, false]);
+    const [visible, setVisible] = useState(false);
+
+    // IntersectionObserver — only set video src when gallery enters viewport
+    useEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting) {
+                    setVisible(true);
+                    observer.disconnect();
+                }
+            },
+            { rootMargin: "200px" }
+        );
+
+        observer.observe(section);
+        return () => observer.disconnect();
+    }, []);
 
     const handleVideoEnter = (index: number) => {
         const video = videoRefs.current[index];
@@ -176,7 +196,7 @@ export default function Gallery() {
                                 ref={(el) => {
                                     videoRefs.current[index] = el;
                                 }}
-                                src={item.src}
+                                src={visible ? item.src : undefined}
                                 className="gallery-pillar-media"
                                 muted
                                 loop

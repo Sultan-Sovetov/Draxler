@@ -134,11 +134,16 @@ export default function ForgingFeatures() {
       setConnectors(nextConnectors);
     };
 
-    measure();
-    const rafId = window.requestAnimationFrame(measure);
-    window.addEventListener("resize", measure);
+    let debounceTimer: ReturnType<typeof setTimeout>;
+    const debouncedMeasure = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(measure, 60);
+    };
 
-    const resizeObserver = new ResizeObserver(() => measure());
+    measure();
+    window.addEventListener("resize", debouncedMeasure);
+
+    const resizeObserver = new ResizeObserver(debouncedMeasure);
     if (layoutRef.current) resizeObserver.observe(layoutRef.current);
     if (rimRef.current) resizeObserver.observe(rimRef.current);
     FEATURES.forEach((feature) => {
@@ -147,53 +152,11 @@ export default function ForgingFeatures() {
     });
 
     return () => {
-      window.cancelAnimationFrame(rafId);
-      window.removeEventListener("resize", measure);
+      clearTimeout(debounceTimer);
+      window.removeEventListener("resize", debouncedMeasure);
       resizeObserver.disconnect();
     };
   }, []);
-
-  useEffect(() => {
-    const rafId = window.requestAnimationFrame(() => {
-      const layoutEl = layoutRef.current;
-      const rimEl = rimRef.current;
-      if (!layoutEl || !rimEl) return;
-
-      const layoutRect = layoutEl.getBoundingClientRect();
-      const rimRect = rimEl.getBoundingClientRect();
-      setSvgSize({ width: layoutRect.width || 1, height: layoutRect.height || 1 });
-
-      const nextConnectors = FEATURES.map((feature) => {
-        const blockEl = blockRefs.current[feature.id];
-        if (!blockEl) return null;
-
-        const blockRect = blockEl.getBoundingClientRect();
-        const hotspot = HOTSPOTS[feature.id];
-
-        const startX = rimRect.left + (rimRect.width * hotspot.x) / 100 - layoutRect.left;
-        const startY = rimRect.top + (rimRect.height * hotspot.y) / 100 - layoutRect.top;
-        const endX =
-          feature.side === "left"
-            ? blockRect.right + 12 - layoutRect.left
-            : blockRect.left - 12 - layoutRect.left;
-        const endY = blockRect.top + 16 - layoutRect.top;
-
-        const cp1x = feature.side === "left" ? startX - 56 : startX + 56;
-        const cp2x = startX + (endX - startX) * 0.58;
-
-        return {
-          id: feature.id,
-          hotspotX: startX,
-          hotspotY: startY,
-          path: `M ${startX} ${startY} C ${cp1x} ${startY}, ${cp2x} ${endY}, ${endX} ${endY}`,
-        } as ConnectorGeometry;
-      }).filter((item): item is ConnectorGeometry => item !== null);
-
-      setConnectors(nextConnectors);
-    });
-
-    return () => window.cancelAnimationFrame(rafId);
-  }, [activeId]);
 
   return (
     <section className="forging-features" aria-label="The advantages of forging">

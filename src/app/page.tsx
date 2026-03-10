@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import dynamic from "next/dynamic";
 import AeroLoader from "@/components/AeroLoader";
 import Navbar from "@/components/Navbar";
@@ -18,6 +18,8 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
+  const [configNear, setConfigNear] = useState(false);
+  const configSentinelRef = useRef<HTMLDivElement>(null);
 
   // Lock body scroll during loading
   useEffect(() => {
@@ -28,6 +30,23 @@ export default function Home() {
     }
   }, [loading]);
 
+  // Defer CarConfigurator mount until near viewport — R3F costs ~14.9s of script eval
+  useEffect(() => {
+    const sentinel = configSentinelRef.current;
+    if (!sentinel) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setConfigNear(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "600px" }
+    );
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main className="min-h-screen bg-aero-dark text-aero-light overflow-x-hidden">
       {loading && <AeroLoader onComplete={() => setLoading(false)} />}
@@ -37,11 +56,19 @@ export default function Home() {
       <div>
         <Hero />
         <Gallery />
-        <CarConfigurator />
+        <div ref={configSentinelRef}>
+          {configNear ? <CarConfigurator /> : (
+            <section
+              className="car-configurator-section"
+              style={{ minHeight: "100vh" }}
+              aria-hidden
+            />
+          )}
+        </div>
         {/* <WheelShowcase /> */}
         <HomeCatalogPreview />
         <Roadmap />
-        <ParallaxDivider src="/media/background%202.png" compact>
+        <ParallaxDivider src="/media/background_2.jpg" compact>
           <ForgingFeatures />
         </ParallaxDivider>
         {/* <ParallaxDivider reduced>

@@ -1,37 +1,48 @@
 "use client";
 
-import { useEffect, useRef, CSSProperties } from "react";
+import { useEffect, useRef, useCallback, CSSProperties } from "react";
 // Pure CSS mask + vanilla JS — no GSAP needed
 
 
 export default function FlashlightReveal() {
     const containerRef = useRef<HTMLDivElement>(null);
     const maskRef = useRef<HTMLDivElement>(null);
+    const rectRef = useRef<DOMRect | null>(null);
+    const rafRef = useRef(0);
+
+    // Cache bounding rect, recalculate on resize
+    const updateRect = useCallback(() => {
+        if (containerRef.current) {
+            rectRef.current = containerRef.current.getBoundingClientRect();
+        }
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            if (!containerRef.current || !maskRef.current) return;
-
-            const rect = containerRef.current.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            // Update CSS variables for the mask position
-            maskRef.current.style.setProperty("--mx", `${x}px`);
-            maskRef.current.style.setProperty("--my", `${y}px`);
+            cancelAnimationFrame(rafRef.current);
+            rafRef.current = requestAnimationFrame(() => {
+                const rect = rectRef.current;
+                if (!rect || !maskRef.current) return;
+                maskRef.current.style.setProperty("--mx", `${e.clientX - rect.left}px`);
+                maskRef.current.style.setProperty("--my", `${e.clientY - rect.top}px`);
+            });
         };
 
         const container = containerRef.current;
         if (container) {
-            container.addEventListener("mousemove", handleMouseMove);
+            updateRect();
+            container.addEventListener("mousemove", handleMouseMove, { passive: true });
+            window.addEventListener("resize", updateRect, { passive: true });
         }
 
         return () => {
+            cancelAnimationFrame(rafRef.current);
             if (container) {
                 container.removeEventListener("mousemove", handleMouseMove);
             }
+            window.removeEventListener("resize", updateRect);
         };
-    }, []);
+    }, [updateRect]);
 
     return (
         <section ref={containerRef} className="flashlight-section">

@@ -107,21 +107,27 @@ export default function Navbar() {
     }, [isHome, smoothScrollTo]);
 
     useEffect(() => {
+        let ticking = false;
         const handleScroll = () => {
-            const y = window.scrollY;
-            const delta = y - lastScrollY.current;
+            if (ticking) return;
+            ticking = true;
+            requestAnimationFrame(() => {
+                const y = window.scrollY;
+                const delta = y - lastScrollY.current;
 
-            // Show frosted glass after scrolling 80px
-            setScrolled(y > 80);
+                // Show frosted glass after scrolling 80px
+                setScrolled(y > 80);
 
-            // Hide on scroll down (> 10px delta), show on scroll up
-            if (delta > 10 && y > 200) {
-                setHidden(true);
-            } else if (delta < -5) {
-                setHidden(false);
-            }
+                // Hide on scroll down (> 10px delta), show on scroll up
+                if (delta > 10 && y > 200) {
+                    setHidden(true);
+                } else if (delta < -5) {
+                    setHidden(false);
+                }
 
-            lastScrollY.current = y;
+                lastScrollY.current = y;
+                ticking = false;
+            });
         };
 
         window.addEventListener("scroll", handleScroll, { passive: true });

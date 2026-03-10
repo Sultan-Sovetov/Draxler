@@ -53,7 +53,6 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  transition: background 0.5s ease, color 0.5s ease;
 }
 
 html.lenis,
@@ -116,6 +115,12 @@ html.lenis body {
   user-select: none;
 }
 
+@keyframes aero-breathe {
+  0%   { opacity: 0.14; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.14; }
+}
+
 /* ========== HERO ========== */
 .hero-section {
   position: relative;
@@ -124,6 +129,7 @@ html.lenis body {
   display: flex;
   align-items: center;
   justify-content: center;
+  contain: layout style;
 }
 
 .hero-video-wrapper {
@@ -277,9 +283,11 @@ html.lenis body {
   color: rgba(255, 255, 255, 0.6);
 }
 
-/* Pre-rendered typewriter character spans */
+/* Pre-rendered typewriter character spans — start hidden to prevent CLS flash */
 .hero-char {
   display: inline-block;
+  opacity: 0;
+  transform: translateY(20px);
 }
 
 .hero-subtitle {
@@ -604,6 +612,7 @@ html.lenis body {
   padding: 5rem 0 0rem;
   background: var(--background);
   color: var(--foreground);
+  contain: layout style;
 }
 
 .gallery-section-label {
@@ -636,28 +645,34 @@ html.lenis body {
 }
 
 .gallery-container {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
   width: 100%;
   height: 100%;
   min-height: 100%;
-  align-items: stretch;
   gap: 0;
+  transition: grid-template-columns 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Expand hovered pillar — CSS :has() keeps this off the main thread */
+.gallery-container:has(.gallery-pillar:nth-child(1):hover) {
+  grid-template-columns: 3fr 1fr 1fr;
+}
+.gallery-container:has(.gallery-pillar:nth-child(2):hover) {
+  grid-template-columns: 1fr 3fr 1fr;
+}
+.gallery-container:has(.gallery-pillar:nth-child(3):hover) {
+  grid-template-columns: 1fr 1fr 3fr;
 }
 
 .gallery-pillar {
-  flex: 1;
   height: 100%;
   min-height: 100%;
   position: relative;
   overflow: hidden;
   cursor: pointer;
-  transition: flex 0.7s cubic-bezier(0.65, 0, 0.35, 1);
   border-radius: 0;
   clip-path: inset(0 0 0 0);
-}
-
-.gallery-pillar:hover {
-  flex: 3;
 }
 
 .gallery-pillar img,
@@ -914,15 +929,15 @@ html.lenis body {
 .forging-feature-description {
   margin-top: 0.52rem;
   margin-bottom: 0;
-  max-height: 0;
   opacity: 0;
-  overflow: hidden;
   transform: translateY(10px);
   font-family: Helvetica, Arial, sans-serif;
   font-size: clamp(0.76rem, 0.92vw, 0.9rem);
   line-height: 1.55;
   letter-spacing: 0.018em;
   color: rgba(255, 255, 255, 0.74);
+  max-height: 0;
+  overflow: hidden;
   transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
               max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1417,8 +1432,10 @@ html.lenis body {
   position: relative;
   width: 100%;
   height: 100vh;
+  min-height: 100vh;
   overflow: hidden;
   background: radial-gradient(circle at 20% 15%, #1f1f22 0%, #0f0f11 45%, #060606 100%);
+  contain: layout style paint;
 }
 
 /* Preparing overlay – localized to the configurator section */
@@ -1429,9 +1446,7 @@ html.lenis body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(0, 0, 0, 0.85);
 }
 
 .car-config-overlay {
@@ -1495,10 +1510,8 @@ html.lenis body {
   letter-spacing: 0.34em;
   text-transform: uppercase;
   color: #000000;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(18px) saturate(1.35);
-  -webkit-backdrop-filter: blur(18px) saturate(1.35);
-  border: 1px solid rgba(255, 255, 255, 0.24);
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.45);
   padding: 0.95rem 2.4rem;
   border-radius: 100px;
   cursor: pointer;
@@ -1519,6 +1532,13 @@ html.lenis body {
   background: rgba(255, 255, 255, 0.2);
 }
 
+.car-config-action-btn:active {
+  transform: translateY(0);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #000000;
+  background: rgba(255, 255, 255, 0.2);
+}
+
 .car-config-action-btn--exit {
   color: #000000;
 }
@@ -1532,9 +1552,7 @@ html.lenis body {
   padding: 1rem 1.1rem;
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(14, 14, 20, 0.62);
-  backdrop-filter: blur(20px) saturate(1.4);
-  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  background: rgba(14, 14, 20, 0.92);
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
 }
 
@@ -1617,9 +1635,7 @@ html.lenis body {
   position: absolute;
   inset: 0;
   z-index: 38;
-  background: rgba(2, 2, 6, 0.42);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: rgba(2, 2, 6, 0.88);
   display: grid;
   place-items: center;
   pointer-events: auto;
@@ -1782,9 +1798,7 @@ html.lenis body {
   width: 270px;
   padding: 1rem;
   border-radius: 24px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(38px) saturate(1.5);
-  -webkit-backdrop-filter: blur(38px) saturate(1.5);
+  background: rgba(18, 18, 24, 0.92);
   border: 1px solid rgba(255, 255, 255, 0.2);
   max-height: 70vh;
   overflow-y: auto;
@@ -2095,9 +2109,7 @@ html.lenis body {
   border-radius: 22px;
   padding: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(24px) saturate(1.45);
-  -webkit-backdrop-filter: blur(24px) saturate(1.45);
+  background: rgba(18, 18, 24, 0.92);
   box-shadow: 0 18px 42px rgba(0, 0, 0, 0.25);
   display: grid;
   grid-template-columns: minmax(180px, 240px) 1fr;
@@ -2388,13 +2400,7 @@ html.lenis body {
     grid-template-columns: 1fr;
   }
 
-  .car-config-preparing-overlay,
-  .car-config-action-btn,
-  .car-config-summary,
-  .config-lead-modal-backdrop,
   .config-lead-modal,
-  .hud-panel,
-  .hud-wheel-drawer,
   .navbar--glass,
   .navbar-catalog-dropdown {
     backdrop-filter: blur(10px) saturate(1.15);
@@ -2403,13 +2409,7 @@ html.lenis body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .car-config-preparing-overlay,
-  .car-config-action-btn,
-  .car-config-summary,
-  .config-lead-modal-backdrop,
   .config-lead-modal,
-  .hud-panel,
-  .hud-wheel-drawer,
   .navbar--glass,
   .navbar-catalog-dropdown {
     backdrop-filter: blur(8px) saturate(1.05);
@@ -3080,9 +3080,7 @@ html.lenis body {
   transform: translateX(-50%) translateY(-10px);
   min-width: 250px;
   padding: 0.6rem 0;
-  background: rgba(10, 10, 10, 0.88);
-  backdrop-filter: blur(24px) saturate(1.4);
-  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  background: rgba(10, 10, 10, 0.94);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;
   opacity: 0;
@@ -3617,7 +3615,6 @@ html.lenis body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  will-change: transform;
 }
 
 .pdp-hero-gradient {
@@ -4067,9 +4064,7 @@ html.lenis body {
 .pdp-gallery-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  background: rgba(0, 0, 0, 0.92);
   z-index: 150;
   display: flex;
   align-items: center;
