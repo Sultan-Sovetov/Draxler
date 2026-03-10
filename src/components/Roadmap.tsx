@@ -49,6 +49,7 @@ export default function Roadmap() {
                                 alt={s.title}
                                 className="rdm-img"
                                 fill
+                                loading="lazy"
                                 sizes="(max-width: 768px) 100vw, 50vw"
                             />
                         </div>

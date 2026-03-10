@@ -134,14 +134,13 @@ export default function ForgingFeatures() {
       setConnectors(nextConnectors);
     };
 
-    let debounceTimer: ReturnType<typeof setTimeout>;
+    let rafId: number | null = null;
     const debouncedMeasure = () => {
-      clearTimeout(debounceTimer);
-      debounceTimer = setTimeout(measure, 60);
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(measure);
     };
 
     measure();
-    window.addEventListener("resize", debouncedMeasure);
 
     const resizeObserver = new ResizeObserver(debouncedMeasure);
     if (layoutRef.current) resizeObserver.observe(layoutRef.current);
@@ -152,8 +151,7 @@ export default function ForgingFeatures() {
     });
 
     return () => {
-      clearTimeout(debounceTimer);
-      window.removeEventListener("resize", debouncedMeasure);
+      if (rafId !== null) cancelAnimationFrame(rafId);
       resizeObserver.disconnect();
     };
   }, []);

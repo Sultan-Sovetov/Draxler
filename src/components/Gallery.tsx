@@ -12,17 +12,17 @@ const galleryItems = [
     {
         src: "/gallery/any_style1.mp4",
         name: "Any Style",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
+        description: "From brushed satin to mirror-polished chrome, every finish is tailored to your vision. Dual-tone, custom paint, carbon accents — your wheels, your signature."
     },
     {
         src: "/gallery/any_design1.mp4",
         name: "Any Design",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
+        description: "Bring any concept to life. Our engineers translate sketches, references, or ideas into production-ready forged wheel designs with no compromise."
     },
     {
         src: "/gallery/any_wheels1.mp4",
         name: "Any Wheels",
-        description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur feugiat, tellus non suscipit ultrices, massa risus posuere neque, in efficitur sem lorem sed velit."
+        description: "Monoblock, multi-piece, beadlock, or concave—built for supercars, SUVs, trucks, and classics. Any size from 16\" to 26\" with perfect fitment guaranteed."
     },
 ];
 
@@ -157,6 +157,7 @@ export default function Gallery() {
                     duration: 1.1,
                     stagger: 0.1,
                     ease: "power3.inOut",
+                    force3D: true,
                     scrollTrigger: {
                         trigger: section.querySelector(".gallery-container"),
                         start: "top 80%",
@@ -203,9 +204,7 @@ export default function Gallery() {
                                 playsInline
                                 preload="metadata"
                             />
-                            {!playingStates[index] && (
-                                <div className="gallery-pillar-pause-dim" />
-                            )}
+                            <div className={`gallery-pillar-pause-dim${playingStates[index] ? ' is-playing' : ''}`} />
                             <div className="gallery-pillar-overlay">
                                 <div className="gallery-pillar-copy">
                                     <div className="gallery-pillar-name">{item.name}</div>

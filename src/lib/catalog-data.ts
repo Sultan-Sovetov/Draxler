@@ -21,7 +21,7 @@ export const catalogCategories: CatalogCategory[] = [
   {
     slug: "vip",
     name: "Luxury series",
-    displayTitle: "L U X U R Y\nS E R I E S",
+    displayTitle: "L U X U R Y \u00A0 S E R I E S",
     description:
       "Commanding presence for executive saloons and luxury SUVs. Designed for maximum visual impact, featuring intricate monoblock structures and elegant brushed finishes.",
     headerImage: "/catalog/catalog_1_white.png",
@@ -91,7 +91,7 @@ export const catalogCategories: CatalogCategory[] = [
   {
     slug: "offroad",
     name: "Off-Road Series",
-    displayTitle: "O F F - R O A D\nS E R I E S",
+    displayTitle: "O F F - R O A D \u00A0 S E R I E S",
     description:
       "Engineered for the extremes. Reinforced load ratings and bead-lock capabilities meet rugged aesthetics. Built to withstand the harshest terrains without compromising on style.",
     headerImage: "/catalog/catalog_2_white.png",

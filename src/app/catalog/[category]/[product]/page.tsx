@@ -9,6 +9,195 @@ import { getProductBySlug } from "@/lib/catalog-data";
 import Footer from "@/components/Footer";
 
 /* ═══════════════════════════════════════════ */
+/*           CATEGORY HERO BACKGROUNDS         */
+/* ═══════════════════════════════════════════ */
+const categoryHeroImage: Record<string, string> = {
+    vip: "/catalog/luxury phantom.jpg",
+    offroad: "/catalog/offroad ford.jpg",
+    sport: "/catalog/sport porsche.jpg",
+};
+
+/* ═══════════════════════════════════════════ */
+/*              SEO ACCORDION DATA             */
+/* ═══════════════════════════════════════════ */
+interface SeoSection {
+    title: string;
+    content: React.ReactNode;
+    defaultOpen?: boolean;
+}
+
+const SEO_SECTIONS: SeoSection[] = [
+    {
+        title: "DESCRIPTION",
+        defaultOpen: true,
+        content: (
+            <>
+                <h4>Exclusive Custom Forged Wheels Tailored to Your Vehicle</h4>
+                <p>
+                    Any wheel design presented can be custom-made for your car in any size and color
+                    configuration. To ensure a 100% perfect fitment before manufacturing begins, we
+                    provide precise 3D wheel renderings based on your vehicle&apos;s exact dimensions and
+                    specifications.
+                </p>
+                <p className="seo-sub-label">Available Wheel Configurations:</p>
+                <ul>
+                    <li>Monoblock wheels</li>
+                    <li>2-piece and 3-piece modular wheels</li>
+                    <li>Duoblock wheels</li>
+                    <li>Beadlock wheels for drag racing and off-road applications</li>
+                    <li>Dually truck, armored vehicle, and UTV/ATV applications</li>
+                </ul>
+            </>
+        ),
+    },
+    {
+        title: "PREMIUM MATERIALS & ENGINEERING SPECIFICATIONS",
+        content: (
+            <>
+                <p>
+                    At DRAXLER, we engineer and manufacture premium custom forged wheels with an
+                    uncompromising attention to detail.
+                </p>
+                <ul>
+                    <li>
+                        <strong>Aerospace-Grade 6061-T6 Forged Aluminum:</strong> Our forged billet
+                        blanks are produced using high-pressure forging (up to 12,000 tons). This
+                        refines the grain structure, minimizes porosity, and delivers an exceptional
+                        strength-to-weight ratio.
+                    </li>
+                    <li>
+                        <strong>Forged Magnesium Option:</strong> For hardcore motorsport
+                        applications, wheels can be manufactured from ultra-lightweight forged
+                        magnesium to significantly reduce unsprung mass and improve track
+                        performance.
+                    </li>
+                    <li>
+                        <strong>Any Size &amp; Fitment (15&quot; to 30&quot;):</strong> Fully
+                        customizable diameters, widths, offsets (ET), center bores (DIA), bolt
+                        patterns (PCD), and centerlock setups. We calculate perfect geometry for
+                        both staggered and square setups-ranging from OEM-spec to flush, mild, or
+                        aggressive fitments.
+                    </li>
+                    <li>
+                        <strong>Maximum Compatibility:</strong> Engineered for seamless integration
+                        with OEM brake systems and Big Brake Kits (BBK), with precise caliper
+                        clearances calculated for every application. Fully compatible with factory OE
+                        TPMS sensors and factory lug hardware.
+                    </li>
+                    <li>
+                        <strong>Strict Quality Control &amp; Global Standards:</strong> Our
+                        manufacturing processes and testing align with leading JWL and VIA compliance
+                        benchmarks. Every wheel undergoes rigorous checks for radial/lateral runout,
+                        roundness, balance, and finish consistency.
+                    </li>
+                </ul>
+            </>
+        ),
+    },
+    {
+        title: "CUSTOM DESIGNS & PREMIUM FINISHES (OPTIONS)",
+        content: (
+            <>
+                <p>
+                    Every finish undergoes a multi-stage surface preparation process, followed by
+                    premium clear-coat or tinted-clear applications for maximum depth and long-term
+                    corrosion resistance.
+                </p>
+                <ol>
+                    <li>
+                        <strong>Standard Finishes:</strong> Brushed, polished, satin or gloss clear,
+                        precision-machined or milled accents, dual-tone, and advanced chrome options
+                        (including gold, black, and electroplated chrome).
+                    </li>
+                    <li>
+                        <strong>Exclusive Upgrades (Available at extra cost):</strong>
+                        <ul>
+                            <li>Wheel widths above 11.5J</li>
+                            <li>Carbon fiber barrels and aerodynamic covers (aero-disc)</li>
+                            <li>Titanium lug nuts</li>
+                            <li>Weight-saving pocket cut-outs and drilled spokes</li>
+                            <li>
+                                Floating spinning center caps and custom alloy caps with a milled
+                                logo
+                            </li>
+                            <li>Racing-spec knurled bead seats to prevent tire slippage</li>
+                        </ul>
+                    </li>
+                </ol>
+            </>
+        ),
+    },
+    {
+        title: "VINTAGE, CLASSIC & HOT ROD APPLICATIONS",
+        content: (
+            <p>
+                We also specialize in manufacturing custom wheels for classic cars, hot rods, and
+                vintage Indy vehicles. Our lineup includes authentic wire wheels and traditional
+                magnesium-style &quot;mag wheels.&quot; Options include period-correct &quot;dog
+                dish&quot; hubcaps, &quot;knock-off&quot; center caps, and deep-lip profiles. Get
+                the heritage look you want without compromising on modern engineering, safety, and
+                quality standards.
+            </p>
+        ),
+    },
+    {
+        title: "WARRANTY & CUSTOMER SERVICE",
+        content: (
+            <ul>
+                <li>LIFETIME Structural Warranty</li>
+                <li>Guaranteed perfect fitment for your specific vehicle</li>
+                <li>Excellent wheel balance and absolute roundness guaranteed</li>
+                <li>Exceptional, personalized after-sales support</li>
+            </ul>
+        ),
+    },
+    {
+        title: "SECURE PAYMENT & WORLDWIDE SHIPPING",
+        content: (
+            <>
+                <p className="seo-sub-label">Secured Payment Methods:</p>
+                <ul>
+                    <li>PayPal (+4.4% fee) | Visa / Mastercard / American Express (via PayPal)</li>
+                    <li>Bank Wire Transfer (SWIFT)</li>
+                    <li>Cryptocurrency (USDT, BTC, ETH)</li>
+                    <li>Alipay / WeChat</li>
+                </ul>
+                <p className="seo-sub-label">Global Shipping Options:</p>
+                <ul>
+                    <li>Express Delivery: Fast shipping via DHL, UPS, TNT, or FedEx.</li>
+                    <li>
+                        AIR Shipping (10–15 days): Customs clearance included. Available for the
+                        USA, UK, Australia, EU countries, and select Asian destinations.
+                    </li>
+                    <li>
+                        SEA Shipping (25–45 days): Customs clearance included. Contact us to verify
+                        availability for your country.
+                    </li>
+                    <li>Delivery is available directly to your local international airport or seaport.</li>
+                </ul>
+            </>
+        ),
+    },
+];
+
+function SeoAccordion({ section }: { section: SeoSection }) {
+    const [open, setOpen] = useState(!!section.defaultOpen);
+    return (
+        <div className={`seo-accordion ${open ? "is-open" : ""}`}>
+            <button
+                className="seo-accordion-trigger"
+                onClick={() => setOpen((v) => !v)}
+                aria-expanded={open}
+            >
+                <span className="seo-accordion-title">{section.title}</span>
+                <span className="seo-accordion-icon">{open ? "–" : "+"}</span>
+            </button>
+            {open && <div className="seo-accordion-body">{section.content}</div>}
+        </div>
+    );
+}
+
+/* ═══════════════════════════════════════════ */
 /*         METAL FINISH DEFINITIONS            */
 /* ═══════════════════════════════════════════ */
 type FinishType = "polished" | "satin" | "brushed";
@@ -153,7 +342,12 @@ export default function ProductDetailPage() {
         <>
             {/* ===== TASK 1 — Slim Cinematic Header ===== */}
             <section ref={heroRef} className="pdp-hero" aria-label={category.name}>
-                <div className="pdp-hero-bg" />
+                <div
+                    className="pdp-hero-bg"
+                    style={{
+                        backgroundImage: `url('${categoryHeroImage[categorySlug] ?? "/catalog/luxury phantom.jpg"}')`,
+                    }}
+                />
                 <div className="pdp-hero-gradient" />
                 <span className="pdp-hero-series">{category.displayTitle}</span>
             </section>
@@ -294,6 +488,13 @@ export default function ProductDetailPage() {
                         </a>
                     </div>
                 </div>
+            </div>
+
+            {/* ===== SEO Content Sections ===== */}
+            <div className="seo-section">
+                {SEO_SECTIONS.map((section) => (
+                    <SeoAccordion key={section.title} section={section} />
+                ))}
             </div>
 
             <div className="pdp-page-footer">

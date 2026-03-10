@@ -1,68 +1,74 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { catalogCategories } from "@/lib/catalog-data";
+import Footer from "@/components/Footer";
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+const ITEMS_PER_PAGE = 8; // 2 rows × 4 columns
+
 export default function CatalogPage() {
   const pageRef = useRef<HTMLDivElement>(null);
+  const [visibleCounts, setVisibleCounts] = useState<Record<string, number>>(
+    () => Object.fromEntries(catalogCategories.map((cat) => [cat.slug, ITEMS_PER_PAGE]))
+  );
+
+  const handleShowMore = useCallback((slug: string) => {
+    setVisibleCounts((prev) => {
+      const oldCount = prev[slug] ?? ITEMS_PER_PAGE;
+      const newCount = oldCount + ITEMS_PER_PAGE;
+
+      // Animate newly revealed cards after render
+      requestAnimationFrame(() => {
+        const section = pageRef.current?.querySelector(`#${slug}`);
+        if (!section) return;
+        const cards = section.querySelectorAll(".cat-product-card");
+        const newCards = Array.from(cards).slice(oldCount);
+        if (newCards.length > 0) {
+          gsap.fromTo(
+            newCards,
+            { opacity: 0, y: 40 },
+            { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out" }
+          );
+        }
+      });
+
+      return { ...prev, [slug]: newCount };
+    });
+  }, []);
+
+  const categoryBackgroundBySlug: Record<string, string> = {
+    vip: "/catalog/luxury phantom.jpg",
+    offroad: "/catalog/offroad ford.jpg",
+    sport: "/catalog/sport porsche.jpg",
+  };
+
+  const categoryHeadingBySlug: Record<string, string> = {
+    vip: "Luxury Series Collection",
+    offroad: "Off-Road Series Collection",
+    sport: "Sport Series Collection",
+  };
 
   useEffect(() => {
     if (!pageRef.current) return;
 
     const ctx = gsap.context(() => {
-      /* Animate each section header on scroll */
-      pageRef.current!.querySelectorAll(".cat-section-header").forEach((header) => {
-        const bar = header.querySelector(".cat-header-bar");
-        const title = header.querySelector(".cat-header-title");
-        const desc = header.querySelector(".cat-header-desc");
-        const img = header.querySelector(".cat-header-image-wrap");
-
-        if (bar) {
-          gsap.from(bar, {
-            scaleX: 0,
-            transformOrigin: "left center",
-            duration: 0.8,
-            ease: "power3.out",
-            scrollTrigger: { trigger: header, start: "top 80%", once: true },
-          });
-        }
-        if (title) {
-          gsap.from(title, {
-            opacity: 0,
-            y: 30,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: { trigger: header, start: "top 80%", once: true },
-            delay: 0.2,
-          });
-        }
-        if (desc) {
-          gsap.from(desc, {
-            opacity: 0,
-            y: 25,
-            duration: 0.7,
-            ease: "power3.out",
-            scrollTrigger: { trigger: header, start: "top 80%", once: true },
-            delay: 0.35,
-          });
-        }
-        if (img) {
-          gsap.from(img, {
-            opacity: 0,
-            scale: 0.92,
-            duration: 1,
-            ease: "power3.out",
-            scrollTrigger: { trigger: header, start: "top 80%", once: true },
-          });
-        }
+      /* Animate each section hero text on scroll */
+      pageRef.current!.querySelectorAll(".cat-section-hero-content").forEach((heroContent) => {
+        gsap.from(heroContent, {
+          opacity: 0,
+          y: 34,
+          duration: 0.85,
+          ease: "power3.out",
+          scrollTrigger: { trigger: heroContent, start: "top 82%", once: true },
+        });
       });
 
       /* Stagger product cards per section */
@@ -87,47 +93,32 @@ export default function CatalogPage() {
   }, []);
 
   return (
-    <div ref={pageRef}>
-      {/* Slim Cinematic Hero */}
-      <section className="cat-hero">
-        <div className="cat-hero-bg" />
-        <div className="cat-hero-gradient" />
-      </section>
-
-      {/* Global page title */}
-      <div className="cat-page-title-wrap">
-        <h1 className="cat-page-title">T H E &nbsp;&nbsp; C O L L E C T I O N</h1>
-      </div>
-
-      {catalogCategories.map((cat, idx) => {
-        const isReversed = idx % 2 === 1;
+    <div ref={pageRef} className="catalog-page">
+      {catalogCategories.map((cat) => {
+        const bgImage = categoryBackgroundBySlug[cat.slug] ?? "/catalog/luxury.jpg";
 
         return (
           <section key={cat.slug} id={cat.slug} className="cat-section">
-            {/* Split-screen header with angled bar */}
-            <div className={`cat-section-header ${isReversed ? "cat-section-header--reversed" : ""}`}>
-              <div className="cat-header-text">
-                <div className="cat-header-bar">
-                  <h2 className="cat-header-title">{cat.displayTitle}</h2>
-                </div>
-                <p className="cat-header-desc">{cat.description}</p>
-              </div>
-              <div className="cat-header-image-wrap">
-                <Image
-                  src={cat.headerImage}
-                  alt={cat.name}
-                  width={740}
-                  height={740}
-                  className="cat-header-image"
-                  sizes="(max-width: 960px) 90vw, 50vw"
-                  priority={idx === 0}
-                />
+            <div
+              className="cat-section-hero"
+              style={{
+                backgroundImage: `url('${bgImage}')`,
+              }}
+            >
+              <div className="cat-section-hero-overlay" />
+              <div className="cat-hero-content cat-section-hero-content">
+                <h2 className="cat-hero-title">{cat.displayTitle}</h2>
+                <p className="cat-hero-description">{cat.description}</p>
               </div>
             </div>
 
+            <div className="cat-block-heading-wrap">
+              <h3 className="cat-block-heading">{categoryHeadingBySlug[cat.slug] ?? cat.name}</h3>
+            </div>
+
             {/* Product grid */}
-            <div className="cat-product-grid">
-              {cat.products.map((product) => (
+            <div className="cat-product-grid cat-product-grid--floating">
+              {cat.products.slice(0, visibleCounts[cat.slug] ?? ITEMS_PER_PAGE).map((product) => (
                 <Link
                   key={product.slug}
                   href={`/catalog/${cat.slug}/${product.slug}`}
@@ -139,7 +130,7 @@ export default function CatalogPage() {
                       alt={product.name}
                       width={1200}
                       height={1200}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      sizes="(max-width: 960px) 100vw, (max-width: 1400px) 50vw, 25vw"
                       className="cat-product-img-default"
                       draggable={false}
                     />
@@ -148,7 +139,7 @@ export default function CatalogPage() {
                       alt={`${product.name} angle view`}
                       width={1200}
                       height={1200}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                      sizes="(max-width: 960px) 100vw, (max-width: 1400px) 50vw, 25vw"
                       className="cat-product-img-hover"
                       draggable={false}
                     />
@@ -160,9 +151,24 @@ export default function CatalogPage() {
                 </Link>
               ))}
             </div>
+
+            {(visibleCounts[cat.slug] ?? ITEMS_PER_PAGE) < cat.products.length && (
+              <div className="cat-see-more-wrap">
+                <button
+                  className="cat-see-more-btn"
+                  onClick={() => handleShowMore(cat.slug)}
+                >
+                  See More
+                </button>
+              </div>
+            )}
           </section>
         );
       })}
+
+      <div className="pdp-page-footer">
+        <Footer />
+      </div>
     </div>
   );
 }
