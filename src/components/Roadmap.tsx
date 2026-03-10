@@ -7,7 +7,7 @@ const sections = [
         num: "01",
         title: "Consultation & Engineering",
         desc: "Define your perfect setup — select design, finish, and fitment parameters. Our engineers create a precise 3D model based on your car's brake and suspension data. You review and approve the exact geometry before production begins.",
-        image: "/roadmap/design.jpg",
+        image: "/roadmap/Design.jpg",
         bg: "white" as const,
         imagePosition: "right" as const,
     },
