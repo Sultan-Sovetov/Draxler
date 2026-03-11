@@ -1343,9 +1343,9 @@ export default function CarConfigurator() {
                 {isActive && !showFinalize && (
                     <motion.div
                         className="car-config-summary"
-                        initial={{ opacity: 0, x: 26, y: 18 }}
-                        animate={{ opacity: 1, x: 0, y: 0 }}
-                        exit={{ opacity: 0, x: 16, y: 10 }}
+                        initial={{ opacity: 0, y: -12 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -8 }}
                     >
                         <span className="car-config-summary-label">Current Build</span>
                         <h4>Your {selectedModel} on {selectedWheelModel}</h4>

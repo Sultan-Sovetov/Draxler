@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
+import { motion, AnimatePresence } from "framer-motion";
+import { X, LoaderCircle, Check } from "lucide-react";
 import gsap from "gsap";
 import { getProductBySlug } from "@/lib/catalog-data";
 import Footer from "@/components/Footer";
@@ -277,8 +279,56 @@ export default function ProductDetailPage() {
 
     const [selectedFinish, setSelectedFinish] = useState<MetalFinish>(METAL_FINISHES[0]);
     const [customColor, setCustomColor] = useState("#2f2f2f");
+    const [customColorChanged, setCustomColorChanged] = useState(false);
     const [usingCustomColor, setUsingCustomColor] = useState(false);
     const heroRef = useRef<HTMLDivElement>(null);
+
+    /* ── Lead modal state ── */
+    const [showLeadModal, setShowLeadModal] = useState(false);
+    const [leadName, setLeadName] = useState("");
+    const [leadEmail, setLeadEmail] = useState("");
+    const [leadPhone, setLeadPhone] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitSuccess, setSubmitSuccess] = useState(false);
+
+    const handleCloseLead = useCallback(() => {
+        setShowLeadModal(false);
+        setSubmitSuccess(false);
+        setIsSubmitting(false);
+    }, []);
+
+    const handleSubmitLead = useCallback(async () => {
+        if (!leadName.trim() || !leadEmail.trim() || !leadPhone.trim()) return;
+        setIsSubmitting(true);
+        try {
+            const res = await fetch("/api/configurator-lead", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    selectedCarModel: result?.product?.name ?? "N/A",
+                    selectedWheelModel: result?.product?.name ?? "N/A",
+                    customer: {
+                        name: leadName.trim(),
+                        email: leadEmail.trim(),
+                        phone: leadPhone.trim(),
+                    },
+                }),
+            });
+            if (!res.ok) throw new Error("Failed");
+            setSubmitSuccess(true);
+            setTimeout(() => {
+                setShowLeadModal(false);
+                setLeadName("");
+                setLeadEmail("");
+                setLeadPhone("");
+                setSubmitSuccess(false);
+            }, 1300);
+        } catch {
+            setSubmitSuccess(false);
+        } finally {
+            setIsSubmitting(false);
+        }
+    }, [leadEmail, leadName, leadPhone, result?.product?.name]);
 
     /* ── Entrance animations ── */
     useEffect(() => {
@@ -451,7 +501,10 @@ export default function ProductDetailPage() {
                                 aria-label="Custom color"
                                 onClick={() => setUsingCustomColor(true)}
                             >
-                                <span className="pdp-swatch-inner pdp-swatch-inner--custom" style={sphereStyle({ id: "custom", label: "Custom", hex: customColor, type: "polished" })} />
+                                <span
+                                    className={`pdp-swatch-inner ${customColorChanged ? "" : "pdp-swatch-inner--rainbow"}`}
+                                    style={customColorChanged ? sphereStyle({ id: "custom", label: "Custom", hex: customColor, type: "polished" }) : undefined}
+                                />
                             </button>
                         </div>
 
@@ -462,7 +515,10 @@ export default function ProductDetailPage() {
                                     id="pdp-custom-color"
                                     type="color"
                                     value={customColor}
-                                    onChange={(event) => setCustomColor(event.target.value)}
+                                    onChange={(event) => {
+                                        setCustomColor(event.target.value);
+                                        setCustomColorChanged(true);
+                                    }}
                                     className="pdp-custom-color-input"
                                 />
                             </label>
@@ -473,19 +529,16 @@ export default function ProductDetailPage() {
                     <div className="pdp-actions">
                         <button
                             className="pdp-btn-primary"
-                            onClick={() => {
-                                const el = document.getElementById("contact");
-                                if (el) el.scrollIntoView({ behavior: "smooth" });
-                            }}
+                            onClick={() => setShowLeadModal(true)}
                         >
                             ORDER CONFIGURATION
                         </button>
-                        <a
-                            href={`mailto:info@draxler.com?subject=Fitment%20Advice%20—%20${encodeURIComponent(product.name)}&body=Finish:%20${encodeURIComponent(previewFinish.label)}%0AColor:%20${encodeURIComponent(previewFinish.hex.toUpperCase())}`}
+                        <button
                             className="pdp-btn-secondary"
+                            onClick={() => setShowLeadModal(true)}
                         >
                             REQUEST FITMENT ADVICE
-                        </a>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -496,6 +549,83 @@ export default function ProductDetailPage() {
                     <SeoAccordion key={section.title} section={section} />
                 ))}
             </div>
+
+            {/* ===== Lead Modal ===== */}
+            <AnimatePresence>
+                {showLeadModal && (
+                    <motion.div
+                        className="config-lead-modal-backdrop config-lead-modal-backdrop--fixed"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={handleCloseLead}
+                    >
+                        <motion.div
+                            className="config-lead-modal"
+                            initial={{ opacity: 0, y: 30, scale: 0.97 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            exit={{ opacity: 0, y: 18, scale: 0.98 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button className="config-lead-close" onClick={handleCloseLead}>
+                                <X size={15} />
+                            </button>
+
+                            <h3>Request Quote</h3>
+                            <p>{product.name} — {previewFinish.label} ({previewFinish.hex.toUpperCase()})</p>
+
+                            <div className="config-lead-step-content">
+                                <label>Name</label>
+                                <input
+                                    className="config-lead-input"
+                                    value={leadName}
+                                    onChange={(e) => setLeadName(e.target.value)}
+                                    placeholder="Your name"
+                                />
+
+                                <label>Email</label>
+                                <input
+                                    className="config-lead-input"
+                                    type="email"
+                                    value={leadEmail}
+                                    onChange={(e) => setLeadEmail(e.target.value)}
+                                    placeholder="name@email.com"
+                                />
+
+                                <label>Phone</label>
+                                <input
+                                    className="config-lead-input"
+                                    value={leadPhone}
+                                    onChange={(e) => setLeadPhone(e.target.value)}
+                                    placeholder="+1 (___) ___-____"
+                                />
+
+                                <div className="config-lead-actions">
+                                    <button
+                                        className="config-lead-submit"
+                                        onClick={handleSubmitLead}
+                                        disabled={!leadName.trim() || !leadEmail.trim() || !leadPhone.trim() || isSubmitting || submitSuccess}
+                                    >
+                                        {isSubmitting ? (
+                                            <>
+                                                <LoaderCircle size={16} className="spin" />
+                                                <span>Sending...</span>
+                                            </>
+                                        ) : submitSuccess ? (
+                                            <>
+                                                <Check size={16} />
+                                                <span>Sent</span>
+                                            </>
+                                        ) : (
+                                            <span>Send Request</span>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
             <div className="pdp-page-footer">
                 <Footer />

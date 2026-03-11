@@ -1553,15 +1553,17 @@ html.lenis body {
 
 .car-config-summary {
   position: absolute;
-  right: 2rem;
-  bottom: 2rem;
+  top: 1.5rem;
+  left: 1.5rem;
   z-index: 24;
-  width: min(360px, calc(100% - 1.5rem));
-  padding: 1rem 1.1rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(14, 14, 20, 0.92);
-  box-shadow: 0 16px 42px rgba(0, 0, 0, 0.38);
+  width: min(320px, calc(100% - 3rem));
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(14, 14, 20, 0.82);
+  backdrop-filter: blur(32px) saturate(1.4);
+  -webkit-backdrop-filter: blur(32px) saturate(1.4);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
 }
 
 .car-config-summary-label {
@@ -1647,6 +1649,10 @@ html.lenis body {
   display: grid;
   place-items: center;
   pointer-events: auto;
+}
+.config-lead-modal-backdrop--fixed {
+  position: fixed;
+  z-index: 9999;
 }
 
 .config-lead-modal {
@@ -1794,566 +1800,589 @@ html.lenis body {
   }
 }
 
-/* ========== CONFIGURATOR HUD ========== */
+/* ========== CONFIGURATOR HUD (v2 — toolbar + slide panel) ========== */
 
-/* ── Glass panel container ── */
-.hud-panel {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 20;
-  pointer-events: auto;
-  width: 270px;
-  padding: 1rem;
-  border-radius: 24px;
-  background: rgba(18, 18, 24, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  max-height: 70vh;
-  overflow-y: auto;
-  scrollbar-width: none;
+/* ── Vertical icon toolbar ── */
+.chud-toolbar {
+  position: fixed;
+  left: 1.55rem;
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  height: fit-content;
+  width: 68px;
+  z-index: 32;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.5rem;
+  border-radius: 20px;
+  background: rgba(10, 10, 14, 0.72);
+  backdrop-filter: blur(40px) saturate(1.6);
+  -webkit-backdrop-filter: blur(40px) saturate(1.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow:
-    0 16px 40px rgba(0, 0, 0, 0.22),
-    0 0 0 1px rgba(255, 255, 255, 0.06) inset,
-    0 1px 0 rgba(255, 255, 255, 0.12) inset;
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
 }
 
-.hud-panel::-webkit-scrollbar {
-  display: none;
-}
-
-.hud-panel--left {
-  left: 2rem;
-}
-
-.hud-panel--right {
-  right: 2rem;
-  width: 230px;
-}
-
-.hud-brand-logo-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin-bottom: 0.85rem;
-}
-
-.hud-logo-box {
-  width: 100%;
-  min-height: 58px;
+/* ── Square icon button ── */
+.chud-icon-btn {
+  position: relative;
+  width: 52px;
+  height: 52px;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(255, 255, 255, 0.04);
-  display: inline-flex;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.2rem;
   cursor: pointer;
-  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+  transition: background 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              border-color 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.hud-logo-box:hover,
-.hud-logo-box--active {
-  border-color: rgba(255, 255, 255, 0.26);
-  transform: scale(1.1);
+.chud-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(255, 255, 255, 0.06);
 }
 
-.hud-logo-image {
-  width: 100%;
-  height: 50px;
-  object-fit: contain;
-  padding: 0.3rem;
-  filter: brightness(0) grayscale(100%) contrast(100%);
+.chud-icon-btn:active {
+  transform: scale(0.94);
+}
+
+.chud-icon-btn--active {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 16px rgba(255, 255, 255, 0.06);
+}
+
+.chud-icon-label {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
   opacity: 0.7;
-  transition: opacity 0.3s ease, filter 0.3s ease;
+  line-height: 1;
 }
 
-.hud-logo-box:hover .hud-logo-image,
-.hud-logo-box--active .hud-logo-image {
-  filter: brightness(0) grayscale(100%) contrast(100%);
+.chud-icon-btn--active .chud-icon-label {
   opacity: 1;
+}
+
+/* ── Toolbar divider ── */
+.chud-toolbar-divider {
+  width: 28px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0.25rem 0;
+}
+
+/* ── Finalize button in toolbar ── */
+.chud-icon-btn--finalize {
+  height: auto;
+  width: 100%;
+  padding: 0.55rem 0.28rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.chud-icon-btn--finalize:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.chud-finalize-text {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.51rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  white-space: nowrap;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.chud-icon-btn--finalize:hover .chud-finalize-text {
+  color: #fff;
+}
+
+/* ── Slide-out panel ── */
+.chud-panel {
+  position: fixed;
+  left: calc(1.55rem + 68px + 0.6rem);
+  top: 0;
+  bottom: 0;
+  margin: auto 0;
+  height: fit-content;
+  z-index: 31;
+  width: 370px;
+  max-height: calc(100vh - 10rem);
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  background: rgba(10, 10, 14, 0.78);
+  backdrop-filter: blur(48px) saturate(1.5);
+  -webkit-backdrop-filter: blur(48px) saturate(1.5);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow:
+    0 24px 64px rgba(0, 0, 0, 0.45),
+    0 0 0 0.5px rgba(255, 255, 255, 0.05) inset;
+  color: #fff;
+  overflow: hidden;
 }
 
 /* ── Panel header ── */
-.hud-panel-header {
+.chud-panel-header {
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+}
+
+.chud-panel-title {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+/* ── Panel scrollable body ── */
+.chud-panel-body {
+  flex: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+/* ── Section content wrapper ── */
+.chud-section-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Subsection style ── */
+.chud-subsection {
+  margin-top: 0.75rem;
+}
+
+.chud-subsection-label {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.6rem;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  margin-bottom: 0.6rem;
+}
+
+/* ── Brand tile (vehicle logos) ── */
+.chud-brand-tile {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.45rem;
+  cursor: pointer;
+  transition: border-color 0.25s ease,
+              background 0.25s ease,
+              transform 0.2s ease,
+              box-shadow 0.25s ease;
+}
+
+.chud-brand-tile:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.chud-brand-tile:active {
+  transform: scale(0.96);
+}
+
+.chud-brand-tile--active {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.04);
+}
+
+.chud-brand-tile-inner {
+  display: flex;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+}
+
+.chud-brand-tile-inner--light {
+  background: rgba(255, 255, 255, 0.88);
+}
+
+/* ── Model button ── */
+.chud-model-btn {
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.6rem 0.85rem;
+  text-align: left;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.6);
+  cursor: pointer;
+  transition: background 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease,
+              transform 0.15s ease;
+}
+
+.chud-model-btn:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.chud-model-btn:active {
+  transform: scale(0.98);
+}
+
+.chud-model-btn--active {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.chud-model-btn--factory {
+  text-align: center;
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+}
+
+/* ── Category pill button ── */
+.chud-cat-btn {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  padding: 0.55rem 0.5rem;
+  text-align: center;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+  cursor: pointer;
+  transition: background 0.2s ease,
+              border-color 0.2s ease,
+              color 0.2s ease;
+}
+
+.chud-cat-btn:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.chud-cat-btn--active {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+/* ── Wheel card ── */
+.chud-wheel-card {
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.75rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.25s ease,
+              background 0.25s ease,
+              transform 0.2s ease;
+}
+
+.chud-wheel-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chud-wheel-card:active {
+  transform: scale(0.98);
+}
+
+.chud-wheel-card--active {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chud-wheel-card-img {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.chud-wheel-card-name {
+  margin-top: 0.5rem;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.82rem;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Car group (3D cars accordion) ── */
+.chud-car-group {
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  overflow: hidden;
+}
+
+.chud-car-group-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.85rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  transition: color 0.2s ease;
+}
+
+.chud-car-group-header:hover {
+  color: #fff;
+}
+
+.chud-car-group-chevron {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+}
+
+.chud-car-group-models {
+  padding: 0.35rem 0.5rem 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* ── Finish swatch ── */
+.chud-finish-swatch {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.5rem;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.25s ease,
+              background 0.25s ease,
+              transform 0.2s ease;
+}
+
+.chud-finish-swatch:hover {
+  border-color: rgba(255, 255, 255, 0.22);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.chud-finish-swatch:active {
+  transform: scale(0.96);
+}
+
+.chud-finish-swatch--active {
+  border-color: rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.chud-finish-color {
+  display: block;
+  width: 100%;
+  height: 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  margin-bottom: 0.4rem;
+}
+
+.chud-finish-name {
+  display: block;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 0.58rem;
   font-weight: 400;
-  letter-spacing: 0.45em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #000000;
-  padding: 0.25rem 0.6rem 0.7rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.22);
-  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.hud-panel-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
+/* ── Custom finish panel ── */
+.chud-custom-finish {
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.02);
+  padding: 0.85rem;
 }
 
-/* ── Brand row (left panel) ── */
-.hud-brand-group {
-  position: relative;
-}
-
-.hud-brand-row {
+.chud-custom-finish-toggle {
   width: 100%;
   display: flex;
   align-items: center;
-  gap: 0.7rem;
-  padding: 0.5rem 0.55rem;
-  border-radius: 14px;
-  border: 1px solid transparent;
+  justify-content: space-between;
   background: transparent;
+  border: none;
   cursor: pointer;
-  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   font-family: Helvetica, Arial, sans-serif;
-  color: rgba(255, 255, 255, 0.64);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.2s ease;
 }
 
-.hud-brand-row:hover {
-  background: rgba(255, 255, 255, 0.06);
+.chud-custom-finish-toggle:hover {
   color: rgba(255, 255, 255, 0.95);
 }
 
-.hud-brand-row--active {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.08);
-  color: #fff;
-}
-
-/* Monogram initial */
-.hud-brand-mono {
-  width: 36px;
-  height: 36px;
+/* ── Live color readout ── */
+.chud-live-color {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
   border-radius: 10px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
   border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(0, 0, 0, 0.2);
+  padding: 0.5rem 0.75rem;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.85rem;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.75);
-  flex-shrink: 0;
-  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hud-brand-row:hover .hud-brand-mono {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.08));
-  border-color: rgba(255, 255, 255, 0.12);
-  color: #fff;
-  box-shadow: 0 0 14px rgba(255, 255, 255, 0.06);
-}
-
-.hud-brand-row--active .hud-brand-mono {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.1));
-  border-color: rgba(255, 255, 255, 0.15);
-  color: #fff;
-  box-shadow: 0 0 18px rgba(255, 255, 255, 0.08);
-}
-
-/* Brand name */
-.hud-brand-name {
-  flex: 1;
-  font-size: 0.82rem;
-  font-weight: 300;
-  letter-spacing: 0.08em;
-  text-align: left;
-}
-
-/* Chevron arrow */
-.hud-brand-chevron {
-  opacity: 0.3;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
-  flex-shrink: 0;
-}
-
-.hud-brand-chevron--open {
-  transform: rotate(90deg);
-  opacity: 0.8;
-}
-
-.hud-brand-row:hover .hud-brand-chevron {
-  opacity: 0.6;
-}
-
-/* Expandable model list */
-.hud-model-list {
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding-left: 1rem;
-  margin-left: 1.4rem;
-  margin-top: 0.15rem;
-  margin-bottom: 0.3rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.06);
-}
-
-.hud-model-item {
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.74rem;
-  font-weight: 300;
-  letter-spacing: 0.09em;
-  padding: 0.5rem 0.65rem;
-  border-radius: 10px;
-  border: 1px solid transparent;
-  background: transparent;
-  color: rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-  text-align: left;
-  transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.hud-model-item:hover {
-  background: rgba(255, 255, 255, 0.18);
-  color: #000000;
-}
-
-.hud-model-item--active {
-  border-color: rgba(255, 255, 255, 0.35);
-  opacity: 1;
-}
-
-.hud-models-wrap {
-  margin-top: 0.7rem;
-}
-
-.hud-models-title {
-  font-size: 0.62rem;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: #000000;
-  margin-bottom: 0.5rem;
-}
-
-.hud-models-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.35rem;
-}
-
-.hud-model-item:active {
-  transform: scale(0.97);
-}
-
-/* ── Right panel: Wheel brands ── */
-.hud-wheel-item {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  padding: 0.65rem 0.6rem;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  transition: background 0.25s cubic-bezier(0.4, 0, 0.2, 1), color 0.25s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.76rem;
-  font-weight: 300;
-  color: rgba(0, 0, 0, 0.84);
-  letter-spacing: 0.11em;
-  text-transform: uppercase;
-}
-
-.hud-wheel-item:hover {
-  background: rgba(255, 255, 255, 0.16);
-  color: #000000;
-}
-
-.hud-wheel-item--active {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.35);
-  color: #000000;
-}
-
-.hud-selected-hint {
-  margin-top: 0.68rem;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(255, 255, 255, 0.08);
-  padding: 0.52rem 0.62rem;
-  display: flex;
-  align-items: center;
   font-size: 0.6rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.hud-finalize-btn {
-  width: fit-content;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.12);
-  color: #000000;
-  padding: 0.72rem 1rem;
-  font-size: 0.58rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  font-weight: 500;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  cursor: pointer;
-  transition: transform 0.25s ease, background 0.25s ease;
-}
-
-.hud-finalize-btn:hover {
-  transform: translateY(-1px);
-  background: rgba(255, 255, 255, 0.22);
-}
-
-.hud-wheel-drawer {
-  position: absolute;
-  left: 50%;
-  bottom: 7rem;
-  transform: translateX(-50%);
-  z-index: 28;
-  width: min(760px, calc(100% - 1.5rem));
-  border-radius: 22px;
-  padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: rgba(18, 18, 24, 0.92);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.25);
-  display: grid;
-  grid-template-columns: minmax(180px, 240px) 1fr;
-  gap: 1.1rem;
-  align-items: center;
-}
-
-.hud-wheel-drawer-left {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.hud-wheel-drawer-label {
-  display: block;
-  font-size: 0.56rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(0, 0, 0, 0.56);
-  margin-bottom: 0.3rem;
-}
-
-.hud-wheel-drawer-right h4 {
-  font-size: 1.08rem;
-  font-weight: 300;
-  letter-spacing: 0.14em;
-  color: #000000;
-  margin-bottom: 0.55rem;
-}
-
-.hud-wheel-drawer-right p {
-  color: rgba(0, 0, 0, 0.76);
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-bottom: 0.35rem;
-}
-
-.hud-wheel-close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  width: 30px;
-  height: 30px;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.32);
-  background: rgba(255, 255, 255, 0.08);
-  color: #000000;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.hud-wheel-image-wrap {
-  width: min(220px, 100%);
-  transition: transform 0.3s ease;
-}
-
-.hud-wheel-image {
-  width: 100%;
-  height: auto;
-  display: block;
-  object-fit: contain;
-  filter: grayscale(100%) brightness(0.08) contrast(150%);
-}
-
-.hud-wheel-pick-btn {
-  width: fit-content;
-  border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  background: rgba(255, 255, 255, 0.12);
-  color: #000000;
-  padding: 0.76rem 0.9rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.45rem;
   letter-spacing: 0.2em;
-  font-size: 0.61rem;
   text-transform: uppercase;
-  cursor: pointer;
+  color: rgba(255, 255, 255, 0.4);
 }
 
-.hud-wheel-drawer-actions {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
+/* ── Selected finish indicator ── */
+.chud-selected-finish {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
 }
 
-/* Radio dot */
-.hud-wheel-radio {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  flex-shrink: 0;
-  transition: border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), background 0.25s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-}
-
-.hud-wheel-item--active .hud-wheel-radio {
-  background: #000;
-  border-color: #000;
-  box-shadow: none;
-}
-
-.hud-wheel-item:hover .hud-wheel-radio {
-  border-color: rgba(255, 255, 255, 0.45);
-}
-
-/* ── Bottom instruction tag ── */
-.hud-bottom-tag {
+/* ── Bottom hint ── */
+.chud-bottom-hint {
+  pointer-events: none;
   position: absolute;
-  bottom: 2rem;
+  bottom: 1.5rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.65rem;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(230, 230, 240, 0.42);
-  pointer-events: none;
+  color: rgba(255, 255, 255, 0.3);
 }
 
-.hud-bottom-dot {
-  width: 5px;
-  height: 5px;
+.chud-bottom-dot {
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
-  background: rgba(230, 230, 240, 0.4);
-}
-
-.hud-bottom-sep {
-  opacity: 0.3;
-}
-
-/* ── Light-mode overrides ── */
-[data-theme="light"] .hud-panel {
-  background: rgba(255, 255, 255, 0.65);
-  border-color: rgba(0, 0, 0, 0.05);
-  box-shadow:
-    0 24px 72px rgba(0, 0, 0, 0.08),
-    0 0 0 1px rgba(0, 0, 0, 0.02) inset,
-    0 1px 0 rgba(255, 255, 255, 0.8) inset;
-}
-
-[data-theme="light"] .hud-panel-header {
-  color: rgba(0, 0, 0, 0.3);
-  border-bottom-color: rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="light"] .hud-brand-row {
-  color: rgba(0, 0, 0, 0.55);
-}
-
-[data-theme="light"] .hud-brand-row:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: rgba(0, 0, 0, 0.9);
-}
-
-[data-theme="light"] .hud-brand-row--active {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.05);
-  color: #000;
-}
-
-[data-theme="light"] .hud-brand-mono {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.07), rgba(0, 0, 0, 0.03));
-  border-color: rgba(0, 0, 0, 0.06);
-  color: rgba(0, 0, 0, 0.65);
-}
-
-[data-theme="light"] .hud-brand-row:hover .hud-brand-mono,
-[data-theme="light"] .hud-brand-row--active .hud-brand-mono {
-  background: linear-gradient(135deg, rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0.05));
-  border-color: rgba(0, 0, 0, 0.1);
-  color: #000;
-  box-shadow: none;
-}
-
-[data-theme="light"] .hud-brand-chevron {
-  opacity: 0.3;
-}
-
-[data-theme="light"] .hud-brand-row:hover .hud-brand-chevron {
-  opacity: 0.55;
-}
-
-[data-theme="light"] .hud-model-list {
-  border-left-color: rgba(0, 0, 0, 0.06);
-}
-
-[data-theme="light"] .hud-model-item {
-  color: rgba(0, 0, 0, 0.45);
-}
-
-[data-theme="light"] .hud-model-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: #000;
-}
-
-[data-theme="light"] .hud-wheel-item {
-  color: rgba(0, 0, 0, 0.5);
-}
-
-[data-theme="light"] .hud-wheel-item:hover {
-  background: rgba(0, 0, 0, 0.04);
-  color: rgba(0, 0, 0, 0.9);
-}
-
-[data-theme="light"] .hud-wheel-item--active {
-  background: rgba(0, 0, 0, 0.06);
-  border-color: rgba(0, 0, 0, 0.05);
-  color: #000;
-}
-
-[data-theme="light"] .hud-wheel-radio {
-  border-color: rgba(0, 0, 0, 0.2);
-}
-
-[data-theme="light"] .hud-wheel-item--active .hud-wheel-radio {
-  background: #000;
-  border-color: #000;
-  box-shadow: none;
-}
-
-[data-theme="light"] .hud-wheel-item:hover .hud-wheel-radio {
-  border-color: rgba(0, 0, 0, 0.4);
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* ── Mobile responsive ── */
+@media (max-width: 768px) {
+  .chud-toolbar {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0.75rem;
+    margin: 0 auto;
+    height: auto;
+    width: fit-content;
+    flex-direction: row;
+    padding: 0.35rem;
+    border-radius: 16px;
+    gap: 0.2rem;
+  }
+
+  .chud-icon-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  .chud-icon-label {
+    display: none;
+  }
+
+  .chud-toolbar-divider {
+    width: 1px;
+    height: 22px;
+    margin: 0 0.12rem;
+  }
+
+  .chud-icon-btn--finalize {
+    min-width: 3.8rem;
+    padding: 0.4rem 0.48rem;
+  }
+
+  .chud-finalize-text {
+    font-size: 0.44rem;
+    letter-spacing: 0.14em;
+  }
+
+  .chud-panel {
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 4.75rem;
+    top: auto;
+    margin: 0;
+    height: auto;
+    width: auto;
+    max-height: 50vh;
+    border-radius: 18px;
+  }
+
+  .chud-panel-body {
+    padding: 1rem 1.15rem 1.15rem;
+  }
+
+  .chud-brand-tile-inner {
+    height: 46px;
+  }
+}
+
+/* ── Keep old .hud- classes for anything still referencing them ── */
+.hud-panel { display: none; }
+
+/* ── Configurator layout mobile ── */
 @media (max-width: 768px) {
   .car-config-title {
     top: 2.688rem;
@@ -2361,51 +2390,14 @@ html.lenis body {
   }
 
   .car-config-summary {
-    right: 0.75rem;
+    top: 1rem;
     left: 0.75rem;
-    width: auto;
-    bottom: 4.7rem;
+    right: auto;
+    width: min(260px, calc(100% - 1.5rem));
   }
 
   .car-config-action-anchor {
     bottom: 2.5rem;
-  }
-
-  .hud-panel--left {
-    left: 0.75rem;
-    width: 206px;
-  }
-
-  .hud-panel--right {
-    right: 0.75rem;
-    width: 184px;
-  }
-
-  .hud-panel {
-    padding: 0.85rem;
-    border-radius: 20px;
-    max-height: 62vh;
-  }
-
-  .hud-brand-mono {
-    width: 30px;
-    height: 30px;
-    font-size: 0.75rem;
-    border-radius: 8px;
-  }
-
-  .hud-brand-name {
-    font-size: 0.72rem;
-  }
-
-  .hud-wheel-item {
-    font-size: 0.72rem;
-  }
-
-  .hud-wheel-drawer {
-    width: calc(100% - 1rem);
-    bottom: 6.5rem;
-    grid-template-columns: 1fr;
   }
 
   .config-lead-modal,
@@ -4714,19 +4706,18 @@ html.lenis body {
 
 .pdp-swatch--custom {
   border-style: solid;
-  border-color: rgba(0, 0, 0, 0.42);
-  background:
-    conic-gradient(from 45deg, rgba(255,255,255,1) 0 25%, rgba(0,0,0,0.14) 0 50%, rgba(255,255,255,1) 0 75%, rgba(0,0,0,0.14) 0 100%);
+  border-color: rgba(0, 0, 0, 0.18);
 }
 
-.pdp-swatch-inner--custom {
+.pdp-swatch-inner--rainbow {
   background:
-    conic-gradient(from 45deg, rgba(255,255,255,0.96) 0 25%, rgba(0,0,0,0.12) 0 50%, rgba(255,255,255,0.96) 0 75%, rgba(0,0,0,0.12) 0 100%),
-    radial-gradient(circle at 28% 24%, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.25) 30%, transparent 48%);
+    radial-gradient(circle at 28% 24%, rgba(255,255,255,0.85) 0%, transparent 38%),
+    conic-gradient(from 0deg, #ff0000, #ff8800, #ffff00, #00ff00, #00aaff, #8800ff, #ff0088, #ff0000) !important;
   box-shadow:
-    inset 0 0 0 1px rgba(0, 0, 0, 0.24),
-    inset -6px -7px 14px rgba(0,0,0,0.2),
-    inset 6px 7px 12px rgba(255,255,255,0.35);
+    inset 0 0 0 1px rgba(0, 0, 0, 0.12),
+    inset -5px -6px 12px rgba(0,0,0,0.25),
+    inset 5px 6px 10px rgba(255,255,255,0.3),
+    0 2px 8px rgba(0,0,0,0.15);
 }
 
 .pdp-custom-color-input-wrap {
@@ -4759,24 +4750,11 @@ html.lenis body {
 }
 
 .pdp-sphere.is-custom::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image:
-    conic-gradient(from 45deg, rgba(255,255,255,0.26) 0 25%, rgba(0,0,0,0.14) 0 50%, rgba(255,255,255,0.26) 0 75%, rgba(0,0,0,0.14) 0 100%),
-    radial-gradient(circle at 26% 20%, rgba(255,255,255,0.7) 0%, transparent 44%);
-  background-size: 18px 18px, auto;
-  mix-blend-mode: overlay;
-  opacity: 0.62;
+  display: none;
 }
 
 .pdp-sphere.is-custom::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.24);
-  pointer-events: none;
+  display: none;
 }
 
 .pdp-page-footer .magnetic-btn-wrapper {
