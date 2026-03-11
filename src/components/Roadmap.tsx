@@ -1,6 +1,8 @@
 ﻿"use client";
 
 import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 const sections = [
     {
@@ -29,32 +31,63 @@ const sections = [
     },
 ];
 
+function RoadmapBlock({ s }: { s: (typeof sections)[number] }) {
+    const blockRef = useRef<HTMLDivElement>(null);
+    const [visible, setVisible] = useState(false);
+    const [overlayActive, setOverlayActive] = useState(false);
+
+    useEffect(() => {
+        const el = blockRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => { if (entry.isIntersecting) { setVisible(true); observer.disconnect(); } },
+            { threshold: 0.15 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    const handleImageClick = useCallback(() => setOverlayActive((prev) => !prev), []);
+
+    return (
+        <div
+            ref={blockRef}
+            className={`rdm-block ${s.bg === "black" ? "rdm-block--dark" : "rdm-block--light"}`}
+        >
+            <div className={`rdm-inner ${s.imagePosition === "left" ? "rdm-inner--img-left" : ""}`}>
+                <div className="rdm-text">
+                    <span className={`rdm-num rdm-reveal rdm-reveal-d1${visible ? " rdm-reveal--visible" : ""}`}>{s.num}</span>
+                    <h2 className={`rdm-title rdm-reveal rdm-reveal-d2${visible ? " rdm-reveal--visible" : ""}`}>{s.title}</h2>
+                    <p className={`rdm-desc rdm-reveal rdm-reveal-d3${visible ? " rdm-reveal--visible" : ""}`}>{s.desc}</p>
+                </div>
+                <div
+                    className={`rdm-media rdm-reveal-img${visible ? " rdm-reveal-img--visible" : ""}`}
+                    onClick={handleImageClick}
+                >
+                    <Image
+                        src={s.image}
+                        alt={s.title}
+                        className="rdm-img"
+                        fill
+                        loading="lazy"
+                        sizes="(max-width: 768px) 100vw, 50vw"
+                    />
+                    <div className={`rdm-overlay${overlayActive ? " rdm-overlay--active" : ""}`}>
+                        <Link href="/catalog" className="rdm-overlay-btn" onClick={(e) => e.stopPropagation()}>
+                            View Catalog
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
 export default function Roadmap() {
     return (
         <section id="customization">
             {sections.map((s) => (
-                <div
-                    key={s.num}
-                    className={`rdm-block ${s.bg === "black" ? "rdm-block--dark" : "rdm-block--light"}`}
-                >
-                    <div className={`rdm-inner ${s.imagePosition === "left" ? "rdm-inner--img-left" : ""}`}>
-                        <div className="rdm-text">
-                            <span className="rdm-num">{s.num}</span>
-                            <h2 className="rdm-title">{s.title}</h2>
-                            <p className="rdm-desc">{s.desc}</p>
-                        </div>
-                        <div className="rdm-media">
-                            <Image
-                                src={s.image}
-                                alt={s.title}
-                                className="rdm-img"
-                                fill
-                                loading="lazy"
-                                sizes="(max-width: 768px) 100vw, 50vw"
-                            />
-                        </div>
-                    </div>
-                </div>
+                <RoadmapBlock key={s.num} s={s} />
             ))}
         </section>
     );

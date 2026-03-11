@@ -68,7 +68,7 @@ export default function Home() {
         {/* <WheelShowcase /> */}
         <HomeCatalogPreview />
         <Roadmap />
-        <ParallaxDivider src="/media/background_2.jpg" compact>
+        <ParallaxDivider src="/media/background_2.webp" compact>
           <ForgingFeatures />
         </ParallaxDivider>
         {/* <ParallaxDivider reduced>

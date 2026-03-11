@@ -174,6 +174,18 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
             { name: "Escalade Premium Luxury (2021)", file: "cadillac/2021_cadillac_escalade_premium_luxury.glb" },
         ],
     },
+    {
+        brand: "Rolls-Royce",
+        models: [
+            { name: "Ghost", file: "rr/rolls_royce_ghost_new.glb" },
+        ],
+    },
+    {
+        brand: "Land Rover",
+        models: [
+            { name: "Defender", file: "landrover/land_rover_defender-v1.glb" },
+        ],
+    },
 
 ];
 
@@ -194,15 +206,50 @@ const DEFAULT_CAR = CAR_3D_OPTIONS.find(
     (car) => car.modelPath === "/car-models/mercedes/2025_mercedes-benz_g-class_amg_g_63.glb"
 ) ?? CAR_3D_OPTIONS[0];
 
-const applyRimFinish = (material: THREE.Material, hexColor: string) => {
-    const standard = material as THREE.MeshStandardMaterial;
-    const physical = material as THREE.MeshPhysicalMaterial;
-    if (!standard.isMeshStandardMaterial && !physical.isMeshPhysicalMaterial) return;
+/**
+ * Applies rim finish from an encoded string: "hex|metalness|roughness|clearcoat"
+ * Falls back to metallic defaults if only a bare hex is provided.
+ * When clearcoat > 0 and the material is MeshStandardMaterial, it upgrades
+ * it to MeshPhysicalMaterial so clearcoat works.
+ */
+const applyRimFinish = (mesh: THREE.Mesh, matIndex: number, encoded: string) => {
+    const parts = encoded.split("|");
+    const hex = parts[0];
+    const metalness = parts[1] !== undefined ? parseFloat(parts[1]) : 0.8;
+    const roughness = parts[2] !== undefined ? parseFloat(parts[2]) : 0.2;
+    const clearcoat = parts[3] !== undefined ? parseFloat(parts[3]) : 0;
 
-    standard.color?.set(hexColor);
-    standard.metalness = 0.8;
-    standard.roughness = 0.2;
-    material.needsUpdate = true;
+    let mat = Array.isArray(mesh.material) ? mesh.material[matIndex] : mesh.material;
+    if (!mat) return;
+
+    const std = mat as THREE.MeshStandardMaterial;
+    if (!std.isMeshStandardMaterial) return;
+
+    // Upgrade to MeshPhysicalMaterial when clearcoat is requested
+    if (clearcoat > 0 && !(mat as THREE.MeshPhysicalMaterial).isMeshPhysicalMaterial) {
+        const phys = new THREE.MeshPhysicalMaterial();
+        phys.copy(std);
+        phys.clearcoat = clearcoat;
+        phys.clearcoatRoughness = 0.05;
+        if (Array.isArray(mesh.material)) {
+            mesh.material[matIndex] = phys;
+        } else {
+            mesh.material = phys;
+        }
+        mat = phys;
+    }
+
+    const target = mat as THREE.MeshPhysicalMaterial;
+    target.color?.set(hex);
+    target.metalness = metalness;
+    target.roughness = roughness;
+
+    if (target.isMeshPhysicalMaterial) {
+        target.clearcoat = clearcoat;
+        target.clearcoatRoughness = clearcoat > 0 ? 0.05 : 0;
+    }
+
+    mat.needsUpdate = true;
 };
 
 type RimMapping = {
@@ -611,7 +658,7 @@ function RimInjector({
                 const m = child as THREE.Mesh;
                 if (!m.isMesh) return;
                 const mats = Array.isArray(m.material) ? m.material : [m.material];
-                mats.forEach((mat) => applyRimFinish(mat, rimColor));
+                mats.forEach((_mat, idx) => applyRimFinish(m, idx, rimColor));
             });
         });
     }, [rimColor]);
@@ -1073,7 +1120,7 @@ export default function CarConfigurator() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
     const [selectedCar, setSelectedCar] = useState<Car3DOption>(DEFAULT_CAR);
-    const [selectedFinishColor, setSelectedFinishColor] = useState("#0F1115");
+    const [selectedFinishColor, setSelectedFinishColor] = useState("#0A0A0A|0.85|0.15|0");
     const [selectedRimUrl, setSelectedRimUrl] = useState<string | null>(null);
 
     /* ── GSAP: pin section + drive scrollProgress ── */

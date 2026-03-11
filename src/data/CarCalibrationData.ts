@@ -458,4 +458,28 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         offsetZRear: 0,
         forceBboxFallback: true,
     },
+
+    // ── Land Rover Defender v1: user-provided dev calibration ──
+    "land_rover_defender-v1.glb": {
+        scale: 0.97,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: 270,
+        offsetXLeft: 0.09,
+        offsetXRight: -0.09,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
+
+    // ── Rolls-Royce Ghost new: user-provided dev calibration ──
+    "rolls_royce_ghost_new.glb": {
+        scale: 0.93,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: 270,
+        offsetXLeft: 0.04,
+        offsetXRight: -0.04,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
 };

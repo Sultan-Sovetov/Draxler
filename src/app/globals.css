@@ -101,17 +101,17 @@ html.lenis body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #fff;
-  border-radius: 14px;
+  background: transparent;
+  border-radius: 0;
 }
 
 .aero-loader-text-sm {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   font-weight: 800;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #000;
+  color: rgba(255,255,255,0.85);
   user-select: none;
 }
 
@@ -1401,6 +1401,7 @@ html.lenis body {
   overflow: hidden;
   aspect-ratio: 4 / 3;
   will-change: transform;
+  cursor: pointer;
 }
 
 .rdm-img {
@@ -1409,6 +1410,92 @@ html.lenis body {
   object-fit: cover;
   display: block;
   transform: translateZ(0);
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rdm-media:hover .rdm-img {
+  transform: scale(1.04);
+}
+
+/* ── Roadmap image overlay (click to reveal) ── */
+.rdm-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0);
+  transition: opacity 0.32s ease, visibility 0s linear 0.32s, background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rdm-overlay--active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  background: rgba(0, 0, 0, 0.55);
+  transition: opacity 0.32s ease, visibility 0s linear 0s, background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rdm-overlay-btn {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #fff;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.6);
+  padding: 0.75rem 2rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.35s ease, transform 0.35s ease, border-color 0.25s ease, background 0.25s ease;
+  pointer-events: none;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.rdm-overlay--active .rdm-overlay-btn {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.rdm-overlay-btn:hover {
+  background: rgba(255,255,255,0.1);
+  border-color: #fff;
+}
+
+/* ── Roadmap scroll reveal animations ── */
+.rdm-reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.rdm-reveal--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.rdm-reveal-d1 { transition-delay: 0.08s; }
+.rdm-reveal-d2 { transition-delay: 0.18s; }
+.rdm-reveal-d3 { transition-delay: 0.28s; }
+
+.rdm-reveal-img {
+  opacity: 0;
+  transform: translateY(24px) scale(0.97);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1), transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: 0.15s;
+}
+
+.rdm-reveal-img--visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 @media (max-width: 768px) {
@@ -1965,6 +2052,9 @@ html.lenis body {
   flex: 1;
   overflow-x: hidden;
   overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  contain: layout paint;
   padding: 1.25rem 1.5rem 1.5rem;
 }
 
@@ -2024,10 +2114,6 @@ html.lenis body {
   align-items: center;
   justify-content: center;
   border-radius: 10px;
-}
-
-.chud-brand-tile-inner--light {
-  background: rgba(255, 255, 255, 0.88);
 }
 
 /* ── Model button ── */

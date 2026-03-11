@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState, useEffect, useRef, type WheelEvent } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Palette, Car, CircleDot, Box, Paintbrush } from "lucide-react";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
@@ -28,15 +28,25 @@ interface Car3DBrandGroup {
 type SignatureFinish = {
     name: string;
     hex: string;
+    /** Encoded value sent to applyRimFinish: "hex|metalness|roughness|clearcoat" */
+    value: string;
+    /** Optional React style for the swatch (gradients for special finishes) */
+    swatchStyle?: Record<string, string>;
 };
 
 const SIGNATURE_FINISHES: SignatureFinish[] = [
-    { name: "Phantom Black", hex: "#0F1115" },
-    { name: "Silver Satin", hex: "#A8ADB7" },
-    { name: "Draxler Purple", hex: "#5636A5" },
-    { name: "Emerald Shadow", hex: "#0F4C46" },
-    { name: "Royal Burgundy", hex: "#55202B" },
-    { name: "Arctic Pearl", hex: "#F3F4F8" },
+    { name: "Gloss Black",      hex: "#0A0A0A", value: "#0A0A0A|0.85|0.15|0" },
+    { name: "Matte Black",      hex: "#1A1A1A", value: "#1A1A1A|0.1|0.85|0" },
+    { name: "Satin Black",      hex: "#121212", value: "#121212|0.45|0.55|0" },
+    { name: "Dark Gunmetal",    hex: "#3B3B3F", value: "#3B3B3F|0.82|0.18|0" },
+    { name: "Gunmetal Silver",  hex: "#6D6D75", value: "#6D6D75|0.8|0.2|0" },
+    { name: "Silver Metallic",  hex: "#A8ADB7", value: "#A8ADB7|0.82|0.18|0" },
+    { name: "Bright Silver",    hex: "#C5C9D0", value: "#C5C9D0|0.88|0.12|0" },
+    { name: "Polished Silver",  hex: "#D8DCE2", value: "#D8DCE2|1.0|0.03|0.9", swatchStyle: { background: "linear-gradient(135deg,#bfc4cc 0%,#f0f2f5 40%,#d0d4da 60%,#eef0f3 100%)" } },
+    { name: "Arctic White",     hex: "#F3F4F8", value: "#F3F4F8|0.75|0.2|0" },
+    { name: "Bronze",           hex: "#7A5C3A", value: "#7A5C3A|0.85|0.18|0" },
+    { name: "Dark Bronze",      hex: "#4E3A25", value: "#4E3A25|0.82|0.22|0" },
+    { name: "Champagne Gold",   hex: "#B8A67E", value: "#B8A67E|0.88|0.15|0" },
 ];
 
 const hexToHsl = (hex: string) => {
@@ -109,18 +119,37 @@ const hslToHex = (h: number, s: number, l: number) => {
 };
 
 const BRAND_LOGO_BY_NAME: Record<string, string> = {
-    "Mercedes-Benz": "/logos_names/Mercedes-Logo.svg.png",
+    "Mercedes-Benz": "/logos_names/mercedes.png",
     "Ford": "/logos_names/ford.png",
     "Chevrolet": "/logos_names/chevrolet.png",
     "Dodge / RAM": "/logos_names/dodge.png",
-    "Porsche": "/logos_names/Porsche_logo.png",
-    "BMW": "/logos_names/BMW.svg.png",
-    "Lamborghini": "/logos_names/lamborghini-logo.png",
-    "Ferrari": "/logos_names/ferrari logo.png",
+    "Porsche": "/logos_names/porsche.png",
+    "BMW": "/logos_names/bmw.png",
+    "Lamborghini": "/logos_names/lamborghini.png",
+    "Ferrari": "/logos_names/ferrari.png",
     "McLaren": "/logos_names/mclaren.png",
-    "Lexus": "/logos_names/Lexus.png",
+    "Lexus": "/logos_names/lexus.png",
     "Audi": "/logos_names/audi.png",
     "Cadillac": "/logos_names/cadillac.png",
+    "Rolls-Royce": "/logos_names/rolls royce.png",
+    "Land Rover": "/logos_names/land rover.png",
+};
+
+const BRAND_LOGO_SCALE_BY_NAME: Record<string, number> = {
+    "Mercedes-Benz": 1.08,
+    "Ford": 1,
+    "Chevrolet": 1.32,
+    "Dodge / RAM": 1.28,
+    "Porsche": 1.1,
+    "BMW": 1.12,
+    "Lamborghini": 1.2,
+    "Ferrari": 1.34,
+    "McLaren": 1.08,
+    "Lexus": 1.26,
+    "Audi": 1.18,
+    "Cadillac": 1.18,
+    "Rolls-Royce": 1.1,
+    "Land Rover": 1.14,
 };
 
 const CATEGORY_SLUG_MAP: Record<string, string> = {
@@ -134,21 +163,31 @@ const GLB_RIMS: Record<string, string> = {
     "DRX-103": "/car-models/rims/DRX_103.glb",
     "DRX-104": "/car-models/rims/DRX_104.glb",
     "DRX-105": "/car-models/rims/DRX_105.glb",
+    "DRX-106": "/car-models/rims/DRX_106.glb",
+    "DRX-107": "/car-models/rims/DRX_107.glb",
     "DRX-110": "/car-models/rims/DRX_110.glb",
     "DRX-112": "/car-models/rims/DRX_112.glb",
+    "DRX-113": "/car-models/rims/DRX_113.glb",
+    "DRX-114": "/car-models/rims/DRX_114.glb",
     "DRX-201": "/car-models/rims/DRX_201.glb",
     "DRX-202": "/car-models/rims/DRX_202.glb",
     "DRX-203": "/car-models/rims/DRX_203.glb",
     "DRX-204": "/car-models/rims/DRX_204.glb",
     "DRX-205": "/car-models/rims/DRX_205.glb",
+    "DRX-207": "/car-models/rims/DRX_207.glb",
+    "DRX-208": "/car-models/rims/DRX_208.glb",
+    "DRX-210": "/car-models/rims/DRX_210.glb",
     "DRX-213": "/car-models/rims/DRX_213.glb",
     "DRX-301": "/car-models/rims/DRX_301.glb",
     "DRX-302": "/car-models/rims/DRX_302.glb",
     "DRX-304": "/car-models/rims/DRX_304.glb",
+    "DRX-305": "/car-models/rims/DRX_305.glb",
+    "DRX-306": "/car-models/rims/DRX_306.glb",
+    "DRX-307": "/car-models/rims/DRX_307.glb",
     "DRX-309": "/car-models/rims/DRX_309.glb",
     "DRX-311": "/car-models/rims/DRX_311.glb",
     "DRX-312": "/car-models/rims/DRX_312.glb",
-    "DRX-313": "/car-models/rims/DRX_313.glb",
+    "DRX-314": "/car-models/rims/DRX_314.glb",
 };
 
 const WHEEL_MODELS = catalogCategories.flatMap((cat) => {
@@ -165,16 +204,6 @@ const WHEEL_MODELS = catalogCategories.flatMap((cat) => {
 });
 
 const WHEEL_CATEGORIES = ["Off-Road", "Luxury", "Sport"] as const;
-
-const LIGHT_TILE_BRANDS = new Set([
-    "Mercedes-Benz",
-    "Audi",
-    "BMW",
-    "Lexus",
-    "Ford",
-    "Porsche",
-    "Cadillac",
-]);
 
 const EXCLUDED_VEHICLE_BRANDS = new Set(["McLaren"]);
 
@@ -224,8 +253,7 @@ export default function ConfiguratorHUD({
     const [selectedWheelModel, setSelectedWheelModel] = useState<string>("DRX-301");
     const [showCustomFinish, setShowCustomFinish] = useState(false);
     const [openCarBrand, setOpenCarBrand] = useState<string | null>(carGroups[0]?.brand ?? null);
-    const panelScrollRef = useRef<HTMLDivElement>(null);
-    const initialHsl = useMemo(() => hexToHsl(selectedFinishColor), [selectedFinishColor]);
+    const initialHsl = useMemo(() => hexToHsl(selectedFinishColor.split("|")[0]), [selectedFinishColor]);
     const [customHuePercent, setCustomHuePercent] = useState(Math.round((initialHsl.h / 360) * 100));
 
     const carBrands = useMemo<CarBrand[]>(
@@ -272,7 +300,7 @@ export default function ConfiguratorHUD({
     );
 
     useEffect(() => {
-        const hsl = hexToHsl(selectedFinishColor);
+        const hsl = hexToHsl(selectedFinishColor.split("|")[0]);
         setCustomHuePercent(Math.round((hsl.h / 360) * 100));
     }, [selectedFinishColor]);
 
@@ -284,21 +312,9 @@ export default function ConfiguratorHUD({
     );
 
     const signatureMatch = useMemo(
-        () => SIGNATURE_FINISHES.find((finish) => finish.hex.toLowerCase() === selectedFinishColor.toLowerCase()),
+        () => SIGNATURE_FINISHES.find((finish) => finish.value === selectedFinishColor),
         [selectedFinishColor]
     );
-
-    const handlePanelWheel = (event: WheelEvent<HTMLElement>) => {
-        event.stopPropagation();
-
-        const scroller = panelScrollRef.current;
-        if (!scroller) return;
-
-        if (scroller.scrollHeight > scroller.clientHeight) {
-            event.preventDefault();
-            scroller.scrollTop += event.deltaY;
-        }
-    };
 
     const SECTION_TABS = [
         { key: "vehicle" as const, label: "Vehicle", icon: Car },
@@ -358,7 +374,6 @@ export default function ConfiguratorHUD({
                             <motion.aside
                                 key={openSection}
                                 className="chud-panel"
-                                onWheelCapture={handlePanelWheel}
                                 initial={{ opacity: 0, x: -20, scale: 0.97 }}
                                 animate={{ opacity: 1, x: 0, scale: 1 }}
                                 exit={{ opacity: 0, x: -20, scale: 0.97 }}
@@ -368,14 +383,17 @@ export default function ConfiguratorHUD({
                                     <h3 className="chud-panel-title">{SECTION_TABS.find(t => t.key === openSection)?.label}</h3>
                                 </div>
 
-                                <div ref={panelScrollRef} className="chud-panel-body configurator-scrollbar">
+                                <div
+                                    className="chud-panel-body configurator-scrollbar"
+                                    onWheel={(event) => event.stopPropagation()}
+                                >
                                     {/* ── Vehicle section ── */}
                                     {openSection === "vehicle" && (
                                         <div className="chud-section-content">
                                             <div className="grid grid-cols-3 gap-2">
                                                 {carBrands.map((brand) => {
                                                     const isActiveBrand = selectedBrand === brand.name;
-                                                    const needsLightTile = LIGHT_TILE_BRANDS.has(brand.name);
+                                                    const logoScale = BRAND_LOGO_SCALE_BY_NAME[brand.name] ?? 1;
 
                                                     return (
                                                         <button
@@ -387,13 +405,13 @@ export default function ConfiguratorHUD({
                                                             className={`chud-brand-tile${isActiveBrand ? " chud-brand-tile--active" : ""}`}
                                                             aria-label={`Select ${brand.name}`}
                                                         >
-                                                            <div className={`chud-brand-tile-inner${needsLightTile ? " chud-brand-tile-inner--light" : ""}`}>
+                                                            <div className="chud-brand-tile-inner" style={{ transform: `scale(${logoScale})` }}>
                                                                 <Image
                                                                     src={brand.logoPath}
                                                                     alt={brand.name}
                                                                     width={90}
                                                                     height={46}
-                                                                    className="h-[42px] w-auto object-contain"
+                                                                    className="h-[40px] w-auto max-w-[124px] object-contain"
                                                                 />
                                                             </div>
                                                         </button>
@@ -478,6 +496,8 @@ export default function ConfiguratorHUD({
                                                                 alt={wheel.id}
                                                                 width={360}
                                                                 height={235}
+                                                                sizes="320px"
+                                                                quality={72}
                                                                 className="h-[200px] w-full object-contain"
                                                             />
                                                         </div>
@@ -553,18 +573,18 @@ export default function ConfiguratorHUD({
                                     {openSection === "finish" && (
                                         <div className="chud-section-content">
                                             <div className="chud-subsection-label">Signature Finishes</div>
-                                            <div className="grid grid-cols-3 gap-2">
+                                            <div className="grid grid-cols-4 gap-2">
                                                 {SIGNATURE_FINISHES.map((finish) => {
-                                                    const isActive = selectedFinishColor.toLowerCase() === finish.hex.toLowerCase();
+                                                    const isActive = selectedFinishColor === finish.value;
                                                     return (
                                                         <button
                                                             key={finish.name}
-                                                            onClick={() => onSelectFinishColor(finish.hex)}
+                                                            onClick={() => onSelectFinishColor(finish.value)}
                                                             className={`chud-finish-swatch${isActive ? " chud-finish-swatch--active" : ""}`}
                                                         >
                                                             <span
                                                                 className="chud-finish-color"
-                                                                style={{ background: finish.hex }}
+                                                                style={finish.swatchStyle ?? { background: finish.hex }}
                                                             />
                                                             <span className="chud-finish-name">{finish.name}</span>
                                                         </button>
@@ -581,7 +601,7 @@ export default function ConfiguratorHUD({
                                                         <Palette size={14} />
                                                         Custom
                                                     </span>
-                                                    <span className="font-mono text-[12px] tracking-[0.08em] text-white/55">{selectedFinishColor.toUpperCase()}</span>
+                                                    <span className="font-mono text-[12px] tracking-[0.08em] text-white/55">{selectedFinishColor.split("|")[0].toUpperCase()}</span>
                                                 </button>
 
                                                 <AnimatePresence initial={false}>
@@ -609,7 +629,7 @@ export default function ConfiguratorHUD({
                                                                             const nextPercent = Number(event.target.value);
                                                                             setCustomHuePercent(nextPercent);
                                                                             const nextHue = Math.round((nextPercent / 100) * 360);
-                                                                            onSelectFinishColor(hslToHex(nextHue, 100, 50));
+                                                                            onSelectFinishColor(`${hslToHex(nextHue, 100, 50)}|0.8|0.2|0`);
                                                                         }}
                                                                         className="configurator-hue-slider mt-2 h-2 w-full cursor-pointer appearance-none rounded-full"
                                                                     />

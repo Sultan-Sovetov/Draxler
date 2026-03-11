@@ -136,6 +136,46 @@ export const catalogCategories: CatalogCategory[] = [
         sizes: ['21"', '22"', '23"', '24"'],
         price: "From $10,800",
       },
+      {
+        slug: "drx-113",
+        name: "DRX-113",
+        image: "/catalog/luxury/DRX_113_angle.png",
+        hoverImage: "/catalog/luxury/DRX_113_front.png",
+        description:
+          "Progressive split-spoke monoblock with mirror-cut transitions and deep concavity. Designed for premium executive platforms.",
+        sizes: ['21"', '22"', '23"', '24"'],
+        price: "From $11,100",
+      },
+      {
+        slug: "drx-114",
+        name: "DRX-114",
+        image: "/catalog/luxury/DRX_114_angle.png",
+        hoverImage: "/catalog/luxury/DRX_114_front.png",
+        description:
+          "Layered multi-spoke design with stepped barrel architecture and hand-finished lip. Refined luxury with an assertive stance.",
+        sizes: ['21"', '22"', '23"'],
+        price: "From $11,400",
+      },
+      {
+        slug: "drx-115",
+        name: "DRX-115",
+        image: "/catalog/luxury/DRX_115_angle.png",
+        hoverImage: "/catalog/luxury/DRX_115_front.png",
+        description:
+          "High-density turbine spoke pattern tuned for visual depth and brake cooling. Crafted for flagship sedans and coupes.",
+        sizes: ['20"', '21"', '22"', '23"'],
+        price: "From $10,900",
+      },
+      {
+        slug: "drx-116",
+        name: "DRX-116",
+        image: "/catalog/luxury/DRX_116_angle.png",
+        hoverImage: "/catalog/luxury/DRX_116_front.png",
+        description:
+          "Ultra-premium directional fan geometry with deep-dish profile and polished accents. Signature statement for bespoke builds.",
+        sizes: ['21"', '22"', '23"', '24"'],
+        price: "From $11,900",
+      },
     ],
   },
   {
@@ -265,6 +305,16 @@ export const catalogCategories: CatalogCategory[] = [
           "Classic deep-dish with reinforced bead ring and heavy wall construction. Ultimate expedition capability.",
         sizes: ['17"', '18"', '20"'],
         price: "From $7,900",
+      },
+      {
+        slug: "drx-314",
+        name: "DRX-314",
+        image: "/catalog/offroad/DRX_314_angle.png",
+        hoverImage: "/catalog/offroad/DRX_314_front.png",
+        description:
+          "Heavy-gauge split-spoke with simulated bead-lock ring. Maximum ground-clearance compatibility.",
+        sizes: ['17"', '18"', '20"'],
+        price: "From $7,500",
       },
     ],
   },

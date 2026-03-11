@@ -324,6 +324,20 @@ FL: ["Object_592", "Object_590"],
 RL: ["Object_606", "Object_604"],
 FR: ["Object_620", "Object_618"],
 RR: ["Object_634", "Object_632"]
+},
+
+"rolls_royce_ghost_new.glb": {
+FL: ["rrghost_wheel_c"],
+RL: ["rrghost_wheel_c001"],
+FR: ["rrghost_wheel_c002"],
+RR: ["rrghost_wheel_c003"]
+},
+
+"land_rover_defender-v1.glb": {
+FL: ["Object_195"],
+RL: ["Object_225"],
+FR: ["Object_233"],
+RR: ["Object_239"]
 }
 
 };
