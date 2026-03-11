@@ -126,6 +126,16 @@ export const catalogCategories: CatalogCategory[] = [
         sizes: ['21"', '22"', '23"', '24"'],
         price: "From $10,200",
       },
+      {
+        slug: "drx-112",
+        name: "DRX-112",
+        image: "/catalog/luxury/DRX_112_angle.png",
+        hoverImage: "/catalog/luxury/DRX_112_front.png",
+        description:
+          "Bold twin-spoke monoblock with deep-dish barrel and brushed satin finish. Commanding presence for ultra-luxury grand tourers.",
+        sizes: ['21"', '22"', '23"', '24"'],
+        price: "From $10,800",
+      },
     ],
   },
   {
@@ -375,6 +385,16 @@ export const catalogCategories: CatalogCategory[] = [
           "Ultra-concave Y-spoke forged concept with pronounced outer lip. Purposeful performance stance for premium sport platforms.",
         sizes: ['20"', '21"', '22"'],
         price: "From $12,700",
+      },
+      {
+        slug: "drx-213",
+        name: "DRX-213",
+        image: "/catalog/sport/DRX_213_angle.png",
+        hoverImage: "/catalog/sport/DRX_213_front.png",
+        description:
+          "Radical aero-disc concept with closed-face turbine channels. Maximum downforce efficiency meets forged lightweight construction.",
+        sizes: ['19"', '20"', '21"'],
+        price: "From $13,800",
       },
     ],
   },

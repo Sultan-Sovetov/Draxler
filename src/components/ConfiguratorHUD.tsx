@@ -125,19 +125,43 @@ const BRAND_LOGO_BY_NAME: Record<string, string> = {
 
 const CATEGORY_SLUG_MAP: Record<string, string> = {
     "Off-Road": "offroad",
-    "VIP": "vip",
+    "Luxury": "vip",
     "Sport": "sport",
+};
+
+const GLB_RIMS: Record<string, string> = {
+    "DRX-102": "/car-models/rims/DRX_102.glb",
+    "DRX-103": "/car-models/rims/DRX_103.glb",
+    "DRX-104": "/car-models/rims/DRX_104.glb",
+    "DRX-105": "/car-models/rims/DRX_105.glb",
+    "DRX-110": "/car-models/rims/DRX_110.glb",
+    "DRX-112": "/car-models/rims/DRX_112.glb",
+    "DRX-201": "/car-models/rims/DRX_201.glb",
+    "DRX-202": "/car-models/rims/DRX_202.glb",
+    "DRX-203": "/car-models/rims/DRX_203.glb",
+    "DRX-204": "/car-models/rims/DRX_204.glb",
+    "DRX-205": "/car-models/rims/DRX_205.glb",
+    "DRX-213": "/car-models/rims/DRX_213.glb",
+    "DRX-301": "/car-models/rims/DRX_301.glb",
+    "DRX-302": "/car-models/rims/DRX_302.glb",
+    "DRX-304": "/car-models/rims/DRX_304.glb",
+    "DRX-309": "/car-models/rims/DRX_309.glb",
+    "DRX-311": "/car-models/rims/DRX_311.glb",
+    "DRX-312": "/car-models/rims/DRX_312.glb",
+    "DRX-313": "/car-models/rims/DRX_313.glb",
 };
 
 const WHEEL_MODELS = catalogCategories.flatMap((cat) => {
     const displayCategory =
         Object.entries(CATEGORY_SLUG_MAP).find(([, slug]) => slug === cat.slug)?.[0] ?? cat.name;
-    return cat.products.map((p) => ({
-        id: p.name,
-        image: p.hoverImage,
-        rimUrl: null as string | null,
-        category: displayCategory,
-    }));
+    return cat.products
+        .filter((p) => Boolean(GLB_RIMS[p.name]))
+        .map((p) => ({
+            id: p.name,
+            image: p.hoverImage,
+            rimUrl: GLB_RIMS[p.name],
+            category: displayCategory,
+        }));
 });
 
 const WHEEL_CATEGORIES = ["Off-Road", "Luxury", "Sport"] as const;
@@ -457,7 +481,9 @@ export default function ConfiguratorHUD({
                                                                 className="h-[200px] w-full object-contain"
                                                             />
                                                         </div>
-                                                        <div className="chud-wheel-card-name">{wheel.id}</div>
+                                                        <div className="chud-wheel-card-name">
+                                                            {wheel.id}
+                                                        </div>
                                                     </button>
                                                 ))}
                                             </motion.div>
