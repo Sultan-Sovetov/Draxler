@@ -12,17 +12,17 @@ const galleryItems = [
     {
         src: "/gallery/any_style1.mp4",
         name: "Any Style",
-        description: "From brushed satin to mirror-polished chrome, every finish is tailored to your vision. Dual-tone, custom paint, carbon accents — your wheels, your signature."
+        description: "From brushed satin to mirror-polished chrome, every finish is tailored to your vision. Dual-tone, custom paint, carbon accents — your wheels, your signature. We can also match brand palettes and brake hardware tones for a cohesive factory-plus look."
     },
     {
         src: "/gallery/any_design1.mp4",
         name: "Any Design",
-        description: "Bring any concept to life. Our engineers translate sketches, references, or ideas into production-ready forged wheel designs with no compromise."
+        description: "Bring any concept to life. Our engineers translate sketches, references, or ideas into production-ready forged wheel designs with no compromise. Every spoke profile is validated for both visual impact and structural integrity before release."
     },
     {
         src: "/gallery/any_wheels1.mp4",
         name: "Any Wheels",
-        description: "Monoblock, multi-piece, beadlock, or concave—built for supercars, SUVs, trucks, and classics. Any size from 16\" to 26\" with perfect fitment guaranteed."
+        description: "Monoblock, multi-piece, beadlock, or concave—built for supercars, SUVs, trucks, and classics. Any size from 16\" to 26\" with perfect fitment guaranteed. Offset, bolt pattern, and brake clearance are engineered to your exact application."
     },
 ];
 

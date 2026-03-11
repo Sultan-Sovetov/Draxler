@@ -8,7 +8,7 @@ const sections = [
     {
         num: "01",
         title: "Consultation & Engineering",
-        desc: "Define your perfect setup — select design, finish, and fitment parameters. Our engineers create a precise 3D model based on your car's brake and suspension data. You review and approve the exact geometry before production begins.",
+        desc: "Define your perfect setup — select design, finish, and fitment parameters. Our engineers create a precise 3D model based on your car's brake and suspension data. You review and approve the exact geometry before production begins. Every concept is engineered around your exact chassis so the final look stays bold without compromising clearance, balance, or daily usability.",
         image: "/roadmap/Design.jpg",
         bg: "white" as const,
         imagePosition: "right" as const,
@@ -16,7 +16,7 @@ const sections = [
     {
         num: "02",
         title: "Manufacturing",
-        desc: "The approved design transforms into reality. From forging and CNC machining to hand-finishing and powder coating, every stage concludes with a strict quality check.",
+        desc: "The approved design transforms into reality. From forging and CNC machining to hand-finishing and powder coating, every stage concludes with a strict quality check. Critical dimensions and runout are measured at multiple checkpoints to guarantee true rotation at speed. Before shipment, each set is visually audited and torque-fit tested so the wheels arrive installation-ready.",
         image: "/roadmap/cnc_machining.jpg",
         bg: "black" as const,
         imagePosition: "left" as const,
@@ -24,7 +24,7 @@ const sections = [
     {
         num: "03",
         title: "Delivery",
-        desc: "Worldwide insured shipping directly to you. Each wheel is individually packaged and ready to install right out of the box.",
+        desc: "Worldwide insured shipping directly to you. Each wheel is individually packaged and ready to install right out of the box. You receive full tracking visibility from dispatch to final handoff. Our support team stays available through delivery day to coordinate timing and ensure a smooth arrival.",
         image: "/roadmap/final_2.jpg",
         bg: "white" as const,
         imagePosition: "right" as const,
@@ -59,6 +59,9 @@ function RoadmapBlock({ s }: { s: (typeof sections)[number] }) {
                     <span className={`rdm-num rdm-reveal rdm-reveal-d1${visible ? " rdm-reveal--visible" : ""}`}>{s.num}</span>
                     <h2 className={`rdm-title rdm-reveal rdm-reveal-d2${visible ? " rdm-reveal--visible" : ""}`}>{s.title}</h2>
                     <p className={`rdm-desc rdm-reveal rdm-reveal-d3${visible ? " rdm-reveal--visible" : ""}`}>{s.desc}</p>
+                    <Link href="/catalog" className={`rdm-process-link rdm-reveal rdm-reveal-d3${visible ? " rdm-reveal--visible" : ""}`}>
+                        View Catalog
+                    </Link>
                 </div>
                 <div
                     className={`rdm-media rdm-reveal-img${visible ? " rdm-reveal-img--visible" : ""}`}
@@ -72,11 +75,7 @@ function RoadmapBlock({ s }: { s: (typeof sections)[number] }) {
                         loading="lazy"
                         sizes="(max-width: 768px) 100vw, 50vw"
                     />
-                    <div className={`rdm-overlay${overlayActive ? " rdm-overlay--active" : ""}`}>
-                        <Link href="/catalog" className="rdm-overlay-btn" onClick={(e) => e.stopPropagation()}>
-                            View Catalog
-                        </Link>
-                    </div>
+                    <div className={`rdm-overlay${overlayActive ? " rdm-overlay--active" : ""}`} />
                 </div>
             </div>
         </div>
