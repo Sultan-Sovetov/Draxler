@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import LimitlessDockRow from "@/components/LimitlessDockRow";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -24,6 +25,15 @@ const galleryItems = [
         name: "Any Wheels",
         description: "Monoblock, multi-piece, beadlock, or concave—built for supercars, SUVs, trucks, and classics. Any size from 16\" to 26\" with perfect fitment guaranteed. Offset, bolt pattern, and brake clearance are engineered to your exact application."
     },
+];
+
+const limitlessRimImages = [
+    "/limitless/roller0-Photoroom.png",
+    "/limitless/roller1-Photoroom.png",
+    "/limitless/roller2-Photoroom.png",
+    "/limitless/roller3-Photoroom.png",
+    "/limitless/roller4-Photoroom.png",
+    "/limitless/roller5-Photoroom.png",
 ];
 
 export default function Gallery() {
@@ -99,24 +109,11 @@ export default function Gallery() {
         const profileStart = performance.now();
 
         const ctx = gsap.context(() => {
-            gsap.from(section.querySelector(".gallery-section-label"), {
+            gsap.from(section.querySelector(".gallery-limitless-rims"), {
                 y: 30,
                 opacity: 0,
                 duration: 0.8,
                 ease: "power3.out",
-                scrollTrigger: {
-                    trigger: section,
-                    start: "top 75%",
-                    once: true,
-                },
-            });
-
-            gsap.from(section.querySelector(".gallery-section-title"), {
-                y: 40,
-                opacity: 0,
-                duration: 0.8,
-                ease: "power3.out",
-                delay: 0.1,
                 scrollTrigger: {
                     trigger: section,
                     start: "top 75%",
@@ -178,8 +175,10 @@ export default function Gallery() {
 
     return (
         <section ref={sectionRef} className="gallery-section" id="bespoke">
-            <div className="gallery-section-label">LIMITLESS CUSTOMIZATION</div>
-            <h2 className="gallery-section-title">From Concept To Reality</h2>
+            <div className="gallery-limitless-rims" aria-label="Limitless wheel selection">
+                <div className="gallery-section-label gallery-section-label--limitless">LIMITLESS CUSTOMIZATION</div>
+                <LimitlessDockRow images={limitlessRimImages} />
+            </div>
 
             {/* Stable outer wrapper — fixed height, overflow hidden.
                 Hover-driven flex changes happen INSIDE this box,

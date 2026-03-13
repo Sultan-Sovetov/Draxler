@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import type { CSSProperties } from "react";
 import type { ReactNode } from "react";
 
 export default function ParallaxDivider({
@@ -14,22 +14,17 @@ export default function ParallaxDivider({
     reduced?: boolean;
     children?: ReactNode;
 }) {
+    const sectionStyle = {
+        backgroundImage: `url("${src}")`,
+    } as CSSProperties;
+
     return (
         <section
             className={`parallax-divider ${compact ? "parallax-divider--compact" : ""} ${
                 reduced ? "parallax-divider--reduced" : ""
             }`}
+            style={sectionStyle}
         >
-            <Image
-                src={src}
-                alt=""
-                width={2400}
-                height={1200}
-                sizes="100vw"
-                className="parallax-divider-img"
-                loading="lazy"
-                draggable={false}
-            />
             <div className="parallax-divider-overlay" aria-hidden="true" />
             {children ? <div className="parallax-divider-content">{children}</div> : null}
         </section>
