@@ -53,9 +53,9 @@ const FEATURES: FeatureItem[] = [
   {
     id: 4,
     side: "right",
-    title: "AEROSPACE ALLOY",
+    title: "IMPACT RESILIENCE",
     description:
-      "Utilizes proprietary 6061-T6 aluminum—an unmatched balance of low weight and ultimate tensile strength used in aerospace.",
+      "Forged wheel blanks are compressed under extreme pressure, creating a denser internal structure that better resists cracking from pothole and curb impacts in real-world road conditions.",
   },
   {
     id: 5,

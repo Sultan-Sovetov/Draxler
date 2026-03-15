@@ -16,7 +16,7 @@ const sections = [
     {
         num: "02",
         title: "Manufacturing",
-        desc: "The approved design transforms into reality. From forging and CNC machining to hand-finishing and powder coating, every stage concludes with a strict quality check. Critical dimensions and runout are measured at multiple checkpoints to guarantee true rotation at speed. Before shipment, each set is visually audited and torque-fit tested so the wheels arrive installation-ready.",
+        desc: "The approved design transforms into reality. From forging and CNC machining to hand-finishing and powder coating, every stage concludes with a strict quality check. Critical dimensions and runout are measured at multiple checkpoints to guarantee true rotation at speed. We also hold international quality certificates JWL & VIA.",
         image: "/roadmap/cnc_machining.jpg",
         bg: "black" as const,
         imagePosition: "left" as const,

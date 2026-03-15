@@ -129,7 +129,7 @@ export default function LimitlessDockRow({ images }: LimitlessDockRowProps) {
               alt={`Forged rim option ${index + 1}`}
               width={560}
               height={560}
-              sizes="(max-width: 900px) 168px, 14.5vw"
+              sizes="(max-width: 900px) 185px, 16vw"
               loading="lazy"
               className="gallery-limitless-dock-image"
               draggable={false}
