@@ -47,7 +47,6 @@ const SEO_SECTIONS: SeoSection[] = [
                     <li>2-piece and 3-piece modular wheels</li>
                     <li>Duoblock wheels</li>
                     <li>Beadlock wheels for drag racing and off-road applications</li>
-                    <li>Dually truck, armored vehicle, and UTV/ATV applications</li>
                 </ul>
             </>
         ),
@@ -130,19 +129,6 @@ const SEO_SECTIONS: SeoSection[] = [
         ),
     },
     {
-        title: "VINTAGE, CLASSIC & HOT ROD APPLICATIONS",
-        content: (
-            <p>
-                We also specialize in manufacturing custom wheels for classic cars, hot rods, and
-                vintage Indy vehicles. Our lineup includes authentic wire wheels and traditional
-                magnesium-style &quot;mag wheels.&quot; Options include period-correct &quot;dog
-                dish&quot; hubcaps, &quot;knock-off&quot; center caps, and deep-lip profiles. Get
-                the heritage look you want without compromising on modern engineering, safety, and
-                quality standards.
-            </p>
-        ),
-    },
-    {
         title: "WARRANTY & CUSTOMER SERVICE",
         content: (
             <ul>
@@ -215,48 +201,44 @@ const METAL_FINISHES: MetalFinish[] = [
     { id: "gloss-black", label: "Gloss Black", hex: "#151515", type: "polished" },
     { id: "silver", label: "Silver", hex: "#97a0aa", type: "polished" },
     { id: "gunmetal", label: "Gunmetal", hex: "#555d67", type: "satin" },
-    { id: "burgundy", label: "Burgundy", hex: "#6f1f2e", type: "polished" },
+    { id: "bronze", label: "Bronze", hex: "#CD7F32", type: "polished" },
     { id: "white", label: "White", hex: "#f2f2f2", type: "satin" },
 ];
 const AVAILABLE_SIZES = ["16\"", "17\"", "18\"", "19\"", "20\"", "21\"", "22\"", "23\"", "24\"", "25\"", "26\""];
 
-/* ── Build 3D sphere CSS layers per finish ── */
-function sphereStyle(finish: MetalFinish): React.CSSProperties {
+/* ── Build metallic tile style per finish ── */
+function metalTileStyle(finish: MetalFinish): React.CSSProperties {
     const { hex, type } = finish;
 
-    const reflectionOpacity = type === "polished" ? 0.82 : type === "satin" ? 0.5 : 0.34;
-    const highlightSize = type === "polished" ? "34% 34%" : type === "satin" ? "46% 46%" : "58% 58%";
+    const reflectionOpacity = type === "polished" ? 0.66 : type === "satin" ? 0.44 : 0.3;
+    const highlightSize = type === "polished" ? "42% 32%" : type === "satin" ? "54% 40%" : "62% 48%";
 
     const brushedOverlay =
         type === "brushed"
-            ? "repeating-linear-gradient(90deg, rgba(255,255,255,0.08) 0px, rgba(255,255,255,0.08) 1px, transparent 1px, transparent 3px)"
+            ? "repeating-linear-gradient(90deg, rgba(255,255,255,0.06) 0px, rgba(255,255,255,0.06) 1px, transparent 1px, transparent 3px)"
             : "";
 
-    const darkenedHex = adjustBrightness(hex, -40);
-    const deeperHex = adjustBrightness(hex, -76);
-    const edgeHighlightHex = adjustBrightness(hex, 26);
+    const darkenedHex = adjustBrightness(hex, -32);
+    const deeperHex = adjustBrightness(hex, -60);
+    const edgeHighlightHex = adjustBrightness(hex, 18);
 
     return {
         width: "100%",
         height: "100%",
-        borderRadius: "50%",
         background: [
             brushedOverlay,
-            "radial-gradient(circle at 24% 20%, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.2) 22%, transparent 40%)",
-            "radial-gradient(circle at 78% 78%, rgba(255,255,255,0.22) 0%, transparent 36%)",
-            `radial-gradient(ellipse ${highlightSize} at 35% 25%, rgba(255,255,255,${reflectionOpacity}) 0%, transparent 60%)`,
-            `radial-gradient(ellipse 96% 96% at 50% 50%, ${edgeHighlightHex} 0%, ${hex} 48%, ${darkenedHex} 78%, ${deeperHex} 100%)`,
+            "radial-gradient(circle at 22% 18%, rgba(255,255,255,0.88) 0%, rgba(255,255,255,0.12) 26%, transparent 46%)",
+            "radial-gradient(circle at 78% 82%, rgba(255,255,255,0.16) 0%, transparent 36%)",
+            `radial-gradient(ellipse ${highlightSize} at 33% 22%, rgba(255,255,255,${reflectionOpacity}) 0%, transparent 62%)`,
+            `linear-gradient(145deg, ${edgeHighlightHex} 0%, ${hex} 42%, ${darkenedHex} 72%, ${deeperHex} 100%)`,
         ]
             .filter(Boolean)
             .join(", "),
         boxShadow: `
-            inset -10px -12px 26px rgba(0,0,0,0.62),
-            inset 8px 10px 18px rgba(255,255,255,${reflectionOpacity * 0.48}),
-            inset 0 0 0 1px rgba(255,255,255,0.08),
-            0 10px 32px rgba(0,0,0,0.42)
+            inset -12px -10px 20px rgba(0,0,0,0.42),
+            inset 10px 10px 16px rgba(255,255,255,${reflectionOpacity * 0.34}),
+            inset 0 0 0 1px rgba(255,255,255,0.1)
         `,
-        filter: "none",
-        transition: "all 0.5s cubic-bezier(0.33, 1, 0.68, 1)",
     };
 }
 
@@ -278,9 +260,6 @@ export default function ProductDetailPage() {
     const result = getProductBySlug(categorySlug, productSlug);
 
     const [selectedFinish, setSelectedFinish] = useState<MetalFinish>(METAL_FINISHES[0]);
-    const [customColor, setCustomColor] = useState("#2f2f2f");
-    const [customColorChanged, setCustomColorChanged] = useState(false);
-    const [usingCustomColor, setUsingCustomColor] = useState(false);
     const heroRef = useRef<HTMLDivElement>(null);
 
     /* ── Lead modal state ── */
@@ -384,9 +363,7 @@ export default function ProductDetailPage() {
     }
 
     const { product, category } = result;
-    const previewFinish: MetalFinish = usingCustomColor
-        ? { id: "custom", label: "Custom", hex: customColor, type: "polished" }
-        : selectedFinish;
+    const previewFinish: MetalFinish = selectedFinish;
 
     return (
         <>
@@ -470,59 +447,45 @@ export default function ProductDetailPage() {
                     {/* ===== TASK 3 — Metal Configurator ===== */}
                     <div className="pdp-info-block pdp-configurator">
                         <div className="pdp-cfg-header">
-                            <span className="pdp-cfg-label">Finish</span>
+                            <span className="pdp-cfg-label">Popular Metal Finishes</span>
                             <span className="pdp-cfg-value">
-                                Color: <strong>{previewFinish.hex.toUpperCase()}</strong>
+                                Selected: <strong>{previewFinish.label}</strong>
                             </span>
                         </div>
 
-                        {/* Material Sample — 3D Sphere */}
-                        <div className="pdp-sphere-wrap">
-                            <div className={`pdp-sphere ${usingCustomColor ? "is-custom" : ""}`} style={sphereStyle(previewFinish)} />
+                        <p className="pdp-cfg-note">
+                            We curated the most requested premium metal tones for quick selection.
+                        </p>
+
+                        <div className="pdp-bespoke-callout" role="note" aria-label="Full bespoke options">
+                            <p className="pdp-bespoke-callout-title">Any Color. Any Finish. Any Wheel Cap.</p>
+                            <p className="pdp-bespoke-callout-subtitle">
+                                Start with the most requested references below, then tailor every detail to your bespoke specification.
+                            </p>
                         </div>
 
-                        {/* Swatch Grid */}
-                        <div className="pdp-swatch-grid">
+                        <div className="pdp-metal-grid" role="radiogroup" aria-label="Popular metal finishes">
                             {METAL_FINISHES.map((f) => (
                                 <button
                                     key={f.id}
-                                    className={`pdp-swatch ${!usingCustomColor && selectedFinish.id === f.id ? "is-active" : ""}`}
+                                    className={`pdp-metal-card ${selectedFinish.id === f.id ? "is-active" : ""}`}
                                     aria-label={f.label}
-                                    onClick={() => {
-                                        setSelectedFinish(f);
-                                        setUsingCustomColor(false);
-                                    }}
+                                    aria-checked={selectedFinish.id === f.id}
+                                    role="radio"
+                                    onClick={() => setSelectedFinish(f)}
                                 >
-                                    <span className="pdp-swatch-inner" style={sphereStyle(f)} />
+                                    <span className="pdp-metal-chip" style={metalTileStyle(f)} />
+                                    <span className="pdp-metal-card-label">{f.label}</span>
                                 </button>
                             ))}
-                            <button
-                                className={`pdp-swatch pdp-swatch--custom ${usingCustomColor ? "is-active" : ""}`}
-                                aria-label="Custom color"
-                                onClick={() => setUsingCustomColor(true)}
-                            >
-                                <span
-                                    className={`pdp-swatch-inner ${customColorChanged ? "" : "pdp-swatch-inner--rainbow"}`}
-                                    style={customColorChanged ? sphereStyle({ id: "custom", label: "Custom", hex: customColor, type: "polished" }) : undefined}
-                                />
-                            </button>
                         </div>
 
-                        {usingCustomColor && (
-                            <label className="pdp-custom-color-input-wrap" htmlFor="pdp-custom-color">
-                                <span className="pdp-custom-color-label">Custom HEX</span>
-                                <input
-                                    id="pdp-custom-color"
-                                    type="color"
-                                    value={customColor}
-                                    onChange={(event) => {
-                                        setCustomColor(event.target.value);
-                                        setCustomColorChanged(true);
-                                    }}
-                                    className="pdp-custom-color-input"
-                                />
-                            </label>
-                        )}
+                        <div className="pdp-metal-selection" aria-live="polite">
+                            <span className="pdp-metal-selection-name">{previewFinish.label}</span>
+                            <span className="pdp-metal-selection-sep">•</span>
+                            <span>{previewFinish.hex.toUpperCase()}</span>
+                        </div>
+
                     </div>
 
                     {/* ===== TASK 4 — Purchase Actions ===== */}

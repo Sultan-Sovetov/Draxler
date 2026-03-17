@@ -41,6 +41,15 @@ export default function Gallery() {
     const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
     const [playingStates, setPlayingStates] = useState<boolean[]>([false, false, false]);
     const [visible, setVisible] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    useEffect(() => {
+        const media = window.matchMedia("(hover: none), (pointer: coarse)");
+        const update = () => setIsTouchDevice(media.matches);
+        update();
+        media.addEventListener("change", update);
+        return () => media.removeEventListener("change", update);
+    }, []);
 
     // IntersectionObserver — only set video src when gallery enters viewport
     useEffect(() => {
@@ -201,6 +210,7 @@ export default function Gallery() {
                                 muted
                                 loop
                                 playsInline
+                                autoPlay={isTouchDevice && visible}
                                 preload="metadata"
                             />
                             <div className={`gallery-pillar-pause-dim${playingStates[index] ? ' is-playing' : ''}`} />
