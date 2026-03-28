@@ -11,17 +11,17 @@ if (typeof window !== "undefined") {
 
 const galleryItems = [
     {
-        src: "/gallery/any_style1.mp4",
+        src: "/gallery/any_style.mp4",
         name: "Any Finish",
         description: "We produce high-performance wheels in any texture-Brushed, Polished, Gloss, Satin, or Matte-with an extensive signature color palette. From dual-tone paint to matching your brake hardware, we ensure a cohesive factory-plus look that serves as your personal signature."
     },
     {
-        src: "/gallery/any_design1.mp4",
+        src: "/gallery/any_design.mp4",
         name: "Any Design",
         description: "Our engineers translate your sketches, references, or ideas into production-ready forged wheel designs without compromise. We manufacture any style-from authentic factory looks and tuning house concepts to bespoke custom projects. Even from a rough hand-drawn sketch, we bring your vision to life with perfect structural integrity."
     },
     {
-        src: "/gallery/any_wheels1.mp4",
+        src: "/gallery/any_wheels.mp4",
         name: "Any Wheels",
         description: "Monoblock, multi-piece, beadlock, or concave—built for supercars, SUVs, trucks, and classics. Any size from 16\" to 26\" with perfect fitment guaranteed. Offset, bolt pattern, and brake clearance are engineered to your exact application."
     },

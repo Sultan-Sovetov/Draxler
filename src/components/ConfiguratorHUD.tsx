@@ -49,6 +49,27 @@ const SIGNATURE_FINISHES: SignatureFinish[] = [
     { name: "Champagne Gold",   hex: "#B8A67E", value: "#B8A67E|0.88|0.15|0" },
 ];
 
+type CarBodyColor = {
+    name: string;
+    value: string;
+    swatchStyle?: Record<string, string>;
+};
+
+const CAR_COLORS: CarBodyColor[] = [
+    { name: "Nardo Grey", value: "#6B6D6E" },
+    { name: "Obsidian Black", value: "#111111" },
+    { name: "Pearl White", value: "#F6F6F2" },
+    { name: "Graphite", value: "#3A3D42" },
+    { name: "Rosso Corsa", value: "#B90D18" },
+    { name: "Portofino Blue", value: "#1B3E7A" },
+    { name: "Miami Blue", value: "#00A9E0" },
+    { name: "British Racing", value: "#0A4B3A" },
+    { name: "Champagne", value: "#B4A17D" },
+    { name: "Liquid Silver", value: "#B8BDC6", swatchStyle: { background: "linear-gradient(135deg,#a9afb8 0%,#d6dbe2 45%,#b7bdc7 100%)" } },
+    { name: "Burnt Orange", value: "#B5562C" },
+    { name: "Amethyst", value: "#5E3A6E" },
+];
+
 const hexToHsl = (hex: string) => {
     const normalized = hex.replace("#", "");
     const value = normalized.length === 3
@@ -137,7 +158,7 @@ const BRAND_LOGO_BY_NAME: Record<string, string> = {
 
 const BRAND_LOGO_SCALE_BY_NAME: Record<string, number> = {
     "Mercedes-Benz": 1.08,
-    "Ford": 1,
+    "Ford": 0.714,
     "Chevrolet": 1.32,
     "Dodge / RAM": 1.28,
     "Porsche": 1.1,
@@ -234,6 +255,8 @@ export default function ConfiguratorHUD({
     onSelectFinishColor,
     selectedRimUrl,
     onSelectRimUrl,
+    carColor,
+    setCarColor,
 }: {
     active: boolean;
     onSelectWheelModel: (wheel: string) => void;
@@ -245,8 +268,10 @@ export default function ConfiguratorHUD({
     onSelectFinishColor: (hex: string) => void;
     selectedRimUrl: string | null;
     onSelectRimUrl: (rimUrl: string | null) => void;
+    carColor: string;
+    setCarColor: (color: string) => void;
 }) {
-    const [openSection, setOpenSection] = useState<"vehicle" | "wheels" | "cars" | "finish" | null>("vehicle");
+    const [openSection, setOpenSection] = useState<"vehicle" | "wheels" | "cars" | "color" | "finish" | null>("vehicle");
     const [selectedBrand, setSelectedBrand] = useState<string>(carGroups[0]?.brand ?? "");
     const [openVehicleBrand, setOpenVehicleBrand] = useState<string | null>(carGroups[0]?.brand ?? null);
     const [selectedWheelCategory, setSelectedWheelCategory] = useState<(typeof WHEEL_CATEGORIES)[number]>("Off-Road");
@@ -320,6 +345,7 @@ export default function ConfiguratorHUD({
         { key: "vehicle" as const, label: "Vehicle", icon: Car },
         { key: "wheels" as const, label: "Wheels", icon: CircleDot },
         { key: "cars" as const, label: "3D Cars", icon: Box },
+        { key: "color" as const, label: "Car Color", icon: Palette },
         { key: "finish" as const, label: "Finish", icon: Paintbrush },
     ];
 
@@ -563,6 +589,32 @@ export default function ConfiguratorHUD({
                                                                 )}
                                                             </AnimatePresence>
                                                         </div>
+                                                    );
+                                                })}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* ── Car Color section ── */}
+                                    {openSection === "color" && (
+                                        <div className="chud-section-content">
+                                            <div className="chud-subsection-label">Body Color</div>
+                                            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                                                {CAR_COLORS.map((color) => {
+                                                    const isActive = carColor.toLowerCase() === color.value.toLowerCase();
+                                                    return (
+                                                        <button
+                                                            key={color.name}
+                                                            onClick={() => setCarColor(color.value)}
+                                                            className={`chud-finish-swatch chud-finish-swatch--large${isActive ? " chud-finish-swatch--active" : ""}`}
+                                                            title={color.name}
+                                                        >
+                                                            <span
+                                                                className="chud-finish-color chud-finish-color--large"
+                                                                style={color.swatchStyle ?? { background: color.value }}
+                                                            />
+                                                            <span className="chud-finish-name chud-finish-name--large">{color.name}</span>
+                                                        </button>
                                                     );
                                                 })}
                                             </div>

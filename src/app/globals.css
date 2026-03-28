@@ -757,16 +757,14 @@ html.lenis body {
   height: 100%;
   min-height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1), filter 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
   transform: scale(1.1);
-  filter: brightness(0.58);
 }
 
 .gallery-pillar:hover img,
 .gallery-pillar:hover video,
 .gallery-pillar:hover .gallery-pillar-media {
   transform: scale(1);
-  filter: brightness(1);
 }
 
 .gallery-pillar-overlay {
@@ -856,13 +854,7 @@ html.lenis body {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed;
-}
-
-@media (max-width: 1024px) {
-  .parallax-divider {
-    background-attachment: scroll;
-  }
+  background-attachment: scroll;
 }
 
 .parallax-divider--compact {
@@ -2378,6 +2370,11 @@ html.lenis body {
   background: rgba(255, 255, 255, 0.1);
 }
 
+.chud-finish-swatch--large {
+  padding: 0.65rem;
+  border-radius: 14px;
+}
+
 .chud-finish-color {
   display: block;
   width: 100%;
@@ -2395,6 +2392,17 @@ html.lenis body {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
+}
+
+.chud-finish-color--large {
+  height: 2.35rem;
+  border-radius: 10px;
+  margin-bottom: 0.5rem;
+}
+
+.chud-finish-name--large {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
 }
 
 /* ── Custom finish panel ── */

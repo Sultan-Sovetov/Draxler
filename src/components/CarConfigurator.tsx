@@ -29,6 +29,7 @@ import ConfiguratorHUD from "./ConfiguratorHUD";
 import AeroLoader from "./AeroLoader";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
 import { CAR_PAINT_EXCLUSIONS } from "../data/car-paint-exclusions";
+import { CAR_PAINT_ALLOWLIST } from "../data/car-paint-allowlist";
 import { CAR_CALIBRATION_DATA } from "../data/CarCalibrationData";
 import { applyMaterialFixes, logMeshInventory } from "../data/car-material-fixes";
 
@@ -161,7 +162,7 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
         brand: "Audi",
         models: [
             { name: "A6 C8 Limousine", file: "audi/audi_a6_c8_limousine.glb" },
-            { name: "A6 C8 Limousine V2", file: "audi/audi_a6_c8_limousine (1).glb" },
+           // { name: "A6 C8 Limousine V2", file: "audi/audi_a6_c8_limousine (1).glb" },
             { name: "RS6", file: "audi/audi.glb" },
            // { name: "RS5", file: "audi/2021_audi_rs5_sportback.glb" },
             { name: "R8", file: "audi/2019_audi_r8_coupe.glb" },
@@ -201,9 +202,14 @@ const CAR_3D_GROUPS: Car3DBrandGroup[] = CAR_3D_GROUP_SOURCES.map((group, groupI
 
 const CAR_3D_OPTIONS: Car3DOption[] = CAR_3D_GROUPS.flatMap((group) => group.models);
 
+const G_CLASS_MODEL_PATH = "/car-models/mercedes/2025_mercedes-benz_g-class_amg_g_63.glb";
+const G_CLASS_MODEL_KEY = "mercedes/2025_mercedes-benz_g-class_amg_g_63.glb";
+const G_CLASS_BASE_COLOR = "#6B6D6E";
+const DEFAULT_CAR_COLOR = "#ffffff";
+
 // Hardcoded default: Mercedes G-Class AMG 63 (2025)
 const DEFAULT_CAR = CAR_3D_OPTIONS.find(
-    (car) => car.modelPath === "/car-models/mercedes/2025_mercedes-benz_g-class_amg_g_63.glb"
+    (car) => car.modelPath === G_CLASS_MODEL_PATH
 ) ?? CAR_3D_OPTIONS[0];
 
 /**
@@ -704,20 +710,27 @@ function CarModel({
     modelUrl,
     rimColor,
     rimUrl,
+    carColor,
 }: {
     modelUrl: string;
     rimColor: string;
     rimUrl: string | null;
+    carColor: string;
 }) {
     const { scene } = useGLTF(modelUrl, true);
     const groupRef = useRef<THREE.Group>(null);
+    const paintableMaterials = useRef<THREE.Material[]>([]);
     const fileName = useMemo(() => modelUrl.split("/").pop() ?? "", [modelUrl]);
     const rimFileName = useMemo(() => rimUrl?.split("/").pop() ?? null, [rimUrl]);
+    const modelPathKey = useMemo(() => modelUrl.replace(/^\/car-models\//, ""), [modelUrl]);
 
     /* ── Clone scene & bake hard-fixes at creation time (runs ONCE per model) ── */
     const modelScene = useMemo(() => {
         const cloned = clone(scene);
         const fName = modelUrl.split("/").pop() ?? "";
+        const paintAllowlist = new Set(CAR_PAINT_ALLOWLIST[modelPathKey] ?? []);
+        const useGClassLegacyPaintFallback = modelPathKey === G_CLASS_MODEL_KEY && paintAllowlist.size === 0;
+        paintableMaterials.current = [];
 
         /* Phase 1 — Data-driven material fixes (chrome, glass, rubber, etc.) */
         const fixCount = applyMaterialFixes(cloned, fName);
@@ -737,6 +750,41 @@ function CarModel({
             }
 
             if (!mesh.isMesh) return;
+
+            const isAllowlistedMesh = paintAllowlist.has(mesh.name);
+            const shouldEvaluateLegacyGClassPaint =
+                useGClassLegacyPaintFallback && !mesh.userData.__materialFixed && !exclusions.has(mesh.name);
+
+            // Strict allowlist by default. For G-Class, preserve legacy body paint behavior
+            // when no allowlist exists yet so the historical Nardo Grey base still applies.
+            if (isAllowlistedMesh || shouldEvaluateLegacyGClassPaint) {
+                const canPaintMaterial = (material: THREE.Material): boolean => {
+                    if (!("color" in material) || !(material as THREE.MeshStandardMaterial).color?.isColor) {
+                        return false;
+                    }
+                    if (isAllowlistedMesh) {
+                        return true;
+                    }
+                    const std = material as THREE.MeshStandardMaterial;
+                    return std.isMeshStandardMaterial && std.metalness > 0.1;
+                };
+
+                if (Array.isArray(mesh.material)) {
+                    const clonedMaterials = mesh.material.map((material) => material.clone());
+                    mesh.material = clonedMaterials;
+                    clonedMaterials.forEach((material) => {
+                        if (canPaintMaterial(material)) {
+                            paintableMaterials.current.push(material);
+                        }
+                    });
+                } else if (mesh.material) {
+                    const clonedMaterial = mesh.material.clone();
+                    mesh.material = clonedMaterial;
+                    if (canPaintMaterial(clonedMaterial)) {
+                        paintableMaterials.current.push(clonedMaterial);
+                    }
+                }
+            }
 
             // Skip meshes already fixed by the material fix system
             if (mesh.userData.__materialFixed) return;
@@ -848,7 +896,7 @@ function CarModel({
         }
 
         return cloned;
-    }, [scene, modelUrl]);
+    }, [scene, modelUrl, modelPathKey]);
     const defaultCalibration = useMemo(
         () => CAR_CALIBRATION_DATA[fileName] ?? DEFAULT_RIM_CALIBRATION,
         [fileName]
@@ -1016,33 +1064,25 @@ function CarModel({
         };
     }, [modelScene]);
 
-    /* ── Shadows + default paint for G-Class (Nardo Grey) ── */
+    /* ── Shadows ── */
     useEffect(() => {
-        const isGClass = fileName === "2025_mercedes-benz_g-class_amg_g_63.glb";
-        const nardoGrey = new THREE.Color("#6B6D6E");
-
         modelScene.traverse((child: THREE.Object3D) => {
             if ((child as THREE.Mesh).isMesh) {
                 const mesh = child as THREE.Mesh;
                 mesh.castShadow = true;
                 mesh.receiveShadow = true;
-
-                // Apply Nardo Grey to G-Class body panels only
-                if (isGClass && !mesh.userData.__paintExcluded && !mesh.userData.__materialFixed) {
-                    const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
-                    mats.forEach((mat) => {
-                        const std = mat as THREE.MeshStandardMaterial;
-                        if (std.isMeshStandardMaterial && std.metalness > 0.1) {
-                            std.color.copy(nardoGrey);
-                            std.metalness = 0.75;
-                            std.roughness = 0.22;
-                            std.needsUpdate = true;
-                        }
-                    });
-                }
             }
         });
-    }, [modelScene, fileName]);
+    }, [modelScene]);
+
+    useEffect(() => {
+        paintableMaterials.current.forEach((material) => {
+            if ("color" in material && (material as THREE.MeshStandardMaterial).color?.isColor) {
+                (material as THREE.MeshStandardMaterial).color.set(carColor);
+                material.needsUpdate = true;
+            }
+        });
+    }, [carColor, modelScene]);
 
     return (
         <group ref={groupRef} scale={scale} position={[center.x, center.y, center.z]}>
@@ -1122,6 +1162,17 @@ export default function CarConfigurator() {
     const [selectedCar, setSelectedCar] = useState<Car3DOption>(DEFAULT_CAR);
     const [selectedFinishColor, setSelectedFinishColor] = useState("#0A0A0A|0.85|0.15|0");
     const [selectedRimUrl, setSelectedRimUrl] = useState<string | null>(null);
+    const [carColor, setCarColor] = useState(
+        DEFAULT_CAR.modelPath === G_CLASS_MODEL_PATH ? G_CLASS_BASE_COLOR : DEFAULT_CAR_COLOR
+    );
+
+    useEffect(() => {
+        if (selectedCar.modelPath === G_CLASS_MODEL_PATH) {
+            setCarColor(G_CLASS_BASE_COLOR);
+            return;
+        }
+        setCarColor(DEFAULT_CAR_COLOR);
+    }, [selectedCar.modelPath]);
 
     /* ── GSAP: pin section + drive scrollProgress ── */
     useEffect(() => {
@@ -1308,6 +1359,7 @@ export default function CarConfigurator() {
                         modelUrl={selectedCar.modelPath}
                         rimColor={selectedFinishColor}
                         rimUrl={selectedRimUrl}
+                        carColor={carColor}
                     />
                     <ReflectiveFloor />
                 </Suspense>
@@ -1384,6 +1436,8 @@ export default function CarConfigurator() {
                 onSelectFinishColor={(hex) => setSelectedFinishColor(hex)}
                 selectedRimUrl={selectedRimUrl}
                 onSelectRimUrl={(url) => setSelectedRimUrl(url)}
+                carColor={carColor}
+                setCarColor={setCarColor}
             />
 
             <AnimatePresence>
