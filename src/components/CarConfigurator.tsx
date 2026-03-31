@@ -185,6 +185,8 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
         brand: "Land Rover",
         models: [
             { name: "Defender", file: "landrover/land_rover_defender-v1.glb" },
+            { name: "Range Rover Sport SVR", file: "lexus/land_rover_range_rover_sport_svr.glb" },
+            { name: "Range Rover Sport (2023)", file: "lexus/land_rover_range_rover_sport_-_2023.glb" },
         ],
     },
 

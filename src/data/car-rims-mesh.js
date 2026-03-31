@@ -63,6 +63,20 @@ FR: ["polySurface8441_56"],
 RR: ["polySurface8441_56"]
 },
 
+"land_rover_range_rover_sport_svr.glb": {
+FL: ["Object_457", "Object_463", "Object_460"],
+RL: ["Object_508", "Object_505", "Object_511"],
+FR: ["Object_484", "Object_481", "Object_487"],
+RR: ["Object_496", "Object_493", "Object_499"]
+},
+
+"land_rover_range_rover_sport_-_2023.glb": {
+FL: ["Object_2603"],
+RL: ["Object_2609"],
+FR: ["Object_2607"],
+RR: ["Object_2605"]
+},
+
 "porsche_911_V1.glb": {
 FL: ["front_rims"],
 RL: ["back_rims"],

@@ -162,3 +162,58 @@ Object_113
 Object_125
 Object_136
 
+
+
+land_rover_range_rover_sport_svr - rims:
+lf - Object_457 , Object_463 , Object_460
+lr - Object_508 , Object_505 , Object_511
+rf - Object_484 , Object_481 , Object_487
+rr - Object_496 , Object_493 , Object_499
+
+Object_157
+Object_337
+Object_235
+Object_403
+Object_187
+Object_268
+Object_127
+Object_169
+Object_202
+Object_247
+Object_394
+Object_424
+
+
+
+land_rover_range_rover_sport_-_2023.glb - rims:
+lf: Object_2603
+lr: Object_2609
+rf: Object_2607
+rr: Object_2605
+
+Object_23
+Object_57
+Object_33
+Object_73
+Object_49
+Object_75
+Object_61
+Object_81
+Object_41
+Object_31
+Object_69
+Object_59
+Object_25
+Object_39
+Object_27
+Object_67
+Object_29
+Object_43
+Object_79
+Object_63
+Object_77
+Object_51
+Object_71
+Object_37
+
+
