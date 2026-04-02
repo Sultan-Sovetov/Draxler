@@ -46,8 +46,7 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
-// const IS_DEV = true;
-const IS_DEV = false;
+const IS_DEV = true;
 
 type Car3DOption = {
     id: string;
@@ -1343,8 +1342,7 @@ export default function CarConfigurator() {
 
     return (
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
-            {/* Keep Leva mounted so useControls does not auto-spawn a floating panel when dev mode is off. */}
-            <Leva hidden={!IS_DEV} collapsed oneLineLabels hideCopyButton />
+            {IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
 
             {/* 3D Canvas */}
             <Canvas

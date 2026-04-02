@@ -68,7 +68,7 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "Object_125",
     "Object_136"
   ],
-  "lexus/land_rover_range_rover_sport_svr.glb": [
+  "landrover/land_rover_range_rover_sport_svr.glb": [
     "Object_157",
     "Object_337",
     "Object_235",
@@ -82,8 +82,7 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "Object_394",
     "Object_424"
   ],
-  "lexus/land_rover_range_rover_sport_-_2023.glb": [
-    "Object_35",
+  "landrover/land_rover_range_rover_sport_-_2023.glb": [
     "Object_23",
     "Object_57",
     "Object_33",
@@ -246,7 +245,9 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
   ],
   "toyota/toyota_supra.glb": [
     "Plane004_carpaint_0",
-    "Plane004_carpaint_0_1"
+    "Plane004_carpaint_0_1",
+    "Plane047_carpaint_0",
+    "toyota_supra.glb"
   ],
   "toyota/2025_toyota_land_cruiser_250.glb": [
     "_150cda98_1ce1_4669_8db6_f9db82877b7f__CarPaint_0",
