@@ -222,6 +222,19 @@ const G_CLASS_MODEL_PATH = "/car-models/mercedes/2025_mercedes-benz_g-class_amg_
 const G_CLASS_MODEL_KEY = "mercedes/2025_mercedes-benz_g-class_amg_g_63.glb";
 const G_CLASS_BASE_COLOR = "#6B6D6E";
 const DEFAULT_CAR_COLOR = "#ffffff";
+const RANGE_ROVER_SPORT_2023_MODEL_KEY = "landrover/land_rover_range_rover_sport_-_2023.glb";
+const RANGE_ROVER_SPORT_2023_CUSTOM_RIMS = new Set(["DRX_304.glb", "DRX_309.glb", "DRX_314.glb"]);
+const RANGE_ROVER_SPORT_2023_CUSTOM_CALIBRATION: RimCalibration = {
+    scale: 1,
+    offsetY: 0,
+    rotYLeft: 90,
+    rotYRight: 270,
+    offsetXLeft: -0.21,
+    offsetXRight: 0.21,
+    offsetZFront: 0,
+    offsetZRear: 0,
+    rimFile: null,
+};
 
 // Hardcoded default: Mercedes G-Class AMG 63 (2025)
 const DEFAULT_CAR = CAR_3D_OPTIONS.find(
@@ -327,6 +340,9 @@ const CAR_MODEL_GROUND_Y_OFFSETS: Record<string, number> = {
 };
 
 const HUB_MESHES_TO_REMOVE = ["hub_lf_high", "hub_lf_medium", "hub_lf_low", "hub_lf_very_low"] as const;
+const MODEL_SPECIFIC_MESHES_TO_REMOVE: Record<string, readonly string[]> = {
+    "landrover/land_rover_range_rover_sport_-_2023.glb": ["Object_6", "Object_8"],
+};
 
 /* ================================================================== */
 /*  RimInjector – hides factory rims, attaches custom rim clones      */
@@ -745,6 +761,7 @@ function CarModel({
         const cloned = clone(scene);
         const fName = modelUrl.split("/").pop() ?? "";
         const paintAllowlist = new Set(CAR_PAINT_ALLOWLIST[modelPathKey] ?? []);
+        const modelSpecificMeshesToRemove = new Set(MODEL_SPECIFIC_MESHES_TO_REMOVE[modelPathKey] ?? []);
         const useGClassLegacyPaintFallback = modelPathKey === G_CLASS_MODEL_KEY && paintAllowlist.size === 0;
         paintableMaterials.current = [];
 
@@ -761,7 +778,10 @@ function CarModel({
         cloned.traverse((child: THREE.Object3D) => {
             const mesh = child as THREE.Mesh;
 
-            if (HUB_MESHES_TO_REMOVE.includes(child.name as (typeof HUB_MESHES_TO_REMOVE)[number])) {
+            if (
+                HUB_MESHES_TO_REMOVE.includes(child.name as (typeof HUB_MESHES_TO_REMOVE)[number])
+                || modelSpecificMeshesToRemove.has(child.name)
+            ) {
                 hubsToRemove.push(child);
             }
 
@@ -913,10 +933,27 @@ function CarModel({
 
         return cloned;
     }, [scene, modelUrl, modelPathKey]);
-    const defaultCalibration = useMemo(
-        () => CAR_CALIBRATION_DATA[fileName] ?? DEFAULT_RIM_CALIBRATION,
-        [fileName]
-    );
+    const defaultCalibration = useMemo<RimCalibration>(() => {
+        const baseCalibration = CAR_CALIBRATION_DATA[fileName] ?? DEFAULT_RIM_CALIBRATION;
+
+        const shouldUseRangeRoverCustomCalibration =
+            modelPathKey === RANGE_ROVER_SPORT_2023_MODEL_KEY
+            && !!rimFileName
+            && RANGE_ROVER_SPORT_2023_CUSTOM_RIMS.has(rimFileName);
+
+        if (shouldUseRangeRoverCustomCalibration) {
+            return {
+                ...baseCalibration,
+                ...RANGE_ROVER_SPORT_2023_CUSTOM_CALIBRATION,
+                rimFile: rimFileName,
+            };
+        }
+
+        return {
+            ...baseCalibration,
+            rimFile: rimFileName ?? null,
+        };
+    }, [fileName, modelPathKey, rimFileName]);
 
     const [rimControls, setRimControls] = useControls(
         "Rim Calibration",

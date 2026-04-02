@@ -83,6 +83,7 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "Object_424"
   ],
   "landrover/land_rover_range_rover_sport_-_2023.glb": [
+    "Object_35",
     "Object_23",
     "Object_57",
     "Object_33",
