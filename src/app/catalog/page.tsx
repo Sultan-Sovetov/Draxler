@@ -146,7 +146,6 @@ export default function CatalogPage() {
                   </div>
                   <div className="cat-product-info">
                     <span className="cat-product-name">{product.name}</span>
-                    <span className="cat-product-price">{product.price}</span>
                   </div>
                 </Link>
               ))}

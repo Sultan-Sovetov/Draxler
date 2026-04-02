@@ -418,10 +418,9 @@ export default function ProductDetailPage() {
 
                 {/* Right — Sticky Details & Configurator */}
                 <div className="pdp-sticky-col">
-                    {/* Title + Price */}
+                    {/* Title */}
                     <div className="pdp-info-block">
                         <h1 className="pdp-title">{product.name}</h1>
-                        <p className="pdp-price">{product.price} / set</p>
                     </div>
 
                     {/* Description */}
@@ -457,10 +456,12 @@ export default function ProductDetailPage() {
                             We curated the most requested premium metal tones for quick selection.
                         </p>
 
-                        <div className="pdp-bespoke-callout" role="note" aria-label="Full bespoke options">
-                            <p className="pdp-bespoke-callout-title">Any Color. Any Finish. Any Wheel Cap.</p>
-                            <p className="pdp-bespoke-callout-subtitle">
-                                Start with the most requested references below, then tailor every detail to your bespoke specification.
+                        <div className="pdp-bespoke-copy" role="note" aria-label="Full bespoke options">
+                            <p className="pdp-bespoke-copy-line">
+                                Bring us your preferred <strong>design language</strong> or style reference, and we will tailor the build to match your order.
+                            </p>
+                            <p className="pdp-bespoke-copy-line">
+                                Custom <strong>engraving</strong> and personalized <strong>wheel caps</strong> are available for every made-to-order set.
                             </p>
                         </div>
 

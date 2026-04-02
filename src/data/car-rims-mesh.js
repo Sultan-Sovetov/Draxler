@@ -134,10 +134,17 @@ RR: ["Circle023_1","Circle026","Circle023","Circle026_1"]
 },
 
 "mclaren_720_(uncompressed).glb": {
-FL: ["Mesh_50","Mesh_49","Mesh_52"],
-RL: ["Mesh_64","Mesh_63","Mesh_66"],
-FR: ["Mesh_57","Mesh_56","Mesh_59"],
-RR: ["Mesh_71","Mesh_70","Mesh_73"]
+FL: ["Mesh_66", "Mesh_65", "Mesh_68"],
+RL: ["Mesh_73", "Mesh_72", "Mesh_75"],
+FR: ["Mesh_80", "Mesh_79", "Mesh_82"],
+RR: ["Mesh_87", "Mesh_87", "Mesh_89"]
+},
+
+"mclaren_720S_spider.glb": {
+FL: ["Object_41"],
+RL: ["Object_42"],
+FR: ["Object_43"],
+RR: ["Object_44"]
 },
 
 "2017_lexus_lc_500_model.glb": {
@@ -340,6 +347,13 @@ FR: ["Object_620", "Object_618"],
 RR: ["Object_634", "Object_632"]
 },
 
+"mercedes-benz_maybach_2022.glb": {
+FL: ["Object_34"],
+RL: ["Object_29"],
+FR: ["Object_34"],
+RR: ["Object_29"]
+},
+
 "rolls_royce_ghost_new.glb": {
 FL: ["rrghost_wheel_c"],
 RL: ["rrghost_wheel_c001"],
@@ -352,6 +366,71 @@ FL: ["Object_195"],
 RL: ["Object_225"],
 FR: ["Object_233"],
 RR: ["Object_239"]
+},
+
+"2025_lexus_lx700h.glb": {
+FL: [
+"LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D_LX700hMETAL_CHROME_D1_0",
+"LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D3_LX700hBlack_Metal1_0",
+"LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D2_LX700hLogo1_0"
+],
+RL: [
+"LX700hLZ_4_002_LZ_4_002_METAL_CHROME_D_LX700hMETAL_CHROME_D1_0",
+"LX700hLZ_4_002_LZ_4_002_METAL_CHROME_D3_LX700hBlack_Metal1_0",
+"LX700hLZ_4_002_LZ_4_002_METAL_CHROME_D2_LX700hLogo1_0"
+],
+FR: [
+"LX700hLZ_4_003_LZ_4_003_METAL_CHROME_D_LX700hMETAL_CHROME_D1_0",
+"LX700hLZ_4_003_LZ_4_003_METAL_CHROME_D3_LX700hBlack_Metal1_0",
+"LX700hLZ_4_003_LZ_4_003_METAL_CHROME_D2_LX700hLogo1_0"
+],
+RR: [
+"LX700hLZ_4_LZ_4_METAL_CHROME_D_LX700hMETAL_CHROME_D1_0",
+"LX700hLZ_4_LZ_4_METAL_CHROME_D_LX700hBlack_Metal1_0",
+"LX700hLZ_4_LZ_4_METAL_CHROME_D_LX700hLogo1_0"
+]
+},
+
+"2025_bmw_m4_competition.glb": {
+FL: ["rimrim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0"],
+RL: ["rim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0_1"],
+FR: ["rim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0"],
+RR: ["rim_072_in_Mesh_2_Rim_072_Garage1_rimRim_072_Garage1_0"]
+},
+
+"2024_bmw_x5_xdrive40i.glb": {
+FL: ["x5SK_Tyre_101_001_SK_Tyre_101_dummy_material_0_012_RIM_0"],
+RL: ["x5Ani_Disc_Scale_BL5_RIM_0"],
+FR: ["x5Ani_Wheel_FR134_RIM_0"],
+RR: ["x5Ani_Disc_Scale_BR5_RIM_0"]
+},
+
+"mersedes-_benz_gls.glb": {
+FL: ["wheel_stoc001_gls_black_chrome036_0", "wheel_stoc001_gls_kaki025_0", "wheel_stoc001_gls_shild002_0"],
+RL: ["wheel_stoc002_gls_black_chrome036_0", "wheel_stoc002_gls_kaki025_0", "wheel_stoc002_gls_shild002_0"],
+FR: ["wheel_stoc003_gls_black_chrome036_0", "wheel_stoc003_gls_kaki025_0", "wheel_stoc003_gls_shild002_0"],
+RR: ["wheel_stoc004_gls_black_chrome036_0", "wheel_stoc004_gls_kaki025_0", "wheel_stoc004_gls_shild002_0"]
+},
+
+"toyota_supra.glb": {
+FL: ["Plane074_GlossBlackpaint_0", "Plane074_metal_0"],
+RL: ["Plane018_GlossBlackpaint_0", "Plane018_GlossBlackpaint_0"],
+FR: ["Plane016_GlossBlackpaint_0", "Plane016_metal_0"],
+RR: ["Plane020_GlossBlackpaint_0", "Plane020_metal_0"]
+},
+
+"2025_toyota_land_cruiser_250.glb": {
+FL: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0", "_95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0", "42603_60690_37_shell_chrome_0", "42603_60690_22_shell_chrome_0", "42603_60690_40_shell_chrome_0", "_00cc43f6_c41c_4c07_ab60_8259d693d6b5__black_metal_0"],
+RL: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1_003_chrome_0", "42603_60690_40_shell001_chrome_0", "42603_60690_37_shell001_chrome_0", "42603_60690_22_shell001_chrome_0", "_00cc43f6_c41c_4c07_ab60_8259d693d6b5_001_black_metal_0", "42603_60690_39_shell001_plas_black_shine_0"],
+FR: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1_005_chrome_0", "42603_60690_22_shell002_chrome_0", "42603_60690_22_shell002_chrome_0", "42603_60690_40_shell002_chrome_0", "42603_60690_39_shell002_plas_black_shine_0", "42603_60690_39_shell002_plas_black_shine_0"],
+RR: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1_006_chrome_0", "42603_60690_40_shell003_chrome_0", "42603_60690_22_shell003_chrome_0", "42603_60690_37_shell003_chrome_0", "42603_60690_39_shell003_plas_black_shine_0", "_00cc43f6_c41c_4c07_ab60_8259d693d6b5_003_black_metal_0"]
+},
+
+"2025_toyota_land_cruiser_250-v1.glb": {
+FL: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0", "_95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0", "42603_60690_37_shell_chrome_0", "42603_60690_22_shell_chrome_0", "42603_60690_40_shell_chrome_0", "_00cc43f6_c41c_4c07_ab60_8259d693d6b5__black_metal_0"],
+RL: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1_003_chrome_0", "42603_60690_40_shell001_chrome_0", "42603_60690_37_shell001_chrome_0", "42603_60690_22_shell001_chrome_0", "_00cc43f6_c41c_4c07_ab60_8259d693d6b5_001_black_metal_0", "42603_60690_39_shell001_plas_black_shine_0"],
+FR: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1_005_chrome_0", "42603_60690_22_shell002_chrome_0", "42603_60690_22_shell002_chrome_0", "42603_60690_40_shell002_chrome_0", "42603_60690_39_shell002_plas_black_shine_0", "42603_60690_39_shell002_plas_black_shine_0"],
+RR: ["_95dc5532_e30a_4aa8_8fd4_7039df86edb1_006_chrome_0", "42603_60690_40_shell003_chrome_0", "42603_60690_22_shell003_chrome_0", "42603_60690_37_shell003_chrome_0", "42603_60690_39_shell003_plas_black_shine_0", "_00cc43f6_c41c_4c07_ab60_8259d693d6b5_003_black_metal_0"]
 }
 
 };

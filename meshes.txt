@@ -217,3 +217,746 @@ Object_71
 Object_37
 
 
+
+
+
+
+
+
+
+
+"land_rover_range_rover_sport_-_2023.glb": {
+  "carModelFile": "land_rover_range_rover_sport_-_2023.glb",
+  "carModelPath": "/car-models/lexus/land_rover_range_rover_sport_-_2023.glb",
+  "rimFile": "DRX_102.glb",
+  "rimPath": "/car-models/rims/DRX_102.glb",
+  "wheelPositions": {
+    "FL": [
+      "Object_2603"
+    ],
+    "RL": [
+      "Object_2609"
+    ],
+    "FR": [
+      "Object_2607"
+    ],
+    "RR": [
+      "Object_2605"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": 270
+    },
+    "Track_Width_X": {
+      "offsetXLeft": -0.14,
+      "offsetXRight": 0.14
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_102.glb",
+    "scale": 1,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": -0.16,
+    "offsetXRight": 0.16,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2023_lexus_gx_550_h_overtrail.glb": {
+  "carModelFile": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimFile": "DRX_113.glb",
+  "rimPath": "/car-models/rims/DRX_113.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.7,
+      "offsetY": 0.0044
+    },
+    "Rotation_Y": {
+      "rotYLeft": 270,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.0003,
+      "offsetXRight": -0.0003
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": -0.0037,
+      "offsetZRear": 0.0055
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_113.glb",
+    "scale": 0.7,
+    "offsetY": 0.0044,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0003,
+    "offsetXRight": -0.0003,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+},
+
+"audi.glb": {
+  "carModelFile": "audi.glb",
+  "carModelPath": "/car-models/audi/audi.glb",
+  "rimFile": "DRX_102.glb",
+  "rimPath": "/car-models/rims/DRX_102.glb",
+  "wheelPositions": {
+    "FL": [
+      "TYRE_SET_2_FL_CSR2_Wheel1B_Rim_0",
+      "TYRE_SET_3_FL_CSR2_Wheel1A_Rim_0",
+      "TYRE_SET_1_FL_ALLOY_WHEELS_TYPE_1_0"
+    ],
+    "RL": [
+      "TYRE_SET_3_RL_CSR2_Wheel1A_Rim_0",
+      "TYRE_SET_2_RL_CSR2_Wheel1B_Rim_0",
+      "TYRE_SET_1_RL_ALLOY_WHEELS_TYPE_1_0"
+    ],
+    "FR": [
+      "TYRE_SET_3_FR_CSR2_Wheel1A_Rim_0",
+      "TYRE_SET_2_FR_CSR2_Wheel1B_Rim_0",
+      "TYRE_SET_1_FR_ALLOY_WHEELS_TYPE_1_0"
+    ],
+    "RR": [
+      "TYRE_SET_2_RR_CSR2_Wheel1B_Rim_0",
+      "TYRE_SET_3_RR_CSR2_Wheel1A_Rim_0",
+      "TYRE_SET_1_RR_ALLOY_WHEELS_TYPE_1_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": 270
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.004,
+      "offsetXRight": -0.003
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_102.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": 0.004,
+    "offsetXRight": -0.003,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"audi_a6_c8_limousine.glb": {
+  "carModelFile": "audi_a6_c8_limousine.glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
+  "rimFile": "DRX_102.glb",
+  "rimPath": "/car-models/rims/DRX_102.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1.03,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": -90,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.08,
+      "offsetXRight": -0.08
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_102.glb",
+    "scale": 1.03,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.09,
+    "offsetXRight": -0.09,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"porsche_cayenne.glb": {
+  "carModelFile": "porsche_cayenne.glb",
+  "carModelPath": "/car-models/porsche/porsche_cayenne.glb",
+  "rimFile": "DRX_113.glb",
+  "rimPath": "/car-models/rims/DRX_113.glb",
+  "wheelPositions": {
+    "FL": [
+      "Material2_22",
+      "Material2_27",
+      "Material2_29"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.83,
+      "offsetY": 16.5
+    },
+    "Rotation_Y": {
+      "rotYLeft": -90,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 3,
+      "offsetXRight": -2.852
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": -20,
+      "offsetZRear": 17.3
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_113.glb",
+    "scale": 0.83,
+    "offsetY": 16.5,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 3,
+    "offsetXRight": -2.852,
+    "offsetZFront": -20,
+    "offsetZRear": 17.3
+  }
+},
+
+"mclaren_720_(uncompressed).glb": {
+  "carModelFile": "mclaren_720_(uncompressed).glb",
+  "carModelPath": "/car-models/mclaren/mclaren_720_(uncompressed).glb",
+  "rimFile": "DRX_113.glb",
+  "rimPath": "/car-models/rims/DRX_113.glb",
+  "wheelPositions": {
+    "FL": [
+      "Mesh_50",
+      "Mesh_49",
+      "Mesh_52"
+    ],
+    "RL": [
+      "Mesh_64",
+      "Mesh_63",
+      "Mesh_66"
+    ],
+    "FR": [
+      "Mesh_57",
+      "Mesh_56",
+      "Mesh_59"
+    ],
+    "RR": [
+      "Mesh_71",
+      "Mesh_70",
+      "Mesh_73"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.83,
+      "offsetY": 0.35
+    },
+    "Rotation_Y": {
+      "rotYLeft": -90,
+      "rotYRight": 90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.07,
+      "offsetXRight": -0.07
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": -0.51,
+      "offsetZRear": 0.25
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_113.glb",
+    "scale": 0.83,
+    "offsetY": 0.35,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.07,
+    "offsetXRight": -0.07,
+    "offsetZFront": -0.51,
+    "offsetZRear": 0.25
+  }
+},
+
+
+
+
+Object_35
+
+
+
+
+
+
+
+
+
+{ name: "720 (Uncompressed)", file: "mclaren/mclaren_720_(uncompressed).glb" },
+Plane055
+Plane056
+Plane049
+Plane046
+Plane038
+Plane036
+Plane033
+Plane031
+Plane030
+Plane029
+Plane027
+Plane025
+Plane024
+Plane
+Plane001
+Plane002
+Plane034
+Plane042
+
+
+
+{ name: "Cayenne (2020)", file: "porsche/porsche_cayenne.glb" },
+Material2_10
+Material2_11
+Material2_9
+
+
+
+
+
+
+
+
+
+2025_bmw_m4_competition.glb:
+Left Front: rimrim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0
+Left Rear: rim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0_1
+Right Rear: rim_072_in_Mesh_2_Rim_072_Garage1_rimRim_072_Garage1_0
+right Front: rim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0
+Body meshes:
+m4body_Mesh_0_car_body_m4car_hood1_0
+m4left_door_Mesh_2_car_body_m4car_body1_0
+m4body_Mesh_0_car_body_m4car_body1_0
+m4right_door_Mesh_3_car_interior_m4car_body1_0
+m4bodykit_Mesh_1_car_bodykit_m4car_bodykit1_0
+
+
+
+
+2024_bmw_x5_xdrive40i.glb:
+Left Front: x5SK_Tyre_101_001_SK_Tyre_101_dummy_material_0_012_RIM_0
+Left Rear: x5Ani_Disc_Scale_BL5_RIM_0
+Right Rear: x5Ani_Disc_Scale_BR5_RIM_0
+right Front: x5Ani_Wheel_FR134_RIM_0
+Body meshes:
+x5SM_SideSkirts_101_SM_SideSkirts_101_dummy_material_0_024_CARPAINT_0
+x5SK_Door_BR_101_001_SK_Door_BR_101_dummy_material_0_007_CARPAINT_0
+x5SK_Door_FR_101_001_SK_Door_FR_101_dummy_material_0_008_CARPAINT_0
+x5SM_Fender_F_101_SM_Fender_F_101_dummy_material_0_020_CARPAINT_0
+x5SM_Bumper_F_101_SM_Bumper_F_101_dummy_material_0_016_CARPAINT_0
+x5SK_Hood_101_001_SK_Hood_101_dummy_material_0_014_CARPAINT_0
+x5SK_Door_FL_101_001_SK_Door_FL_101_dummy_material_0_005_CARPAINT_0
+x5SK_Door_BL_101_001_SK_Door_BL_101_dummy_material_0_005_CARPAINT_0
+x5SM_Fender_B_101_SM_Fender_B_101_dummy_material_0_017_CARPAINT_0
+x5SM_Bumper_B_101_SM_Bumper_B_101_dummy_material_0_016_CARPAINT_0
+x5SK_Trunk_101_001_SK_Trunk_101_dummy_material_0_020_CARPAINT_0
+x5SM_Roof_101_SM_Roof_101_dummy_material_0_024_CARPAINT_0
+x5SM_SideMirror_L_101_SM_SideMirror_L_101_dummy_material_0_024_CARPAINT_0
+x5SM_SideMirror_R_101_SM_SideMirror_R_101_dummy_material_0_023_CARPAINT_0
+
+
+
+
+mercedes-benz_maybach_2022.glb:
+Object_34 - front , Object_29 - rear
+Body meshes:
+Object_14 - 27
+
+
+
+
+
+mersedes-_benz_gls.glb:
+Left Front: wheel_stoc001_gls_black_chrome036_0 , wheel_stoc001_gls_kaki025_0 , wheel_stoc001_gls_shild002_0
+Left Rear: wheel_stoc002_gls_black_chrome036_0 , wheel_stoc002_gls_kaki025_0 , wheel_stoc002_gls_shild002_0
+Right Rear: wheel_stoc004_gls_black_chrome036_0 , wheel_stoc004_gls_kaki025_0 , wheel_stoc004_gls_shild002_0
+right Front: wheel_stoc003_gls_black_chrome036_0 , wheel_stoc003_gls_kaki025_0 , wheel_stoc003_gls_shild002_0
+Body meshes:
+gls_hood_1_gls_paint021_0
+gls_bumper_F_b_gls_paint021_0
+gls_fender_R_gls_paint021_0
+gls_door_FR_gls_paint021_0
+gls_body_gls_paint021_0
+gls_door_RR_gls_paint021_0
+gls_mirror_R_gls_paint021_0
+gls_bumper_R_a_gls_paint021_0
+gls_tailgate_gls_paint021_0
+gls_fender_L_gls_paint021_0
+gls_door_FL_gls_paint021_0
+gls_door_RL_gls_paint021_0
+
+
+toyota_supra.glb:
+Left Front: Plane074_GlossBlackpaint_0 , Plane074_metal_0
+Left Rear: Plane018_GlossBlackpaint_0 , Plane018_GlossBlackpaint_0
+Right Rear: Plane020_GlossBlackpaint_0 , Plane020_metal_0 
+right Front: Plane016_GlossBlackpaint_0 , Plane016_metal_0
+Body meshes:
+Plane004_carpaint_0 , Plane004_carpaint_0 , Plane004_carpaint_0_1
+
+cruiser:
+Left Front: _95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0 , _95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0 , 42603_60690_37_shell_chrome_0 , 42603_60690_22_shell_chrome_0 , 42603_60690_40_shell_chrome_0 , _00cc43f6_c41c_4c07_ab60_8259d693d6b5__black_metal_0
+Left Rear: _95dc5532_e30a_4aa8_8fd4_7039df86edb1_003_chrome_0 , 42603_60690_40_shell001_chrome_0 , 42603_60690_37_shell001_chrome_0 , 42603_60690_22_shell001_chrome_0 , _00cc43f6_c41c_4c07_ab60_8259d693d6b5_001_black_metal_0 , 42603_60690_39_shell001_plas_black_shine_0
+Right Rear: _95dc5532_e30a_4aa8_8fd4_7039df86edb1_006_chrome_0 , 42603_60690_40_shell003_chrome_0 , 42603_60690_22_shell003_chrome_0 , 42603_60690_37_shell003_chrome_0 , 42603_60690_39_shell003_plas_black_shine_0 , _00cc43f6_c41c_4c07_ab60_8259d693d6b5_003_black_metal_0
+right Front: _95dc5532_e30a_4aa8_8fd4_7039df86edb1_005_chrome_0 , 42603_60690_22_shell002_chrome_0 , 42603_60690_22_shell002_chrome_0 , 42603_60690_40_shell002_chrome_0 , 42603_60690_39_shell002_plas_black_shine_0 , 42603_60690_39_shell002_plas_black_shine_0
+Body meshes:
+_150cda98_1ce1_4669_8db6_f9db82877b7f__CarPaint_0
+_3ad67829_5627_4efb_a10a_992002d1a143__CarPaint_0
+_cdea0b8b_5ed7_4c99_8440_e0bb31d930a4__CarPaint_0
+_2bb9de70_ef04_4377_8335_6fb345753ef4__CarPaint_0
+_2bb9de70_ef04_4377_8335_6fb345753ef4__CarPaint_0
+_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0
+_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0
+_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0
+
+
+
+
+
+"mersedes-_benz_gls.glb": {
+  "carModelFile": "mersedes-_benz_gls.glb",
+  "carModelPath": "/car-models/mercedes/mersedes-_benz_gls.glb",
+  "rimFile": "DRX_102.glb",
+  "rimPath": "/car-models/rims/DRX_102.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_stoc001_gls_black_chrome036_0",
+      "wheel_stoc001_gls_kaki025_0",
+      "wheel_stoc001_gls_shild002_0"
+    ],
+    "RL": [
+      "wheel_stoc002_gls_black_chrome036_0",
+      "wheel_stoc002_gls_kaki025_0",
+      "wheel_stoc002_gls_shild002_0"
+    ],
+    "FR": [
+      "wheel_stoc003_gls_black_chrome036_0",
+      "wheel_stoc003_gls_kaki025_0",
+      "wheel_stoc003_gls_shild002_0"
+    ],
+    "RR": [
+      "wheel_stoc004_gls_black_chrome036_0",
+      "wheel_stoc004_gls_kaki025_0",
+      "wheel_stoc004_gls_shild002_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.99,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": 270
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.01,
+      "offsetXRight": -0.01
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_102.glb",
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": 0.01,
+    "offsetXRight": -0.01,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+
+
+"toyota_supra.glb": {
+  "carModelFile": "toyota_supra.glb",
+  "carModelPath": "/car-models/toyota/toyota_supra.glb",
+  "rimFile": "DRX_102.glb",
+  "rimPath": "/car-models/rims/DRX_102.glb",
+  "wheelPositions": {
+    "FL": [
+      "Plane074_GlossBlackpaint_0",
+      "Plane074_metal_0"
+    ],
+    "RL": [
+      "Plane018_GlossBlackpaint_0",
+      "Plane018_GlossBlackpaint_0"
+    ],
+    "FR": [
+      "Plane016_GlossBlackpaint_0",
+      "Plane016_metal_0"
+    ],
+    "RR": [
+      "Plane020_GlossBlackpaint_0",
+      "Plane020_metal_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.03,
+      "offsetXRight": -0.03
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_102.glb",
+    "scale": 1,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": 0.03,
+    "offsetXRight": -0.03,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2025_toyota_land_cruiser_250.glb": {
+  "carModelFile": "2025_toyota_land_cruiser_250.glb",
+  "carModelPath": "/car-models/toyota/2025_toyota_land_cruiser_250.glb",
+  "rimFile": "DRX_302.glb",
+  "rimPath": "/car-models/rims/DRX_302.glb",
+  "wheelPositions": {
+    "FL": [
+      "_95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0",
+      "_95dc5532_e30a_4aa8_8fd4_7039df86edb1__chrome_0",
+      "42603_60690_37_shell_chrome_0",
+      "42603_60690_22_shell_chrome_0",
+      "42603_60690_40_shell_chrome_0",
+      "_00cc43f6_c41c_4c07_ab60_8259d693d6b5__black_metal_0"
+    ],
+    "RL": [
+      "_95dc5532_e30a_4aa8_8fd4_7039df86edb1_003_chrome_0",
+      "42603_60690_40_shell001_chrome_0",
+      "42603_60690_37_shell001_chrome_0",
+      "42603_60690_22_shell001_chrome_0",
+      "_00cc43f6_c41c_4c07_ab60_8259d693d6b5_001_black_metal_0",
+      "42603_60690_39_shell001_plas_black_shine_0"
+    ],
+    "FR": [
+      "_95dc5532_e30a_4aa8_8fd4_7039df86edb1_005_chrome_0",
+      "42603_60690_22_shell002_chrome_0",
+      "42603_60690_22_shell002_chrome_0",
+      "42603_60690_40_shell002_chrome_0",
+      "42603_60690_39_shell002_plas_black_shine_0",
+      "42603_60690_39_shell002_plas_black_shine_0"
+    ],
+    "RR": [
+      "_95dc5532_e30a_4aa8_8fd4_7039df86edb1_006_chrome_0",
+      "42603_60690_40_shell003_chrome_0",
+      "42603_60690_22_shell003_chrome_0",
+      "42603_60690_37_shell003_chrome_0",
+      "42603_60690_39_shell003_plas_black_shine_0",
+      "_00cc43f6_c41c_4c07_ab60_8259d693d6b5_003_black_metal_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.97,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0,
+      "offsetXRight": 0
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_302.glb",
+    "scale": 0.97,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": 0,
+    "offsetXRight": 0,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2025_bmw_m4_competition.glb": {
+  "carModelFile": "2025_bmw_m4_competition.glb",
+  "carModelPath": "/car-models/bmw/2025_bmw_m4_competition.glb",
+  "rimFile": "DRX_302.glb",
+  "rimPath": "/car-models/rims/DRX_302.glb",
+  "wheelPositions": {
+    "FL": [
+      "rimrim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0"
+    ],
+    "RL": [
+      "rim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0_1"
+    ],
+    "FR": [
+      "rim_072_in_Mesh_2_Rim_072_Garage_rimRim_072_Garage1_0"
+    ],
+    "RR": [
+      "rim_072_in_Mesh_2_Rim_072_Garage1_rimRim_072_Garage1_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 0.88,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.00001,
+      "offsetXRight": 0
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_302.glb",
+    "scale": 0.88,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": 0.00001,
+    "offsetXRight": 0,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},
+
+"2024_bmw_x5_xdrive40i.glb": {
+  "carModelFile": "2024_bmw_x5_xdrive40i.glb",
+  "carModelPath": "/car-models/bmw/2024_bmw_x5_xdrive40i.glb",
+  "rimFile": "DRX_302.glb",
+  "rimPath": "/car-models/rims/DRX_302.glb",
+  "wheelPositions": {
+    "FL": [
+      "x5SK_Tyre_101_001_SK_Tyre_101_dummy_material_0_012_RIM_0"
+    ],
+    "RL": [
+      "x5Ani_Disc_Scale_BL5_RIM_0"
+    ],
+    "FR": [
+      "x5Ani_Wheel_FR134_RIM_0"
+    ],
+    "RR": [
+      "x5Ani_Disc_Scale_BR5_RIM_0"
+    ]
+  },
+  "devMode": {
+    "Global": {
+      "scale": 1,
+      "offsetY": 0
+    },
+    "Rotation_Y": {
+      "rotYLeft": 90,
+      "rotYRight": -90
+    },
+    "Track_Width_X": {
+      "offsetXLeft": 0.0001,
+      "offsetXRight": 0
+    },
+    "Wheelbase_Z": {
+      "offsetZFront": 0,
+      "offsetZRear": 0
+    }
+  },
+  "calibration": {
+    "rimFile": "DRX_302.glb",
+    "scale": 1,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": -90,
+    "offsetXLeft": 0.0001,
+    "offsetXRight": 0,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+},

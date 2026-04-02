@@ -45,6 +45,28 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
             FR: { scaleMul: 1.04 },
         },
     },
+    // ── BMW M4 Competition 2025: user-provided dev calibration ──
+    "2025_bmw_m4_competition.glb": {
+        scale: 1,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: -90,
+        offsetXLeft: -0.0003,
+        offsetXRight: 0.0004,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
+    // ── BMW X5 xDrive40i 2024: user-provided dev calibration ──
+    "2024_bmw_x5_xdrive40i.glb": {
+        scale: 1.03,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: -90,
+        offsetXLeft: 0.0004,
+        offsetXRight: -0.0003,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
     "2015_ford_mustang_rtr.glb": {
         scale: 1,
         offsetY: 0,
@@ -130,8 +152,8 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         offsetY: 0,
         rotYLeft: -90,
         rotYRight: 90,
-        offsetXLeft: 0.11,
-        offsetXRight: -0.1,
+        offsetXLeft: 0.09,
+        offsetXRight: -0.09,
         offsetZFront: 0,
         offsetZRear: 0,
     },
@@ -215,16 +237,76 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         offsetZRear: 0,
     },
 
-    // ── Force bbox fallback: Lexus GX (scrambled/unicode names) ──
-    "2023_lexus_gx_550_h_overtrail.glb": {
-        scale: 0.85,
+    // ── Mercedes GLS: user-provided dev calibration ──
+    "mersedes-_benz_gls.glb": {
+        scale: 0.99,
         offsetY: 0,
-        rotYLeft: -90,
+        rotYLeft: 90,
+        rotYRight: 270,
+        offsetXLeft: 0.01,
+        offsetXRight: -0.01,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
+
+    // ── Mercedes-Benz Maybach 2022: 2 wheel anchors (front/rear), force bbox 4-wheel placement ──
+    "mercedes-benz_maybach_2022.glb": {
+        scale: 0.96,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: 270,
+        offsetXLeft: 0,
+        offsetXRight: 0,
+        offsetZFront: 0,
+        offsetZRear: 0,
+        forceBboxFallback: true,
+    },
+
+    // ── Toyota Supra: user-provided dev calibration ──
+    "toyota_supra.glb": {
+        scale: 1,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: -90,
+        offsetXLeft: 0.03,
+        offsetXRight: -0.03,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
+
+    // ── Toyota Land Cruiser 250 (2025): user-provided dev calibration ──
+    "2025_toyota_land_cruiser_250.glb": {
+        scale: 0.97,
+        offsetY: 0,
+        rotYLeft: 90,
         rotYRight: -90,
         offsetXLeft: 0,
         offsetXRight: 0,
         offsetZFront: 0,
         offsetZRear: 0,
+    },
+    // ── Toyota Land Cruiser 250 v1 (2025): mirrors 250 calibration ──
+    "2025_toyota_land_cruiser_250-v1.glb": {
+        scale: 0.97,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: -90,
+        offsetXLeft: 0,
+        offsetXRight: 0,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
+
+    // ── Force bbox fallback: Lexus GX (scrambled/unicode names) ──
+    "2023_lexus_gx_550_h_overtrail.glb": {
+        scale: 0.7,
+        offsetY: 0.0044,
+        rotYLeft: 270,
+        rotYRight: 90,
+        offsetXLeft: 0.0003,
+        offsetXRight: -0.0003,
+        offsetZFront: -0.0037,
+        offsetZRear: 0.0055,
         forceBboxFallback: true,
         // Only target leaf mesh nodes (rim/chrome/logo) — NOT parent groups (which contain tire)
         // FL logos + FR rim/logo/chrome have unicode chars that prevent findByName matching
@@ -284,15 +366,25 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         forceBboxFallback: true,
         swapFallbackXZ: true,
     },
-    "porsche_cayenne.glb": {
-        scale: 0.85,
-        offsetY: 12,
-        rotYLeft: 0,
-        rotYRight: 0,
-        offsetXLeft: 0,
-        offsetXRight: 0,
+    "land_rover_range_rover_sport_-_2023.glb": {
+        scale: 1,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: 270,
+        offsetXLeft: -0.16,
+        offsetXRight: 0.16,
         offsetZFront: 0,
         offsetZRear: 0,
+    },
+    "porsche_cayenne.glb": {
+        scale: 0.83,
+        offsetY: 16.5,
+        rotYLeft: -90,
+        rotYRight: 90,
+        offsetXLeft: 3,
+        offsetXRight: -2.852,
+        offsetZFront: -20,
+        offsetZRear: 17.3,
         forceBboxFallback: true,
     },
     "lamborghini_huracan.glb": {
@@ -371,12 +463,12 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
 
     // ── Audi RS6: user-tuned from dev mode ──
     "audi.glb": {
-        scale: 1.03,
+        scale: 0.99,
         offsetY: 0,
         rotYLeft: 90,
         rotYRight: 270,
-        offsetXLeft: 0.002,
-        offsetXRight: -0.001,
+        offsetXLeft: 0.004,
+        offsetXRight: -0.003,
         offsetZFront: 0,
         offsetZRear: 0,
     },
@@ -407,9 +499,21 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         forceBboxFallback: true,
     },
 
-    // ── McLaren 720 (Uncompressed): shared FL=FR / RL=RR meshes, bbox fallback ──
+    // ── McLaren 720 (Uncompressed): user-tuned from dev mode ──
     "mclaren_720_(uncompressed).glb": {
-        scale: 0.80,
+        scale: 1.04,
+        offsetY: 0,
+        rotYLeft: 90,
+        rotYRight: 270,
+        offsetXLeft: 0.03,
+        offsetXRight: -0.03,
+        offsetZFront: 0,
+        offsetZRear: 0,
+    },
+
+    // ── McLaren 720S Spider: user-provided dev calibration ──
+    "mclaren_720S_spider.glb": {
+        scale: 0.94,
         offsetY: 0,
         rotYLeft: 90,
         rotYRight: -90,
@@ -417,7 +521,6 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         offsetXRight: 0,
         offsetZFront: 0,
         offsetZRear: 0,
-        forceBboxFallback: true,
     },
 
     // ── McLaren 720S: no per-wheel anchors, bbox fallback ──
@@ -446,17 +549,16 @@ export const CAR_CALIBRATION_DATA: Record<string, CarCalibration> = {
         forceBboxFallback: true,
     },
 
-    // ── Lexus LX 700h: no per-wheel anchors, bbox fallback ──
+    // ── Lexus LX 700h: user-provided DRX_301 dev calibration ──
     "2025_lexus_lx700h.glb": {
-        scale: 0.85,
+        scale: 0.99,
         offsetY: 0,
-        rotYLeft: -90,
+        rotYLeft: 90,
         rotYRight: -90,
-        offsetXLeft: 0,
-        offsetXRight: 0,
+        offsetXLeft: -0.0014,
+        offsetXRight: 0.0014,
         offsetZFront: 0,
         offsetZRear: 0,
-        forceBboxFallback: true,
     },
 
     // ── Land Rover Defender v1: user-provided dev calibration ──

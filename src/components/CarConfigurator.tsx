@@ -23,6 +23,7 @@ import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import * as THREE from "three";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Check, LoaderCircle, X } from "lucide-react";
 import { Leva, useControls, button, folder } from "leva";
 import ConfiguratorHUD from "./ConfiguratorHUD";
@@ -34,7 +35,7 @@ import { CAR_CALIBRATION_DATA } from "../data/CarCalibrationData";
 import { applyMaterialFixes, logMeshInventory } from "../data/car-material-fixes";
 
 if (typeof window !== "undefined") {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 }
 
 /* ─── Camera positions ─── */
@@ -45,7 +46,8 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
-const IS_DEV = true;
+// const IS_DEV = true;
+const IS_DEV = false;
 
 type Car3DOption = {
     id: string;
@@ -76,7 +78,9 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
           //  { name: "S-Class V1", file: "mercedes/Mercedes_Benz_S_class_V1.glb" },
           //norm { name: "S-Class V2", file: "mercedes/Mercedes_Benz_S_class_V2.glb" },
                  //       { name: "S-Class Brabus 850", file: "mercedes/s_brabus_850.glb" },
-                        { name: "S-Class W223", file: "mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb" },
+                                                { name: "S-Class W223", file: "mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb" },
+                                           //     { name: "Maybach (2022)", file: "mercedes/mercedes-benz_maybach_2022.glb" },
+                                                { name: "GLS", file: "mercedes/mersedes-_benz_gls.glb" },
         ],
     },
     {
@@ -107,19 +111,19 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
            // { name: "Challenger 392 Scat Pack (2015)", file: "dodge/2015_dodge_challenger_392_hemi_scat_pack_shaker.glb" },
             { name: "Challenger SRT Hellcat", file: "dodge/dodge_challenger_srt_hellcat__free.glb" },
             { name: "RAM 1500 TRX (2021)", file: "dodge/2021_ram_1500_trx.glb" },
-            { name: "RAM 1500 TRX V2 (2021)", file: "dodge/2021_ram_1500_trx (1).glb" },
+            //{ name: "RAM 1500 TRX V2 (2021)", file: "dodge/2021_ram_1500_trx (1).glb" },
         ],
     },
     {
         brand: "Porsche",
         models: [
            // { name: "Cayenne Turbo GT (2022)", file: "porsche/2022_porsche_cayenne_turbo_gt.glb" },
-            { name: "Cayenne (2020)", file: "porsche/porsche_cayenne.glb" },
+            { name: "Cayenne GTS", file: "porsche/porsche_cayenne.glb" },
           //  { name: "911 V1", file: "porsche/porsche_911_V1.glb" },
            // { name: "911 V1 (Uncompressed)", file: "porsche/porsche_911_V1_(uncompressed).glb" },
-            { name: "911 V2 (Uncompressed)", file: "porsche/porsche_911_V2_(uncompressed).glb" },
+            { name: "911 turbo S", file: "porsche/porsche_911_V2_(uncompressed).glb" },
            // { name: "911 V2 Turbo S", file: "porsche/porsche_911_turbo_s.glb" },
-            { name: "911 Turbo S", file: "porsche/2021_porsche_911_turbo_s_992.glb" },
+            //{ name: "911 Turbo S", file: "porsche/2021_porsche_911_turbo_s_992.glb" },
         ],
     },
     {
@@ -128,6 +132,8 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
           //  { name: "X5 M G05", file: "bmw/bmw_x5_m_g05.glb" },
           //  { name: "5 Series V1", file: "bmw/bmw_5-v1.glb" },
             { name: "M5", file: "bmw/bmw_m5_2024.glb" },
+                        { name: "M4 Competition (2025)", file: "bmw/2025_bmw_m4_competition.glb" },
+                        { name: "X5 xDrive40i (2024)", file: "bmw/2024_bmw_x5_xdrive40i.glb" },
           //  { name: "X5 (Uncompressed)", file: "bmw/bmw x5 new.glb" },
            // { name: "X5 M (Uncompressed)", file: "bmw/bmw_X5_M_(uncompressed).glb" },
         ],
@@ -144,24 +150,32 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
     {
         brand: "McLaren",
         models: [
-            { name: "765LT", file: "mclaren/2022_mclaren_765lt.glb" },
-            { name: "720 (Uncompressed)", file: "mclaren/mclaren_720_(uncompressed).glb" },
-            { name: "720S udalit", file: "mclaren/2017_mclaren_720s.glb" },
+           // { name: "765LT", file: "mclaren/2022_mclaren_765lt.glb" },
+           // { name: "720S", file: "mclaren/mclaren_720_(uncompressed).glb" },
+                        { name: "720S Spider", file: "mclaren/mclaren_720S_spider.glb" },
+          //  { name: "720S udalit", file: "mclaren/2017_mclaren_720s.glb" },
            // { name: "720S v2 udalit", file: "mclaren/2017_mclaren720.glb" },
         ],
     },
     {
         brand: "Lexus",
         models: [
-            { name: "LC 500 (2017)", file: "lexus/2017_lexus_lc_500_model.glb" },
+        //    { name: "LC 500 (2017)", file: "lexus/2017_lexus_lc_500_model.glb" },
             { name: "GX 550h Overtrail (2023)", file: "lexus/2023_lexus_gx_550_h_overtrail.glb" },
             { name: "LX 700h", file: "lexus/2025_lexus_lx700h.glb" },
         ],
     },
     {
+        brand: "Toyota",
+        models: [
+            { name: "Supra", file: "toyota/toyota_supra.glb" },
+            { name: "Land Cruiser 250 (2025)", file: "toyota/2025_toyota_land_cruiser_250.glb" },
+        ],
+    },
+    {
         brand: "Audi",
         models: [
-            { name: "A6 C8 Limousine", file: "audi/audi_a6_c8_limousine.glb" },
+            { name: "A6", file: "audi/audi_a6_c8_limousine.glb" },
            // { name: "A6 C8 Limousine V2", file: "audi/audi_a6_c8_limousine (1).glb" },
             { name: "RS6", file: "audi/audi.glb" },
            // { name: "RS5", file: "audi/2021_audi_rs5_sportback.glb" },
@@ -172,7 +186,7 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
         brand: "Cadillac",
         models: [
             { name: "Escalade Premium (2021)", file: "cadillac/2021_cadillac_escalade_premium.glb" },
-            { name: "Escalade Premium Luxury (2021)", file: "cadillac/2021_cadillac_escalade_premium_luxury.glb" },
+           // { name: "Escalade Premium Luxury (2021)", file: "cadillac/2021_cadillac_escalade_premium_luxury.glb" },
         ],
     },
     {
@@ -185,8 +199,8 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
         brand: "Land Rover",
         models: [
             { name: "Defender", file: "landrover/land_rover_defender-v1.glb" },
-            { name: "Range Rover Sport SVR", file: "lexus/land_rover_range_rover_sport_svr.glb" },
-            { name: "Range Rover Sport (2023)", file: "lexus/land_rover_range_rover_sport_-_2023.glb" },
+           // { name: "Range Rover Sport SVR", file: "landrover/land_rover_range_rover_sport_svr.glb" },
+            { name: "Range Rover Sport (2023)", file: "landrover/land_rover_range_rover_sport_-_2023.glb" },
         ],
     },
 
@@ -1144,7 +1158,8 @@ function ReflectiveFloor() {
 /*  Main export                                                       */
 /* ================================================================== */
 export default function CarConfigurator() {
-    const sectionRef = useRef<HTMLDivElement>(null);
+    const configuratorRef = useRef<HTMLElement>(null);
+    const enterScrollTweenRef = useRef<gsap.core.Tween | null>(null);
     const scrollProgress = useRef(0);
     const isSmallScreen = typeof window !== "undefined" && window.matchMedia("(max-width: 900px)").matches;
     const prefersReducedMotion = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1178,7 +1193,7 @@ export default function CarConfigurator() {
 
     /* ── GSAP: pin section + drive scrollProgress ── */
     useEffect(() => {
-        const section = sectionRef.current;
+        const section = configuratorRef.current;
         if (!section) return;
 
         const isMobile = window.matchMedia("(max-width: 900px)").matches;
@@ -1217,17 +1232,42 @@ export default function CarConfigurator() {
     }, [isActive]);
 
     const handleEnter = useCallback(() => {
+        if (isActive || isPreparing) return;
+
         setIsPreparing(true);
         setShowButton(false);
 
-        // Simulate brief environment preparation, then activate
-        setTimeout(() => {
+        const section = configuratorRef.current;
+
+        if (!section) {
+            document.body.style.overflow = "hidden";
             setIsPreparing(false);
             setIsActive(true);
-        }, 1200);
-    }, []);
+            return;
+        }
+
+        enterScrollTweenRef.current?.kill();
+        enterScrollTweenRef.current = gsap.to(window, {
+            duration: 0.8,
+            ease: "power2.inOut",
+            scrollTo: { y: section, autoKill: false },
+            onComplete: () => {
+                document.body.style.overflow = "hidden";
+                setIsPreparing(false);
+                setIsActive(true);
+                enterScrollTweenRef.current = null;
+            },
+            onInterrupt: () => {
+                setIsPreparing(false);
+                enterScrollTweenRef.current = null;
+            },
+        });
+    }, [isActive, isPreparing]);
 
     const handleExit = useCallback(() => {
+        enterScrollTweenRef.current?.kill();
+        enterScrollTweenRef.current = null;
+        document.body.style.overflow = "";
         setIsActive(false);
         setIsPreparing(false);
         setShowFinalize(false);
@@ -1239,14 +1279,22 @@ export default function CarConfigurator() {
             document.body.style.overflow = "hidden";
             window.dispatchEvent(new CustomEvent("configurator-active", { detail: { active: true } }));
         } else {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
             window.dispatchEvent(new CustomEvent("configurator-active", { detail: { active: false } }));
         }
         return () => {
-            document.body.style.overflow = "auto";
+            document.body.style.overflow = "";
             window.dispatchEvent(new CustomEvent("configurator-active", { detail: { active: false } }));
         };
     }, [isActive]);
+
+    useEffect(() => {
+        return () => {
+            enterScrollTweenRef.current?.kill();
+            enterScrollTweenRef.current = null;
+            document.body.style.overflow = "";
+        };
+    }, []);
 
     const canShowActionButton = isActive || showButton;
 
@@ -1293,8 +1341,9 @@ export default function CarConfigurator() {
     }, [email, name, phone, selectedModel, selectedWheelModel]);
 
     return (
-        <section ref={sectionRef} className="car-configurator-section" id="configurator">
-            {IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
+        <section ref={configuratorRef} className="car-configurator-section" id="configurator">
+            {/* Keep Leva mounted so useControls does not auto-spawn a floating panel when dev mode is off. */}
+            <Leva hidden={!IS_DEV} collapsed oneLineLabels hideCopyButton />
 
             {/* 3D Canvas */}
             <Canvas

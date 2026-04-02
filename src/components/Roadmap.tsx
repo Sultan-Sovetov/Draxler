@@ -25,7 +25,7 @@ const sections = [
         num: "03",
         title: "Delivery",
         desc: "Worldwide insured shipping directly to you. Each wheel is individually packaged and ready to install right out of the box. You receive full tracking visibility from dispatch to final handoff. Our support team stays available through delivery day to coordinate timing and ensure a smooth arrival.",
-        image: "/roadmap/final_2.jpg",
+        image: "/roadmap/final_2.webp",
         bg: "white" as const,
         imagePosition: "right" as const,
     },

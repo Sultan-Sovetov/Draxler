@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Car, CircleDot, Box, Paintbrush } from "lucide-react";
+import { Palette, Car, CircleDot, Paintbrush } from "lucide-react";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
 import { catalogCategories } from "@/lib/catalog-data";
 
@@ -150,6 +150,7 @@ const BRAND_LOGO_BY_NAME: Record<string, string> = {
     "Ferrari": "/logos_names/ferrari.png",
     "McLaren": "/logos_names/mclaren.png",
     "Lexus": "/logos_names/lexus.png",
+    "Toyota": "/logos_names/toyota.png",
     "Audi": "/logos_names/audi.png",
     "Cadillac": "/logos_names/cadillac.png",
     "Rolls-Royce": "/logos_names/rolls royce.png",
@@ -167,6 +168,7 @@ const BRAND_LOGO_SCALE_BY_NAME: Record<string, number> = {
     "Ferrari": 1.34,
     "McLaren": 1.08,
     "Lexus": 1.26,
+    "Toyota": 1.18,
     "Audi": 1.18,
     "Cadillac": 1.18,
     "Rolls-Royce": 1.1,
@@ -226,22 +228,14 @@ const WHEEL_MODELS = catalogCategories.flatMap((cat) => {
 
 const WHEEL_CATEGORIES = ["Off-Road", "Luxury", "Sport"] as const;
 
-const EXCLUDED_VEHICLE_BRANDS = new Set(["McLaren"]);
-
 const stripBracketDetails = (label: string) => label.replace(/\s*\([^)]*\)/g, "").replace(/\s+/g, " ").trim();
 
 const shouldExcludeVehicleModel = (brand: string, modelLabel: string) => {
-    if (EXCLUDED_VEHICLE_BRANDS.has(brand)) return true;
-
     const normalized = stripBracketDetails(modelLabel).toLowerCase();
     if (brand === "Mercedes-Benz" && normalized.includes("brabus 850")) return true;
 
     return normalized.includes("f-150") ||
-        normalized.includes("f 150") ||
-        normalized.includes("cayenne") ||
-        normalized.includes("lc 500") ||
-        normalized.includes("gx 550") ||
-        normalized.includes("gx550");
+    normalized.includes("f 150");
 };
 
 export default function ConfiguratorHUD({
@@ -344,9 +338,9 @@ export default function ConfiguratorHUD({
     const SECTION_TABS = [
         { key: "vehicle" as const, label: "Vehicle", icon: Car },
         { key: "wheels" as const, label: "Wheels", icon: CircleDot },
-        { key: "cars" as const, label: "3D Cars", icon: Box },
+        // { key: "cars" as const, label: "3D Cars", icon: Box },
         { key: "color" as const, label: "Car Color", icon: Palette },
-        { key: "finish" as const, label: "Finish", icon: Paintbrush },
+        { key: "finish" as const, label: "Rim Color", icon: Paintbrush },
     ];
 
     return (
@@ -375,7 +369,15 @@ export default function ConfiguratorHUD({
                                     aria-label={tab.label}
                                 >
                                     <Icon size={20} strokeWidth={1.5} />
-                                    <span className="chud-icon-label">{tab.label}</span>
+                                    <span className="chud-icon-label">
+                                        {tab.key === "finish" ? (
+                                            <>
+                                                Rim
+                                                <br />
+                                                Color
+                                            </>
+                                        ) : tab.label}
+                                    </span>
                                 </motion.button>
                             );
                         })}

@@ -103,7 +103,6 @@ export default function CatalogCategoryPage() {
                         </div>
                         <div className="catalog-card-meta">
                             <div className="catalog-card-name">{product.name}</div>
-                            <div className="catalog-card-price">{product.price}</div>
                         </div>
                     </Link>
                 ))}

@@ -83,6 +83,7 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "Object_424"
   ],
   "lexus/land_rover_range_rover_sport_-_2023.glb": [
+    "Object_35",
     "Object_23",
     "Object_57",
     "Object_33",
@@ -107,6 +108,37 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "Object_51",
     "Object_71",
     "Object_37"
+  ],
+  "mclaren/mclaren_720_(uncompressed).glb": [
+    "Plane055",
+    "Plane056",
+    "Plane049",
+    "Plane046",
+    "Plane038",
+    "Plane036",
+    "Plane033",
+    "Plane031",
+    "Plane030",
+    "Plane029",
+    "Plane027",
+    "Plane025",
+    "Plane024",
+    "Plane",
+    "Plane001",
+    "Plane002",
+    "Plane034",
+    "Plane042"
+  ],
+  "mclaren/mclaren_720S_spider.glb": [
+    "Object_32",
+    "Object_33",
+    "Object_34",
+    "Object_5"
+  ],
+  "porsche/porsche_cayenne.glb": [
+    "Material2_10",
+    "Material2_11",
+    "Material2_9"
   ],
   "porsche/2021_porsche_911_turbo_s_992.glb": [
     "PorschelodA_Exterior_a_RegionA_1_Hard_NonTextured_NoSkin_Geo_lodA_Exterior_a_RegionA_1_Hard_NonTextured_NoSkin_Geo_Porsche_911TurboS992_PorschePorsche_911TurboS992_2021RegionA1_0",
@@ -158,6 +190,81 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
   ],
   "cadillac/2021_cadillac_escalade_premium_luxury.glb": [
     "Object_189", "Object_69"
+  ],
+  "bmw/2025_bmw_m4_competition.glb": [
+    "m4body_Mesh_0_car_body_m4car_hood1_0",
+    "m4left_door_Mesh_2_car_body_m4car_body1_0",
+    "m4body_Mesh_0_car_body_m4car_body1_0",
+    "m4right_door_Mesh_3_car_interior_m4car_body1_0",
+    "m4bodykit_Mesh_1_car_bodykit_m4car_bodykit1_0"
+  ],
+  "bmw/2024_bmw_x5_xdrive40i.glb": [
+    "x5SM_SideSkirts_101_SM_SideSkirts_101_dummy_material_0_024_CARPAINT_0",
+    "x5SK_Door_BR_101_001_SK_Door_BR_101_dummy_material_0_007_CARPAINT_0",
+    "x5SK_Door_FR_101_001_SK_Door_FR_101_dummy_material_0_008_CARPAINT_0",
+    "x5SM_Fender_F_101_SM_Fender_F_101_dummy_material_0_020_CARPAINT_0",
+    "x5SM_Bumper_F_101_SM_Bumper_F_101_dummy_material_0_016_CARPAINT_0",
+    "x5SK_Hood_101_001_SK_Hood_101_dummy_material_0_014_CARPAINT_0",
+    "x5SK_Door_FL_101_001_SK_Door_FL_101_dummy_material_0_005_CARPAINT_0",
+    "x5SK_Door_BL_101_001_SK_Door_BL_101_dummy_material_0_005_CARPAINT_0",
+    "x5SM_Fender_B_101_SM_Fender_B_101_dummy_material_0_017_CARPAINT_0",
+    "x5SM_Bumper_B_101_SM_Bumper_B_101_dummy_material_0_016_CARPAINT_0",
+    "x5SK_Trunk_101_001_SK_Trunk_101_dummy_material_0_020_CARPAINT_0",
+    "x5SM_Roof_101_SM_Roof_101_dummy_material_0_024_CARPAINT_0",
+    "x5SM_SideMirror_L_101_SM_SideMirror_L_101_dummy_material_0_024_CARPAINT_0",
+    "x5SM_SideMirror_R_101_SM_SideMirror_R_101_dummy_material_0_023_CARPAINT_0"
+  ],
+  "mercedes/mersedes-_benz_gls.glb": [
+    "gls_hood_1_gls_paint021_0",
+    "gls_bumper_F_b_gls_paint021_0",
+    "gls_fender_R_gls_paint021_0",
+    "gls_door_FR_gls_paint021_0",
+    "gls_body_gls_paint021_0",
+    "gls_door_RR_gls_paint021_0",
+    "gls_mirror_R_gls_paint021_0",
+    "gls_bumper_R_a_gls_paint021_0",
+    "gls_tailgate_gls_paint021_0",
+    "gls_fender_L_gls_paint021_0",
+    "gls_door_FL_gls_paint021_0",
+    "gls_door_RL_gls_paint021_0"
+  ],
+  "mercedes/mercedes-benz_maybach_2022.glb": [
+    "Object_14",
+    "Object_15",
+    "Object_16",
+    "Object_17",
+    "Object_18",
+    "Object_19",
+    "Object_20",
+    "Object_21",
+    "Object_22",
+    "Object_23",
+    "Object_24",
+    "Object_25",
+    "Object_26",
+    "Object_27"
+  ],
+  "toyota/toyota_supra.glb": [
+    "Plane004_carpaint_0",
+    "Plane004_carpaint_0_1"
+  ],
+  "toyota/2025_toyota_land_cruiser_250.glb": [
+    "_150cda98_1ce1_4669_8db6_f9db82877b7f__CarPaint_0",
+    "_3ad67829_5627_4efb_a10a_992002d1a143__CarPaint_0",
+    "_cdea0b8b_5ed7_4c99_8440_e0bb31d930a4__CarPaint_0",
+    "_2bb9de70_ef04_4377_8335_6fb345753ef4__CarPaint_0",
+    "_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0",
+    "_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0",
+    "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0"
+  ],
+  "toyota/2025_toyota_land_cruiser_250-v1.glb": [
+    "_150cda98_1ce1_4669_8db6_f9db82877b7f__CarPaint_0",
+    "_3ad67829_5627_4efb_a10a_992002d1a143__CarPaint_0",
+    "_cdea0b8b_5ed7_4c99_8440_e0bb31d930a4__CarPaint_0",
+    "_2bb9de70_ef04_4377_8335_6fb345753ef4__CarPaint_0",
+    "_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0",
+    "_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0",
+    "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0"
   ],
   "rr/rolls_royce_ghost_new.glb": [
     "rrghost_door_FL_rrghost_paint_0",
