@@ -166,7 +166,7 @@ const BRAND_LOGO_SCALE_BY_NAME: Record<string, number> = {
     "BMW": 1.12,
     "Lamborghini": 1.2,
     "Ferrari": 1.34,
-    "McLaren": 1.08,
+    "McLaren": 1.615,
     "Lexus": 1.26,
     "Toyota": 1.18,
     "Audi": 1.18,

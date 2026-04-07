@@ -2676,7 +2676,7 @@ html.lenis body {
 
 .footer-main {
   text-align: left;
-  max-width: 760px;
+  max-width: 100%;
 }
 
 .footer-divider {
@@ -2704,8 +2704,12 @@ html.lenis body {
 }
 
 .magnetic-btn-wrapper {
-  display: inline-block;
-  padding: 0.35rem 0;
+  --footer-cta-side-span: calc(clamp(240px, 31vw, 360px) + clamp(1.4rem, 4vw, 4.5rem));
+  display: flex;
+  justify-content: center;
+  width: calc(100% + var(--footer-cta-side-span));
+  margin-left: 0;
+  margin-top: 0.35rem;
   cursor: pointer;
 }
 
@@ -2971,6 +2975,11 @@ html.lenis body {
 
   .footer-main {
     max-width: 100%;
+  }
+
+  .magnetic-btn-wrapper {
+    width: 100%;
+    margin-left: 0;
   }
 
   .footer-brand-assets {

@@ -58,8 +58,6 @@ export default function Footer() {
         <footer className="footer-section" id="contact">
             <div className="footer-content">
                 <div className="footer-main">
-                    <div className="footer-divider" />
-
                     <div className="footer-logo">DRAXLER</div>
                     <div className="footer-tagline">Engineered For Excellence</div>
 

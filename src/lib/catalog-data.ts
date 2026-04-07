@@ -5,7 +5,6 @@ export interface CatalogProduct {
   hoverImage: string;
   description: string;
   sizes: string[];
-  price: string;
 }
 
 export interface CatalogCategory {
@@ -34,7 +33,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "A bold multi-spoke design engineered for maximum airflow and minimal unsprung mass. Each spoke is CNC-machined to a mirror edge.",
         sizes: ['20"', '21"', '22"', '23"'],
-        price: "From $8,200",
       },
       {
         slug: "drx-102",
@@ -44,7 +42,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Deep concave profile with directional spokes designed for aggressive stance and superior brake cooling.",
         sizes: ['20"', '21"', '22"', '23"'],
-        price: "From $8,800",
       },
       {
         slug: "drx-103",
@@ -54,7 +51,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Minimalist five-spoke geometry channelling pure racing heritage. Ultra-lightweight monoblock construction.",
         sizes: ['19"', '20"', '21"', '22"'],
-        price: "From $7,600",
       },
       {
         slug: "drx-104",
@@ -64,7 +60,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Sculptural twelve-spoke geometry with hand-polished barrels. Precision-forged for flagship sedans and executive SUVs.",
         sizes: ['20"', '21"', '22"'],
-        price: "From $8,400",
       },
       {
         slug: "drx-105",
@@ -74,7 +69,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Asymmetric turbine-blade design optimised for visual drama. Deep-dish profile meets aerospace-grade forging.",
         sizes: ['21"', '22"', '23"'],
-        price: "From $9,200",
       },
       {
         slug: "drx-106",
@@ -84,7 +78,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Stepped-lip monoblock with micro-milled spoke edges. Imposing street presence with a refined machinist finish.",
         sizes: ['20"', '21"', '22"', '23"'],
-        price: "From $8,800",
       },
       {
         slug: "drx-107",
@@ -94,7 +87,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Contemporary split-spoke architecture with precision-milled detailing. Refined luxury for grand tourers.",
         sizes: ['20"', '21"', '22"'],
-        price: "From $8,600",
       },
       {
         slug: "drx-109",
@@ -104,7 +96,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Flowing multi-arm design with deep concavity and brushed finish. Engineered for flagship presence.",
         sizes: ['21"', '22"', '23"'],
-        price: "From $9,400",
       },
       {
         slug: "drx-110",
@@ -114,7 +105,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Monoblock mesh pattern with hand-polished outer lip. Timeless elegance for ultra-luxury platforms.",
         sizes: ['20"', '21"', '22"', '23"'],
-        price: "From $9,600",
       },
       {
         slug: "drx-111",
@@ -124,7 +114,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Directional fan-spoke with concave face and mirror-cut accents. The pinnacle of luxury wheel design.",
         sizes: ['21"', '22"', '23"', '24"'],
-        price: "From $10,200",
       },
       {
         slug: "drx-112",
@@ -134,7 +123,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Bold twin-spoke monoblock with deep-dish barrel and brushed satin finish. Commanding presence for ultra-luxury grand tourers.",
         sizes: ['21"', '22"', '23"', '24"'],
-        price: "From $10,800",
       },
       {
         slug: "drx-113",
@@ -144,7 +132,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Progressive split-spoke monoblock with mirror-cut transitions and deep concavity. Designed for premium executive platforms.",
         sizes: ['21"', '22"', '23"', '24"'],
-        price: "From $11,100",
       },
       {
         slug: "drx-114",
@@ -154,7 +141,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Layered multi-spoke design with stepped barrel architecture and hand-finished lip. Refined luxury with an assertive stance.",
         sizes: ['21"', '22"', '23"'],
-        price: "From $11,400",
       },
       {
         slug: "drx-115",
@@ -164,7 +150,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "High-density turbine spoke pattern tuned for visual depth and brake cooling. Crafted for flagship sedans and coupes.",
         sizes: ['20"', '21"', '22"', '23"'],
-        price: "From $10,900",
       },
       {
         slug: "drx-116",
@@ -174,7 +159,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Ultra-premium directional fan geometry with deep-dish profile and polished accents. Signature statement for bespoke builds.",
         sizes: ['21"', '22"', '23"', '24"'],
-        price: "From $11,900",
       },
     ],
   },
@@ -194,7 +178,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Reinforced eight-spoke bead-lock design rated for extreme off-road loads. Full trail-ready specification.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $6,800",
       },
       {
         slug: "drx-302",
@@ -204,7 +187,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Tactical mesh pattern with simulated bead-lock ring. MIL-spec corrosion-resistant coating.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,200",
       },
       {
         slug: "drx-303",
@@ -214,7 +196,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Heavy-duty split-five spoke with integrated tyre pressure sensor bosses. Built for overlanding.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,500",
       },
       {
         slug: "drx-304",
@@ -224,7 +205,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Widebody mesh pattern with reinforced bead-seat and integrated TPMS bosses. Built for the toughest trails.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,100",
       },
       {
         slug: "drx-305",
@@ -234,7 +214,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Six-spoke tactical design with protective ceramic-blast coating. Sand, salt and UV rated for expeditions.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,400",
       },
       {
         slug: "drx-306",
@@ -244,7 +223,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Heavy-gauge split-spoke with simulated bead-lock ring. Maximum ground-clearance compatibility.",
         sizes: ['18"', '20"'],
-        price: "From $6,600",
       },
       {
         slug: "drx-307",
@@ -254,7 +232,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Aggressive directional spoke layout with reinforced hub mount. Engineered for extreme terrain articulation.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,300",
       },
       {
         slug: "drx-309",
@@ -264,7 +241,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Rugged twin-spoke with hardened barrel lip and anti-corrosion clear coat. Desert and mud rated.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,600",
       },
       {
         slug: "drx-310",
@@ -274,7 +250,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Multi-window design with reinforced centre bore and load-rated spokes. Ready for heavy-duty towing.",
         sizes: ['18"', '20"', '22"'],
-        price: "From $7,800",
       },
       {
         slug: "drx-311",
@@ -284,7 +259,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Bold ten-spoke with stepped lip and forged barrel. Overland-proven construction meets street presence.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,000",
       },
       {
         slug: "drx-312",
@@ -294,7 +268,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Concave six-spoke with integrated rock guard. Full trail specification with expedition styling.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,500",
       },
       {
         slug: "drx-313",
@@ -304,7 +277,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Classic deep-dish with reinforced bead ring and heavy wall construction. Ultimate expedition capability.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,900",
       },
       {
         slug: "drx-314",
@@ -314,7 +286,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Heavy-gauge split-spoke with simulated bead-lock ring. Maximum ground-clearance compatibility.",
         sizes: ['17"', '18"', '20"'],
-        price: "From $7,500",
       },
     ],
   },
@@ -334,7 +305,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Track-focused monoblock with maximum brake caliper clearance. Carbon-ceramic compatible.",
         sizes: ['19"', '20"', '21"'],
-        price: "From $9,200",
       },
       {
         slug: "drx-202",
@@ -344,7 +314,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Aero-blade spoke design with integrated air channels. Optimised CFD for brake cooling.",
         sizes: ['19"', '20"', '21"'],
-        price: "From $9,800",
       },
       {
         slug: "drx-203",
@@ -354,7 +323,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Lightweight split-five with centre-lock option. Born on the Nürburgring.",
         sizes: ['19"', '20"'],
-        price: "From $10,600",
       },
       {
         slug: "drx-204",
@@ -364,7 +332,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Ultra-lightweight monoblock with aggressive directional spokes. Shaves unsprung mass for sharper lap times.",
         sizes: ['19"', '20"', '21"'],
-        price: "From $9,500",
       },
       {
         slug: "drx-205",
@@ -374,7 +341,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Fan-blade aero spoke with integrated brake duct channels. Optimised for carbon-ceramic brake clearance.",
         sizes: ['19"', '20"', '21"'],
-        price: "From $10,200",
       },
       {
         slug: "drx-207",
@@ -384,7 +350,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Concave twin-five spoke forged from 6061-T6 billet. Engineering-first design for precision driving.",
         sizes: ['19"', '20"'],
-        price: "From $11,000",
       },
       {
         slug: "drx-208",
@@ -394,7 +359,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Hybrid carbon-weave barrel with forged-aluminium face. Pinnacle of lightweight engineering meets track-day aesthetics.",
         sizes: ['20"', '21"'],
-        price: "From $13,200",
       },
       {
         slug: "drx-209",
@@ -404,7 +368,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Split-spoke motorsport architecture with deep concavity and milled spoke transitions. Built for aggressive street and circuit styling.",
         sizes: ['20"', '21"', '22"'],
-        price: "From $12,100",
       },
       {
         slug: "drx-210",
@@ -414,7 +377,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Directional blade pattern engineered for visual motion and brake airflow. Lightweight forged profile with track-ready intent.",
         sizes: ['20"', '21"', '22"'],
-        price: "From $12,400",
       },
       {
         slug: "drx-211",
@@ -424,7 +386,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "High-tension multi-spoke layout with reinforced hub geometry. Designed to balance low weight with high-speed stability.",
         sizes: ['19"', '20"', '21"'],
-        price: "From $11,900",
       },
       {
         slug: "drx-212",
@@ -434,7 +395,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Ultra-concave Y-spoke forged concept with pronounced outer lip. Purposeful performance stance for premium sport platforms.",
         sizes: ['20"', '21"', '22"'],
-        price: "From $12,700",
       },
       {
         slug: "drx-213",
@@ -444,7 +404,6 @@ export const catalogCategories: CatalogCategory[] = [
         description:
           "Radical aero-disc concept with closed-face turbine channels. Maximum downforce efficiency meets forged lightweight construction.",
         sizes: ['19"', '20"', '21"'],
-        price: "From $13,800",
       },
     ],
   },

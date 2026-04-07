@@ -46,7 +46,7 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
-const IS_DEV = true;
+const IS_DEV = false; // Turned off dev mode visuals
 
 type Car3DOption = {
     id: string;
@@ -132,7 +132,7 @@ const CAR_3D_GROUP_SOURCES: Car3DGroupSource[] = [
           //  { name: "X5 M G05", file: "bmw/bmw_x5_m_g05.glb" },
           //  { name: "5 Series V1", file: "bmw/bmw_5-v1.glb" },
             { name: "M5", file: "bmw/bmw_m5_2024.glb" },
-                        { name: "M4 Competition (2025)", file: "bmw/2025_bmw_m4_competition.glb" },
+                    //    { name: "M4 Competition (2025)", file: "bmw/2025_bmw_m4_competition.glb" },
                         { name: "X5 xDrive40i (2024)", file: "bmw/2024_bmw_x5_xdrive40i.glb" },
           //  { name: "X5 (Uncompressed)", file: "bmw/bmw x5 new.glb" },
            // { name: "X5 M (Uncompressed)", file: "bmw/bmw_X5_M_(uncompressed).glb" },
@@ -374,8 +374,7 @@ function RimInjector({
     }>>([]);
 
     useFrame(() => {
-        if (!isDev) return;
-
+        // ALways apply rim calibration to correct fitments (removed if (!isDev) skip)
         injectedRimsRef.current.forEach(({ mesh, baseScale, basePosition, baseRotation, isLeft, isFront, swapXZ }) => {
             const offsetX = isLeft ? rimCalibration.offsetXLeft : rimCalibration.offsetXRight;
             const rotY = isLeft ? rimCalibration.rotYLeft : rimCalibration.rotYRight;
@@ -397,7 +396,7 @@ function RimInjector({
     useEffect(() => {
         if (!rimSourceScene || !modelScene) return;
 
-        const fileName = modelUrl.split("/").pop() ?? "";
+        const fileName = decodeURIComponent(modelUrl.split("/").pop() ?? "");
         const targetRims = (CAR_RIM_MAPPINGS as Record<string, RimMapping>)[fileName];
         const calibData = CAR_CALIBRATION_DATA[fileName];
         const forceFallback = calibData?.forceBboxFallback === true;
@@ -752,9 +751,9 @@ function CarModel({
     const { scene } = useGLTF(modelUrl, true);
     const groupRef = useRef<THREE.Group>(null);
     const paintableMaterials = useRef<THREE.Material[]>([]);
-    const fileName = useMemo(() => modelUrl.split("/").pop() ?? "", [modelUrl]);
-    const rimFileName = useMemo(() => rimUrl?.split("/").pop() ?? null, [rimUrl]);
-    const modelPathKey = useMemo(() => modelUrl.replace(/^\/car-models\//, ""), [modelUrl]);
+    const fileName = useMemo(() => decodeURIComponent(modelUrl.split("/").pop() ?? ""), [modelUrl]);
+    const rimFileName = useMemo(() => rimUrl ? decodeURIComponent(rimUrl.split("/").pop() ?? "") : null, [rimUrl]);
+    const modelPathKey = useMemo(() => decodeURIComponent(modelUrl).replace(/^\/car-models\//, ""), [modelUrl]);
 
     /* ── Clone scene & bake hard-fixes at creation time (runs ONCE per model) ── */
     const modelScene = useMemo(() => {
@@ -935,6 +934,66 @@ function CarModel({
     }, [scene, modelUrl, modelPathKey]);
     const defaultCalibration = useMemo<RimCalibration>(() => {
         const baseCalibration = CAR_CALIBRATION_DATA[fileName] ?? DEFAULT_RIM_CALIBRATION;
+
+        // Custom Audi RS6 Calibrations per rim
+        if (modelPathKey === "audi/audi.glb" && rimFileName) {
+            if (["DRX_213.glb", "DRX_204.glb"].includes(rimFileName)) {
+                return {
+                    ...baseCalibration,
+                    offsetXLeft: 0,
+                    offsetXRight: 0,
+                    rimFile: rimFileName,
+                };
+            }
+            if (rimFileName === "DRX_202.glb") {
+                return {
+                    ...baseCalibration,
+                    offsetXLeft: 0.01,
+                    offsetXRight: -0.01,
+                    rimFile: rimFileName,
+                };
+            }
+            if (rimFileName === "DRX_314.glb") {
+                return {
+                    ...baseCalibration,
+                    offsetXLeft: 0.009,
+                    offsetXRight: -0.009,
+                    rimFile: rimFileName,
+                };
+            }
+        }
+
+        // Custom Mustang RTR 2015 Calibration per rim
+        if (modelPathKey === "ford/2015_ford_mustang_rtr.glb" && rimFileName === "DRX_202.glb") {
+            return {
+                ...baseCalibration,
+                scale: 1,
+                offsetY: 0,
+                rotYLeft: 90,
+                rotYRight: 270,
+                offsetXLeft: 0.0007,
+                offsetXRight: -0.0006,
+                offsetZFront: 0,
+                offsetZRear: 0,
+                rimFile: rimFileName,
+            };
+        }
+
+        // Custom McLaren 720S Spider Calibration per rim
+        if (modelPathKey === "mclaren/mclaren_720S_spider.glb" && rimFileName === "DRX_213.glb") {
+            return {
+                ...baseCalibration,
+                scale: 0.96,
+                offsetY: 0,
+                rotYLeft: 90,
+                rotYRight: -90,
+                offsetXLeft: -0.03,
+                offsetXRight: 0.04,
+                offsetZFront: 0,
+                offsetZRear: 0,
+                rimFile: rimFileName,
+            };
+        }
 
         const shouldUseRangeRoverCustomCalibration =
             modelPathKey === RANGE_ROVER_SPORT_2023_MODEL_KEY
@@ -1379,7 +1438,7 @@ export default function CarConfigurator() {
 
     return (
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
-            {IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
+            <Leva hidden />
 
             {/* 3D Canvas */}
             <Canvas
