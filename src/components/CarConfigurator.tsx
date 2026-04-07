@@ -46,7 +46,7 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
-const IS_DEV = false; // Turned off dev mode visuals
+const IS_DEV = true;
 
 type Car3DOption = {
     id: string;
@@ -353,12 +353,14 @@ function RimInjector({
     modelUrl,
     modelScene,
     rimCalibration,
+    isDev,
 }: {
     rimUrl: string;
     rimColor: string;
     modelUrl: string;
     modelScene: THREE.Object3D;
     rimCalibration: RimCalibration;
+    isDev: boolean;
 }) {
     const { scene: rimSourceScene } = useGLTF(rimUrl, true);
     const injectedRimsRef = useRef<Array<{
@@ -370,6 +372,7 @@ function RimInjector({
         isFront: boolean;
         swapXZ: boolean;
     }>>([]);
+if (!isDev) return;
 
     useFrame(() => {
         // ALways apply rim calibration to correct fitments (removed if (!isDev) skip)
@@ -1205,6 +1208,7 @@ function CarModel({
                         rimColor={rimColor}
                         modelUrl={modelUrl}
                         modelScene={modelScene}
+                        isDev={IS_DEV}
                         rimCalibration={activeRimCalibration}
                     />
                 </Suspense>
@@ -1433,7 +1437,7 @@ export default function CarConfigurator() {
         }
     }, [email, name, phone, selectedModel, selectedWheelModel]);
 
-    return (
+    return ({IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
             <Leva hidden />
 
