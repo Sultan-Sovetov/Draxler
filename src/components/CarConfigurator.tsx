@@ -1437,9 +1437,9 @@ export default function CarConfigurator() {
         }
     }, [email, name, phone, selectedModel, selectedWheelModel]);
 
-    return ({IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
+    return (
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
-            <Leva hidden />
+            {IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
 
             {/* 3D Canvas */}
             <Canvas
