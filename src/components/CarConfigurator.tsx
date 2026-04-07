@@ -353,14 +353,12 @@ function RimInjector({
     modelUrl,
     modelScene,
     rimCalibration,
-    isDev,
 }: {
     rimUrl: string;
     rimColor: string;
     modelUrl: string;
     modelScene: THREE.Object3D;
     rimCalibration: RimCalibration;
-    isDev: boolean;
 }) {
     const { scene: rimSourceScene } = useGLTF(rimUrl, true);
     const injectedRimsRef = useRef<Array<{
@@ -1208,7 +1206,6 @@ function CarModel({
                         modelUrl={modelUrl}
                         modelScene={modelScene}
                         rimCalibration={activeRimCalibration}
-                        isDev={IS_DEV}
                     />
                 </Suspense>
             )}
