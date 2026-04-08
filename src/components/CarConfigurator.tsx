@@ -1083,20 +1083,20 @@ function CarModel({
         "Rim Calibration",
         () => ({
             Global: folder({
-                scale: { value: defaultCalibration.scale, min: 0.1, max: 20.0, step: 0.000001 },
-                offsetY: { value: defaultCalibration.offsetY, min: -20, max: 20, step: 0.000001 },
+                scale: { value: defaultCalibration.scale, step: 0.000001 },
+                offsetY: { value: defaultCalibration.offsetY, step: 0.000001 },
             }),
             Rotation_Y: folder({
-                rotYLeft: { value: defaultCalibration.rotYLeft ?? 180, min: -360, max: 360, step: 1 },
-                rotYRight: { value: defaultCalibration.rotYRight ?? 0, min: -360, max: 360, step: 1 },
+                rotYLeft: { value: defaultCalibration.rotYLeft ?? 180, step: 0.5 },
+                rotYRight: { value: defaultCalibration.rotYRight ?? 0, step: 0.5 },
             }),
             Track_Width_X: folder({
-                offsetXLeft: { value: defaultCalibration.offsetXLeft ?? 0, min: -20, max: 20, step: 0.000001 },
-                offsetXRight: { value: defaultCalibration.offsetXRight ?? 0, min: -20, max: 20, step: 0.000001 },
+                offsetXLeft: { value: defaultCalibration.offsetXLeft ?? 0, step: 0.000001 },
+                offsetXRight: { value: defaultCalibration.offsetXRight ?? 0, step: 0.000001 },
             }),
             Wheelbase_Z: folder({
-                offsetZFront: { value: defaultCalibration.offsetZFront ?? 0, min: -20, max: 20, step: 0.000001 },
-                offsetZRear: { value: defaultCalibration.offsetZRear ?? 0, min: -20, max: 20, step: 0.000001 },
+                offsetZFront: { value: defaultCalibration.offsetZFront ?? 0, step: 0.000001 },
+                offsetZRear: { value: defaultCalibration.offsetZRear ?? 0, step: 0.000001 },
             }),
             Actions: folder({
                 "Copy Config": button((get) => {
