@@ -938,9 +938,10 @@ function CarModel({
 
         // Custom Audi RS6 Calibrations per rim
         if (modelPathKey === "audi/audi.glb" && rimFileName) {
-            if (["DRX_213.glb", "DRX_204.glb"].includes(rimFileName)) {
+            if (["DRX_213.glb", "DRX_204.glb", "DRX_110.glb", "DRX_114.glb"].includes(rimFileName)) {
                 return {
                     ...baseCalibration,
+                    scale: 1,
                     offsetXLeft: 0,
                     offsetXRight: 0,
                     rimFile: rimFileName,
@@ -954,11 +955,30 @@ function CarModel({
                     rimFile: rimFileName,
                 };
             }
-            if (rimFileName === "DRX_314.glb") {
+            if (["DRX_314.glb", "DRX_311.glb"].includes(rimFileName)) {
                 return {
                     ...baseCalibration,
-                    offsetXLeft: 0.009,
-                    offsetXRight: -0.009,
+                    scale: 0.99,
+                    offsetXLeft: 0,
+                    offsetXRight: 0,
+                    rimFile: rimFileName,
+                };
+            }
+            if (rimFileName === "DRX_105.glb") {
+                return {
+                    ...baseCalibration,
+                    scale: 1,
+                    offsetXLeft: 0.0009,
+                    offsetXRight: 0,
+                    rimFile: rimFileName,
+                };
+            }
+            if (rimFileName === "DRX_113.glb") {
+                return {
+                    ...baseCalibration,
+                    scale: 1,
+                    offsetXLeft: 0.002,
+                    offsetXRight: 0,
                     rimFile: rimFileName,
                 };
             }
