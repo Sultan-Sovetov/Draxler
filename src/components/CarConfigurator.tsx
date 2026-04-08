@@ -25,7 +25,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { Check, LoaderCircle, X } from "lucide-react";
-import { Leva, useControls, button, folder } from "leva";
+import { useControls, button, folder, useCreateStore } from "leva";
 import ConfiguratorHUD from "./ConfiguratorHUD";
 import AeroLoader from "./AeroLoader";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
@@ -47,8 +47,7 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
 const DEV_RUNTIME_ENABLED = true;
-const DEV_TOOLS_QUERY_KEY = "devhud";
-const DEV_TOOLS_STORAGE_KEY = "aero:devhud";
+const DEV_UI_ENABLED = false;
 const DEV_LOGS_ENABLED = false;
 
 type Car3DOption = {
@@ -836,12 +835,14 @@ function CarModel({
     rimUrl,
     carColor,
     showDevTools,
+    controlsStore,
 }: {
     modelUrl: string;
     rimColor: string;
     rimUrl: string | null;
     carColor: string;
     showDevTools: boolean;
+    controlsStore: ReturnType<typeof useCreateStore>;
 }) {
     const { scene } = useGLTF(modelUrl, true);
     const groupRef = useRef<THREE.Group>(null);
@@ -1278,6 +1279,7 @@ function CarModel({
                 }),
             }),
         }),
+        { store: controlsStore },
         [defaultCalibration, fileName, rimFileName, showDevTools]
     );
 
@@ -1457,36 +1459,8 @@ export default function CarConfigurator() {
     const [carColor, setCarColor] = useState(
         DEFAULT_CAR.modelPath === G_CLASS_MODEL_PATH ? G_CLASS_BASE_COLOR : DEFAULT_CAR_COLOR
     );
-    const [showDevTools, setShowDevTools] = useState(false);
-
-    useEffect(() => {
-        const params = new URLSearchParams(window.location.search);
-        const override = params.get(DEV_TOOLS_QUERY_KEY);
-        let shouldShowTools = false;
-
-        try {
-            shouldShowTools = window.localStorage.getItem(DEV_TOOLS_STORAGE_KEY) === "1";
-
-            if (override === "1") {
-                window.localStorage.setItem(DEV_TOOLS_STORAGE_KEY, "1");
-                shouldShowTools = true;
-            } else if (override === "0") {
-                window.localStorage.removeItem(DEV_TOOLS_STORAGE_KEY);
-                shouldShowTools = false;
-            }
-        } catch {
-            shouldShowTools = override === "1";
-        }
-
-        setShowDevTools(shouldShowTools);
-
-        if (override === "1" || override === "0") {
-            params.delete(DEV_TOOLS_QUERY_KEY);
-            const nextQuery = params.toString();
-            const cleanedUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ""}${window.location.hash}`;
-            window.history.replaceState({}, "", cleanedUrl);
-        }
-    }, []);
+    const showDevTools = DEV_UI_ENABLED;
+    const rimControlsStore = useCreateStore();
 
     useEffect(() => {
         if (selectedCar.modelPath === G_CLASS_MODEL_PATH) {
@@ -1647,8 +1621,6 @@ export default function CarConfigurator() {
 
     return (
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
-            {showDevTools && <Leva collapsed oneLineLabels hideCopyButton />}
-
             {/* 3D Canvas */}
             <Canvas
                 dpr={[1, 2]}
@@ -1716,6 +1688,7 @@ export default function CarConfigurator() {
                         rimUrl={selectedRimUrl}
                         carColor={carColor}
                         showDevTools={showDevTools}
+                        controlsStore={rimControlsStore}
                     />
                     <ReflectiveFloor />
                 </Suspense>
