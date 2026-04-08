@@ -46,7 +46,10 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
-const IS_DEV = true;
+
+// Enable DevMode if running locally or if ?dev=true is in the URL.
+// Hides the UI panel for normal users by default.
+const IS_DEV = typeof window !== "undefined" && (window.location.search.includes("dev=true") || window.location.hostname === "localhost");
 
 type Car3DOption = {
     id: string;
@@ -271,6 +274,7 @@ const applyRimFinish = (mesh: THREE.Mesh, matIndex: number, encoded: string) => 
         } else {
             mesh.material = phys;
         }
+        std.dispose();
         mat = phys;
     }
 
@@ -283,8 +287,6 @@ const applyRimFinish = (mesh: THREE.Mesh, matIndex: number, encoded: string) => 
         target.clearcoat = clearcoat;
         target.clearcoatRoughness = clearcoat > 0 ? 0.05 : 0;
     }
-
-    mat.needsUpdate = true;
 };
 
 type RimMapping = {
@@ -372,7 +374,6 @@ function RimInjector({
         isFront: boolean;
         swapXZ: boolean;
     }>>([]);
-if (!isDev) return;
 
     useFrame(() => {
         // ALways apply rim calibration to correct fitments (removed if (!isDev) skip)
@@ -1265,7 +1266,6 @@ function CarModel({
         paintableMaterials.current.forEach((material) => {
             if ("color" in material && (material as THREE.MeshStandardMaterial).color?.isColor) {
                 (material as THREE.MeshStandardMaterial).color.set(carColor);
-                material.needsUpdate = true;
             }
         });
     }, [carColor, modelScene]);
