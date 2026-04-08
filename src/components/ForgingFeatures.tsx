@@ -75,6 +75,7 @@ const FEATURES: FeatureItem[] = [
 
 export default function ForgingFeatures() {
   const [activeId, setActiveId] = useState<FeatureId | null>(null);
+  const [isMobileLayout, setIsMobileLayout] = useState(false);
   const [connectors, setConnectors] = useState<ConnectorGeometry[]>([]);
   const [svgSize, setSvgSize] = useState({ width: 1, height: 1 });
 
@@ -91,6 +92,46 @@ export default function ForgingFeatures() {
 
   const leftFeatures = FEATURES.filter((feature) => feature.side === "left");
   const rightFeatures = FEATURES.filter((feature) => feature.side === "right");
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 960px)");
+    const syncMobileLayout = () => setIsMobileLayout(media.matches);
+
+    syncMobileLayout();
+    media.addEventListener("change", syncMobileLayout);
+
+    return () => {
+      media.removeEventListener("change", syncMobileLayout);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isMobileLayout) {
+      setActiveId((current) => current ?? FEATURES[0].id);
+      return;
+    }
+
+    setActiveId(null);
+  }, [isMobileLayout]);
+
+  const handlePointerEnter = (featureId: FeatureId) => {
+    if (isMobileLayout) return;
+    setActiveId(featureId);
+  };
+
+  const handlePointerLeave = () => {
+    if (isMobileLayout) return;
+    setActiveId(null);
+  };
+
+  const handleFeatureToggle = (featureId: FeatureId) => {
+    if (isMobileLayout) {
+      setActiveId((current) => (current === featureId ? null : featureId));
+      return;
+    }
+
+    setActiveId(featureId);
+  };
 
   useEffect(() => {
     const measure = () => {
@@ -196,10 +237,16 @@ export default function ForgingFeatures() {
               ref={(node) => {
                 blockRefs.current[feature.id] = node;
               }}
-              onMouseEnter={() => setActiveId(feature.id)}
-              onMouseLeave={() => setActiveId(null)}
+              onMouseEnter={() => handlePointerEnter(feature.id)}
+              onMouseLeave={handlePointerLeave}
+              onClick={() => handleFeatureToggle(feature.id)}
               onFocus={() => setActiveId(feature.id)}
-              onBlur={() => setActiveId(null)}
+              onBlur={handlePointerLeave}
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                handleFeatureToggle(feature.id);
+              }}
               tabIndex={0}
             >
               <h3 className="forging-feature-title">{feature.title}</h3>
@@ -229,10 +276,16 @@ export default function ForgingFeatures() {
               ref={(node) => {
                 blockRefs.current[feature.id] = node;
               }}
-              onMouseEnter={() => setActiveId(feature.id)}
-              onMouseLeave={() => setActiveId(null)}
+              onMouseEnter={() => handlePointerEnter(feature.id)}
+              onMouseLeave={handlePointerLeave}
+              onClick={() => handleFeatureToggle(feature.id)}
               onFocus={() => setActiveId(feature.id)}
-              onBlur={() => setActiveId(null)}
+              onBlur={handlePointerLeave}
+              onKeyDown={(event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                handleFeatureToggle(feature.id);
+              }}
               tabIndex={0}
             >
               <h3 className="forging-feature-title">{feature.title}</h3>

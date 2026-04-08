@@ -100,7 +100,7 @@ export default function HomeCatalogPreview() {
                 ))}
             </div>
             <div className="home-catalog-heading">
-                E X P L O R E &nbsp; C A T A L O G &nbsp; & &nbsp; P R O C E S S
+                E X P L O R E &nbsp; C A T A L O G &nbsp; & &nbsp; <span className="home-catalog-heading-process">P R O C E S S</span>
             </div>
         </section>
     );

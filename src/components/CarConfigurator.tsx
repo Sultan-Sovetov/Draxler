@@ -46,10 +46,10 @@ const LOOK_AT = new THREE.Vector3(0, 0.5, 0);
 /* ─── Scene colours ─── */
 const BG = "#f2f2f5";
 const SUN = "#fff0dd";
-
-// Enable DevMode if running locally or if ?dev=true is in the URL.
-// Hides the UI panel for normal users by default.
-const IS_DEV = typeof window !== "undefined" && (window.location.search.includes("dev=true") || window.location.hostname === "localhost");
+const DEV_RUNTIME_ENABLED = true;
+const DEV_TOOLS_QUERY_KEY = "devhud";
+const DEV_TOOLS_STORAGE_KEY = "aero:devhud";
+const DEV_LOGS_ENABLED = false;
 
 type Car3DOption = {
     id: string;
@@ -225,6 +225,23 @@ const G_CLASS_MODEL_PATH = "/car-models/mercedes/2025_mercedes-benz_g-class_amg_
 const G_CLASS_MODEL_KEY = "mercedes/2025_mercedes-benz_g-class_amg_g_63.glb";
 const G_CLASS_BASE_COLOR = "#6B6D6E";
 const DEFAULT_CAR_COLOR = "#ffffff";
+const GLS_MODEL_KEY = "mercedes/mersedes-_benz_gls.glb";
+const GLS_CUSTOM_RIM_CALIBRATIONS: Record<string, {
+    scale?: number;
+    offsetXLeft: number;
+    offsetXRight: number;
+}> = {
+    "DRX_314.glb": { offsetXLeft: 0, offsetXRight: 0 },
+    "DRX_311.glb": { scale: 1.05, offsetXLeft: 0, offsetXRight: 0 },
+    "DRX_306.glb": { scale: 0.99, offsetXLeft: -0.02, offsetXRight: 0.02 },
+    "DRX_309.glb": { scale: 0.99, offsetXLeft: -0.01, offsetXRight: 0.01 },
+    "DRX_202.glb": { scale: 0.99, offsetXLeft: 0.06, offsetXRight: -0.06 },
+    "DRX_204.glb": { scale: 1.04, offsetXLeft: 0, offsetXRight: 0 },
+    "DRX_213.glb": { scale: 1.04, offsetXLeft: 0, offsetXRight: 0 },
+    "DRX_103.glb": { scale: 0.99, offsetXLeft: 0.03, offsetXRight: -0.03 },
+    "DRX_110.glb": { scale: 1.03, offsetXLeft: -0.02, offsetXRight: 0.02 },
+    "DRX_114.glb": { scale: 0.99, offsetXLeft: -0.03, offsetXRight: 0.03 },
+};
 const RANGE_ROVER_SPORT_2023_MODEL_KEY = "landrover/land_rover_range_rover_sport_-_2023.glb";
 const RANGE_ROVER_SPORT_2023_CUSTOM_RIMS = new Set(["DRX_304.glb", "DRX_309.glb", "DRX_314.glb"]);
 const RANGE_ROVER_SPORT_2023_CUSTOM_CALIBRATION: RimCalibration = {
@@ -250,12 +267,69 @@ const DEFAULT_CAR = CAR_3D_OPTIONS.find(
  * When clearcoat > 0 and the material is MeshStandardMaterial, it upgrades
  * it to MeshPhysicalMaterial so clearcoat works.
  */
+const HEX_COLOR_PATTERN = /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i;
+
+const parseFinishChannel = (value: string | undefined, fallback: number): number => {
+    const parsed = Number.parseFloat(value ?? "");
+    if (!Number.isFinite(parsed)) return fallback;
+    return THREE.MathUtils.clamp(parsed, 0, 1);
+};
+
+const copyStandardToPhysical = (
+    source: THREE.MeshStandardMaterial,
+    target: THREE.MeshPhysicalMaterial
+) => {
+    THREE.Material.prototype.copy.call(target, source);
+
+    target.color.copy(source.color);
+    target.roughness = source.roughness;
+    target.metalness = source.metalness;
+
+    target.map = source.map;
+
+    target.lightMap = source.lightMap;
+    target.lightMapIntensity = source.lightMapIntensity;
+
+    target.aoMap = source.aoMap;
+    target.aoMapIntensity = source.aoMapIntensity;
+
+    target.emissive.copy(source.emissive);
+    target.emissiveMap = source.emissiveMap;
+    target.emissiveIntensity = source.emissiveIntensity;
+
+    target.bumpMap = source.bumpMap;
+    target.bumpScale = source.bumpScale;
+
+    target.normalMap = source.normalMap;
+    target.normalMapType = source.normalMapType;
+    target.normalScale.copy(source.normalScale);
+
+    target.displacementMap = source.displacementMap;
+    target.displacementScale = source.displacementScale;
+    target.displacementBias = source.displacementBias;
+
+    target.roughnessMap = source.roughnessMap;
+    target.metalnessMap = source.metalnessMap;
+    target.alphaMap = source.alphaMap;
+
+    target.envMap = source.envMap;
+    target.envMapIntensity = source.envMapIntensity;
+
+    target.wireframe = source.wireframe;
+    target.wireframeLinewidth = source.wireframeLinewidth;
+    target.wireframeLinecap = source.wireframeLinecap;
+    target.wireframeLinejoin = source.wireframeLinejoin;
+
+    target.flatShading = source.flatShading;
+    target.fog = source.fog;
+};
+
 const applyRimFinish = (mesh: THREE.Mesh, matIndex: number, encoded: string) => {
-    const parts = encoded.split("|");
-    const hex = parts[0];
-    const metalness = parts[1] !== undefined ? parseFloat(parts[1]) : 0.8;
-    const roughness = parts[2] !== undefined ? parseFloat(parts[2]) : 0.2;
-    const clearcoat = parts[3] !== undefined ? parseFloat(parts[3]) : 0;
+    const [rawHex, rawMetalness, rawRoughness, rawClearcoat] = `${encoded ?? ""}`.split("|");
+    const hex = HEX_COLOR_PATTERN.test(rawHex ?? "") ? rawHex : "#0A0A0A";
+    const metalness = parseFinishChannel(rawMetalness, 0.8);
+    const roughness = parseFinishChannel(rawRoughness, 0.2);
+    const clearcoat = parseFinishChannel(rawClearcoat, 0);
 
     let mat = Array.isArray(mesh.material) ? mesh.material[matIndex] : mesh.material;
     if (!mat) return;
@@ -266,27 +340,32 @@ const applyRimFinish = (mesh: THREE.Mesh, matIndex: number, encoded: string) => 
     // Upgrade to MeshPhysicalMaterial when clearcoat is requested
     if (clearcoat > 0 && !(mat as THREE.MeshPhysicalMaterial).isMeshPhysicalMaterial) {
         const phys = new THREE.MeshPhysicalMaterial();
-        phys.copy(std);
+        copyStandardToPhysical(std, phys);
         phys.clearcoat = clearcoat;
         phys.clearcoatRoughness = 0.05;
+
         if (Array.isArray(mesh.material)) {
             mesh.material[matIndex] = phys;
         } else {
             mesh.material = phys;
         }
+
         std.dispose();
         mat = phys;
     }
 
-    const target = mat as THREE.MeshPhysicalMaterial;
-    target.color?.set(hex);
+    const target = mat as THREE.MeshStandardMaterial;
+    target.color.set(hex);
     target.metalness = metalness;
     target.roughness = roughness;
 
-    if (target.isMeshPhysicalMaterial) {
-        target.clearcoat = clearcoat;
-        target.clearcoatRoughness = clearcoat > 0 ? 0.05 : 0;
+    if ((mat as THREE.MeshPhysicalMaterial).isMeshPhysicalMaterial) {
+        const physical = mat as THREE.MeshPhysicalMaterial;
+        physical.clearcoat = clearcoat;
+        physical.clearcoatRoughness = clearcoat > 0 ? 0.05 : 0;
     }
+
+    mat.needsUpdate = true;
 };
 
 type RimMapping = {
@@ -376,6 +455,7 @@ function RimInjector({
     }>>([]);
 
     useFrame(() => {
+        if (!isDev) return;
         // ALways apply rim calibration to correct fitments (removed if (!isDev) skip)
         injectedRimsRef.current.forEach(({ mesh, baseScale, basePosition, baseRotation, isLeft, isFront, swapXZ }) => {
             const offsetX = isLeft ? rimCalibration.offsetXLeft : rimCalibration.offsetXRight;
@@ -396,7 +476,7 @@ function RimInjector({
     });
 
     useEffect(() => {
-        if (!rimSourceScene || !modelScene) return;
+        if (!isDev || !rimSourceScene || !modelScene) return;
 
         const fileName = decodeURIComponent(modelUrl.split("/").pop() ?? "");
         const targetRims = (CAR_RIM_MAPPINGS as Record<string, RimMapping>)[fileName];
@@ -434,7 +514,7 @@ function RimInjector({
         // Heuristic rim diameter: ~15% of car's longest dimension
         const heuristicWheelDiameter = carMaxDim * 0.15;
 
-        if (IS_DEV) {
+        if (DEV_LOGS_ENABLED) {
             console.log(`[RimInjector] ${fileName}: carSize(${carSize.x.toFixed(2)}, ${carSize.y.toFixed(2)}, ${carSize.z.toFixed(2)}) maxDim=${carMaxDim.toFixed(2)} heurWheel=${heuristicWheelDiameter.toFixed(3)} forceFallback=${forceFallback}`);
         }
 
@@ -456,7 +536,7 @@ function RimInjector({
                     hiddenFactoryRims.push(child);
                 }
             });
-            if (IS_DEV) {
+            if (DEV_LOGS_ENABLED) {
                 console.log(`[RimHidePatterns] ${fileName}: hid ${hiddenFactoryRims.length} factory meshes by substring`);
             }
         }
@@ -475,7 +555,7 @@ function RimInjector({
                     found = child;
                 }
             });
-            if (IS_DEV && found) {
+            if (DEV_LOGS_ENABLED && found) {
                 console.log(`[RimName] "${name}" not found by exact match → matched "${(found as THREE.Object3D).name}" (sanitized)`);
             }
             return found;
@@ -544,12 +624,12 @@ function RimInjector({
                     baseScaleFactor = factoryDiameter / customDiameter;
                 } else if (customDiameter > 0 && heuristicWheelDiameter > 0) {
                     baseScaleFactor = heuristicWheelDiameter / customDiameter;
-                    if (IS_DEV) {
+                    if (DEV_LOGS_ENABLED) {
                         console.log(`[RimScale] ${fileName} ${position}: anchor too small (${factoryDiameter.toFixed(3)}), using heuristic scale`);
                     }
                 }
 
-                if (IS_DEV) {
+                if (DEV_LOGS_ENABLED) {
                     console.log(`[RimAnchor] ${fileName} ${position}: factoryDiam=${factoryDiameter.toFixed(3)} customDiam=${customDiameter.toFixed(3)} baseScale=${baseScaleFactor.toFixed(3)} worldPos(${worldCenter.x.toFixed(3)},${worldCenter.y.toFixed(3)},${worldCenter.z.toFixed(3)})`);
                 }
 
@@ -563,7 +643,7 @@ function RimInjector({
                     baseScaleFactor /= parentWS_A.x;
                 }
 
-                if (IS_DEV) {
+                if (DEV_LOGS_ENABLED) {
                     console.log(`[RimScale] ${fileName} ${position}: parentWorldScale=${parentWS_A.x.toFixed(4)} compensated baseScale=${baseScaleFactor.toFixed(4)}`);
                 }
 
@@ -588,7 +668,7 @@ function RimInjector({
                     baseScaleFactor /= parentWS_B.x;
                 }
 
-                if (IS_DEV) {
+                if (DEV_LOGS_ENABLED) {
                     console.log(
                         `[RimFallback] ${fileName} ${position}: no anchor → bbox pos(${basePosition.x.toFixed(2)}, ${basePosition.y.toFixed(2)}, ${basePosition.z.toFixed(2)}) scale=${baseScaleFactor.toFixed(3)} parentWS=${parentWS_B.x.toFixed(4)}`
                     );
@@ -605,7 +685,7 @@ function RimInjector({
 
             const finalPosition = basePosition.clone();
 
-            if (IS_DEV) {
+            if (DEV_LOGS_ENABLED) {
                 const path = (!forceFallback && factoryRim) ? "A" : "B";
                 console.log(`[Rim] ${position}: path=${path} baseScaleFactor=${baseScaleFactor.toFixed(3)} pos(${finalPosition.x.toFixed(2)},${finalPosition.y.toFixed(2)},${finalPosition.z.toFixed(2)})`);
             }
@@ -689,18 +769,29 @@ function RimInjector({
 
             injectedRimsRef.current = [];
         };
-    }, [modelScene, modelUrl, rimSourceScene]);
+    }, [isDev, modelScene, modelUrl, rimSourceScene]);
 
     useEffect(() => {
+        if (!isDev) return;
         injectedRimsRef.current.forEach(({ mesh }) => {
+            if (!mesh?.parent) return;
+
             mesh.traverse((child: THREE.Object3D) => {
                 const m = child as THREE.Mesh;
-                if (!m.isMesh) return;
-                const mats = Array.isArray(m.material) ? m.material : [m.material];
-                mats.forEach((_mat, idx) => applyRimFinish(m, idx, rimColor));
+                if (!m.isMesh || !m.material) return;
+
+                if (Array.isArray(m.material)) {
+                    m.material.forEach((material, idx) => {
+                        if (!material) return;
+                        applyRimFinish(m, idx, rimColor);
+                    });
+                    return;
+                }
+
+                applyRimFinish(m, 0, rimColor);
             });
         });
-    }, [rimColor]);
+    }, [isDev, rimColor]);
 
     return null;
 }
@@ -744,11 +835,13 @@ function CarModel({
     rimColor,
     rimUrl,
     carColor,
+    showDevTools,
 }: {
     modelUrl: string;
     rimColor: string;
     rimUrl: string | null;
     carColor: string;
+    showDevTools: boolean;
 }) {
     const { scene } = useGLTF(modelUrl, true);
     const groupRef = useRef<THREE.Group>(null);
@@ -768,7 +861,7 @@ function CarModel({
 
         /* Phase 1 — Data-driven material fixes (chrome, glass, rubber, etc.) */
         const fixCount = applyMaterialFixes(cloned, fName);
-        if (IS_DEV && fixCount > 0) {
+        if (DEV_LOGS_ENABLED && fixCount > 0) {
             console.log(`[MaterialFix] ${fName}: ${fixCount} material(s) fixed`);
         }
 
@@ -885,7 +978,7 @@ function CarModel({
                 });
             });
 
-            if (IS_DEV) {
+            if (DEV_LOGS_ENABLED) {
                 console.log("[HardFix] Brabus tires Object_356/Object_364 forced to opaque black rubber");
             }
         }
@@ -927,7 +1020,7 @@ function CarModel({
                 });
             });
 
-            if (IS_DEV) {
+            if (DEV_LOGS_ENABLED) {
                 console.log("[HardFix] G-Class tires Object_601/615/643/629 forced to opaque black rubber");
             }
         }
@@ -1070,6 +1163,17 @@ function CarModel({
             }
         }
 
+        if (modelPathKey === GLS_MODEL_KEY && rimFileName) {
+            const glsCustomCalibration = GLS_CUSTOM_RIM_CALIBRATIONS[rimFileName];
+            if (glsCustomCalibration) {
+                return {
+                    ...baseCalibration,
+                    ...glsCustomCalibration,
+                    rimFile: rimFileName,
+                };
+            }
+        }
+
         const shouldUseRangeRoverCustomCalibration =
             modelPathKey === RANGE_ROVER_SPORT_2023_MODEL_KEY
             && !!rimFileName
@@ -1110,7 +1214,7 @@ function CarModel({
             }),
             Actions: folder({
                 "Copy Config": button((get) => {
-                    if (!IS_DEV) return;
+                    if (!showDevTools) return;
 
                     const carName = modelUrl.split("/").pop() ?? fileName;
                     const rimName = rimUrl ? rimUrl.split("/").pop() ?? "unknown_rim" : null;
@@ -1168,17 +1272,17 @@ function CarModel({
                     });
                 }),
                 "Log Meshes": button(() => {
-                    if (!IS_DEV) return;
+                    if (!showDevTools) return;
                     const entries = logMeshInventory(modelScene, fileName);
                     alert(`📊 ${entries.length} meshes logged to console. Template copied to clipboard.`);
                 }),
             }),
         }),
-        [defaultCalibration, fileName, rimFileName]
+        [defaultCalibration, fileName, rimFileName, showDevTools]
     );
 
     const activeRimCalibration = useMemo<RimCalibration>(() => {
-        if (!IS_DEV) {
+        if (!DEV_RUNTIME_ENABLED) {
             return defaultCalibration;
         }
 
@@ -1207,7 +1311,7 @@ function CarModel({
     ]);
 
     useEffect(() => {
-        if (!IS_DEV) return;
+        if (!DEV_RUNTIME_ENABLED) return;
 
         setRimControls({
             scale: defaultCalibration.scale,
@@ -1266,6 +1370,7 @@ function CarModel({
         paintableMaterials.current.forEach((material) => {
             if ("color" in material && (material as THREE.MeshStandardMaterial).color?.isColor) {
                 (material as THREE.MeshStandardMaterial).color.set(carColor);
+                material.needsUpdate = true;
             }
         });
     }, [carColor, modelScene]);
@@ -1281,7 +1386,7 @@ function CarModel({
                         rimColor={rimColor}
                         modelUrl={modelUrl}
                         modelScene={modelScene}
-                        isDev={IS_DEV}
+                        isDev={DEV_RUNTIME_ENABLED}
                         rimCalibration={activeRimCalibration}
                     />
                 </Suspense>
@@ -1352,6 +1457,36 @@ export default function CarConfigurator() {
     const [carColor, setCarColor] = useState(
         DEFAULT_CAR.modelPath === G_CLASS_MODEL_PATH ? G_CLASS_BASE_COLOR : DEFAULT_CAR_COLOR
     );
+    const [showDevTools, setShowDevTools] = useState(false);
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search);
+        const override = params.get(DEV_TOOLS_QUERY_KEY);
+        let shouldShowTools = false;
+
+        try {
+            shouldShowTools = window.localStorage.getItem(DEV_TOOLS_STORAGE_KEY) === "1";
+
+            if (override === "1") {
+                window.localStorage.setItem(DEV_TOOLS_STORAGE_KEY, "1");
+                shouldShowTools = true;
+            } else if (override === "0") {
+                window.localStorage.removeItem(DEV_TOOLS_STORAGE_KEY);
+                shouldShowTools = false;
+            }
+        } catch {
+            shouldShowTools = override === "1";
+        }
+
+        setShowDevTools(shouldShowTools);
+
+        if (override === "1" || override === "0") {
+            params.delete(DEV_TOOLS_QUERY_KEY);
+            const nextQuery = params.toString();
+            const cleanedUrl = `${window.location.pathname}${nextQuery ? `?${nextQuery}` : ""}${window.location.hash}`;
+            window.history.replaceState({}, "", cleanedUrl);
+        }
+    }, []);
 
     useEffect(() => {
         if (selectedCar.modelPath === G_CLASS_MODEL_PATH) {
@@ -1512,7 +1647,7 @@ export default function CarConfigurator() {
 
     return (
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
-            {IS_DEV && <Leva collapsed oneLineLabels hideCopyButton />}
+            {showDevTools && <Leva collapsed oneLineLabels hideCopyButton />}
 
             {/* 3D Canvas */}
             <Canvas
@@ -1580,6 +1715,7 @@ export default function CarConfigurator() {
                         rimColor={selectedFinishColor}
                         rimUrl={selectedRimUrl}
                         carColor={carColor}
+                        showDevTools={showDevTools}
                     />
                     <ReflectiveFloor />
                 </Suspense>

@@ -418,7 +418,7 @@ export default function ConfiguratorHUD({
                                     {/* ── Vehicle section ── */}
                                     {openSection === "vehicle" && (
                                         <div className="chud-section-content">
-                                            <div className="grid grid-cols-3 gap-2">
+                                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                                                 {carBrands.map((brand) => {
                                                     const isActiveBrand = selectedBrand === brand.name;
                                                     const logoScale = BRAND_LOGO_SCALE_BY_NAME[brand.name] ?? 1;
@@ -472,7 +472,7 @@ export default function ConfiguratorHUD({
                                     {/* ── Wheels section ── */}
                                     {openSection === "wheels" && (
                                         <div className="chud-section-content">
-                                            <div className="mb-4 grid grid-cols-3 gap-2">
+                                            <div className="mb-4 grid grid-cols-3 gap-1.5 sm:gap-2">
                                                 {WHEEL_CATEGORIES.map((category) => (
                                                     <button
                                                         key={category}
@@ -526,7 +526,7 @@ export default function ConfiguratorHUD({
                                                                 height={235}
                                                                 sizes="320px"
                                                                 quality={72}
-                                                                className="h-[200px] w-full object-contain"
+                                                                className="h-[150px] w-full object-contain sm:h-[180px] md:h-[200px]"
                                                             />
                                                         </div>
                                                         <div className="chud-wheel-card-name">
@@ -542,7 +542,7 @@ export default function ConfiguratorHUD({
                                     {openSection === "cars" && (
                                         <div className="chud-section-content">
                                             <div className="chud-subsection-label">Brand / Model</div>
-                                            <div className="configurator-scrollbar max-h-[420px] space-y-2 overflow-y-auto pr-1">
+                                            <div className="configurator-scrollbar max-h-[300px] space-y-2 overflow-y-auto pr-1 sm:max-h-[420px]">
                                                 {carGroups.map((group) => {
                                                     const isOpen = openCarBrand === group.brand;
 
@@ -627,7 +627,7 @@ export default function ConfiguratorHUD({
                                     {openSection === "finish" && (
                                         <div className="chud-section-content">
                                             <div className="chud-subsection-label">Signature Finishes</div>
-                                            <div className="grid grid-cols-4 gap-2">
+                                            <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                                                 {SIGNATURE_FINISHES.map((finish) => {
                                                     const isActive = selectedFinishColor === finish.value;
                                                     return (

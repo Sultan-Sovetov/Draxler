@@ -1,0 +1,51 @@
+{ name: "GLS", file: "mercedes/mersedes-_benz_gls.glb" }:
+DRX-314:
+OffsetXleft: 0.00
+OffsetXright: 0.00
+
+DRX-311:
+scale: 1.05
+OffsetXleft: 0.00
+OffsetXright: 0.00
+
+DRX-306:
+scale: 0.99
+OffsetXleft: -0.02
+OffsetXright: 0.02
+
+DRX-309:
+scale: 0.99
+OffsetXleft: -0.01
+OffsetXright: 0.01
+
+
+DRX-202:
+scale: 0.99
+OffsetXleft: 0.06
+OffsetXright: -0.06
+
+DRX-204:
+scale: 1.04
+OffsetXleft: 0.00
+OffsetXright: 0.00
+
+DRX-213:
+scale: 1.04
+OffsetXleft: 0.00
+OffsetXright: 0.00
+
+DRX-103:
+scale: 0.99
+OffsetXleft: 0.03
+OffsetXright: -0.03
+
+DRX-110:
+scale: 1.03
+OffsetXleft: -0.02
+OffsetXright: 0.02
+
+DRX-114:
+scale: 0.99
+OffsetXleft: -0.03
+OffsetXright: 0.03
+
