@@ -2388,9 +2388,9 @@ html.lenis body {
 .chud-finish-name {
   display: block;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.58rem;
+  font-size: 0.50rem;
   font-weight: 400;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.7);
 }
@@ -5439,5 +5439,58 @@ html.lenis body {
 
   .seo-accordion-body {
     font-size: 0.88rem;
+  }
+}
+
+/* ================== GLOBAL MOBILE FIXES ================== */
+@media (max-width: 900px) {
+  /* Forging Features text fixes */
+  .forging-feature-description {
+    font-size: 0.85rem !important;
+    line-height: 1.5 !important;
+  }
+  .forging-features-title {
+    font-size: 0.85rem !important;
+    letter-spacing: 0.20em !important;
+  }
+
+  /* HUD fixes */
+  .chud-container {
+    bottom: 1rem !important;
+    right: 1rem !important;
+    width: calc(100% - 2rem) !important;
+  }
+  .chud-toolbar {
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+    justify-content: center !important;
+    padding: 0.5rem !important;
+  }
+  .chud-panel {
+    bottom: 4.5rem !important;
+    max-height: 50vh !important;
+  }
+  
+  /* Footer Fixes */
+  .footer-main {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 2rem !important;
+  }
+  .footer-cta {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0px 0px 20px 0px !important;
+  }
+  .footer-brand-assets {
+    margin-left: 0 !important;
+    align-items: center !important;
+  }
+  .footer-logo {
+    text-align: center !important;
+  }
+  .footer-tagline {
+    text-align: center !important;
   }
 }
