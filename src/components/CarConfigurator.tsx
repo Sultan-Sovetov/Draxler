@@ -981,19 +981,63 @@ function CarModel({
         }
 
         // Custom McLaren 720S Spider Calibration per rim
-        if (modelPathKey === "mclaren/mclaren_720S_spider.glb" && rimFileName === "DRX_213.glb") {
-            return {
-                ...baseCalibration,
-                scale: 0.96,
-                offsetY: 0,
-                rotYLeft: 90,
-                rotYRight: -90,
-                offsetXLeft: -0.03,
-                offsetXRight: 0.04,
-                offsetZFront: 0,
-                offsetZRear: 0,
-                rimFile: rimFileName,
-            };
+        if (modelPathKey === "mclaren/mclaren_720S_spider.glb" && rimFileName) {
+            if (rimFileName === "DRX_204.glb") {
+                return {
+                    ...baseCalibration,
+                    scale: 0.95,
+                    offsetY: 0,
+                    rotYLeft: 90,
+                    rotYRight: -90,
+                    offsetXLeft: -0.02,
+                    offsetXRight: 0.02,
+                    offsetZFront: 0,
+                    offsetZRear: 0,
+                    rimFile: rimFileName,
+                };
+            }
+            if (rimFileName === "DRX_213.glb") {
+                return {
+                    ...baseCalibration,
+                    scale: 0.96,
+                    offsetY: 0,
+                    rotYLeft: 90,
+                    rotYRight: -90,
+                    offsetXLeft: -0.03,
+                    offsetXRight: 0.04,
+                    offsetZFront: 0,
+                    offsetZRear: 0,
+                    rimFile: rimFileName,
+                };
+            }
+            if (rimFileName === "DRX_103.glb") {
+                return {
+                    ...baseCalibration,
+                    scale: 0.96,
+                    offsetY: 0,
+                    rotYLeft: 90,
+                    rotYRight: -90,
+                    offsetXLeft: 0.02,
+                    offsetXRight: -0.02,
+                    offsetZFront: 0,
+                    offsetZRear: 0,
+                    rimFile: rimFileName,
+                };
+            }
+            if (["DRX_110.glb", "DRX_114.glb"].includes(rimFileName)) {
+                return {
+                    ...baseCalibration,
+                    scale: 0.94,
+                    offsetY: 0,
+                    rotYLeft: 90,
+                    rotYRight: -90,
+                    offsetXLeft: -0.03,
+                    offsetXRight: 0.03,
+                    offsetZFront: 0,
+                    offsetZRear: 0,
+                    rimFile: rimFileName,
+                };
+            }
         }
 
         const shouldUseRangeRoverCustomCalibration =
