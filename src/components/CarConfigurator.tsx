@@ -955,7 +955,16 @@ function CarModel({
                     rimFile: rimFileName,
                 };
             }
-            if (["DRX_314.glb", "DRX_311.glb"].includes(rimFileName)) {
+            if (rimFileName === "DRX_302.glb") {
+                return {
+                    ...baseCalibration,
+                    scale: 1.02,
+                    offsetXLeft: 0.004,
+                    offsetXRight: -0.003,
+                    rimFile: rimFileName,
+                };
+            }
+            if (["DRX_314.glb", "DRX_311.glb", "DRX_304.glb"].includes(rimFileName)) {
                 return {
                     ...baseCalibration,
                     scale: 0.99,
