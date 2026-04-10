@@ -270,10 +270,14 @@ export default function ConfiguratorHUD({
     const [openVehicleBrand, setOpenVehicleBrand] = useState<string | null>(carGroups[0]?.brand ?? null);
     const [selectedWheelCategory, setSelectedWheelCategory] = useState<(typeof WHEEL_CATEGORIES)[number]>("Off-Road");
     const [selectedWheelModel, setSelectedWheelModel] = useState<string>("DRX-301");
+    const [showCustomBodyColor, setShowCustomBodyColor] = useState(false);
     const [showCustomFinish, setShowCustomFinish] = useState(false);
     const [openCarBrand, setOpenCarBrand] = useState<string | null>(carGroups[0]?.brand ?? null);
     const initialHsl = useMemo(() => hexToHsl(selectedFinishColor.split("|")[0]), [selectedFinishColor]);
     const [customHuePercent, setCustomHuePercent] = useState(Math.round((initialHsl.h / 360) * 100));
+    const [customBodyHuePercent, setCustomBodyHuePercent] = useState(
+        () => Math.round((hexToHsl(carColor).h / 360) * 100)
+    );
 
     const carBrands = useMemo<CarBrand[]>(
         () => carGroups
@@ -323,16 +327,30 @@ export default function ConfiguratorHUD({
         setCustomHuePercent(Math.round((hsl.h / 360) * 100));
     }, [selectedFinishColor]);
 
+    useEffect(() => {
+        const hsl = hexToHsl(carColor);
+        setCustomBodyHuePercent(Math.round((hsl.h / 360) * 100));
+    }, [carColor]);
+
     const hueDegrees = useMemo(() => Math.round((customHuePercent / 100) * 360), [customHuePercent]);
+    const bodyHueDegrees = useMemo(() => Math.round((customBodyHuePercent / 100) * 360), [customBodyHuePercent]);
 
     const customFinishHex = useMemo(
         () => hslToHex(hueDegrees, 100, 50),
         [hueDegrees]
     );
+    const customBodyHex = useMemo(
+        () => hslToHex(bodyHueDegrees, 100, 50),
+        [bodyHueDegrees]
+    );
 
     const signatureMatch = useMemo(
         () => SIGNATURE_FINISHES.find((finish) => finish.value === selectedFinishColor),
         [selectedFinishColor]
+    );
+    const bodyColorMatch = useMemo(
+        () => CAR_COLORS.find((color) => color.value.toLowerCase() === carColor.toLowerCase()),
+        [carColor]
     );
 
     const SECTION_TABS = [
@@ -347,66 +365,18 @@ export default function ConfiguratorHUD({
         <AnimatePresence>
             {active && (
                 <>
-                    {/* ── Icon toolbar ── */}
-                    <motion.nav
-                        className="chud-toolbar"
-                        initial={{ opacity: 0, x: -28 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -28 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                        {SECTION_TABS.map((tab, i) => {
-                            const Icon = tab.icon;
-                            const isActive = openSection === tab.key;
-                            return (
-                                <motion.button
-                                    key={tab.key}
-                                    className={`chud-icon-btn${isActive ? " chud-icon-btn--active" : ""}`}
-                                    onClick={() => setOpenSection((prev) => (prev === tab.key ? null : tab.key))}
-                                    initial={{ opacity: 0, scale: 0.7 }}
-                                    animate={{ opacity: 1, scale: 1 }}
-                                    transition={{ delay: 0.08 * i + 0.12, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                                    aria-label={tab.label}
+                    <div className="chud-control-stack">
+                        {/* ── Slide-out panel ── */}
+                        <AnimatePresence mode="wait">
+                            {openSection !== null && (
+                                <motion.aside
+                                    key={openSection}
+                                    className="chud-panel"
+                                    initial={{ opacity: 0, x: -20, scale: 0.97 }}
+                                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                                    exit={{ opacity: 0, x: -20, scale: 0.97 }}
+                                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
                                 >
-                                    <Icon size={20} strokeWidth={1.5} />
-                                    <span className="chud-icon-label">
-                                        {tab.key === "finish" ? (
-                                            <>
-                                                Rim
-                                                <br />
-                                                Color
-                                            </>
-                                        ) : tab.label}
-                                    </span>
-                                </motion.button>
-                            );
-                        })}
-
-                        <div className="chud-toolbar-divider" />
-
-                        <motion.button
-                            className="chud-icon-btn chud-icon-btn--finalize"
-                            onClick={onOpenFinalize}
-                            initial={{ opacity: 0, scale: 0.7 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.5, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                            aria-label="Finalize"
-                        >
-                            <span className="chud-finalize-text">Finalize</span>
-                        </motion.button>
-                    </motion.nav>
-
-                    {/* ── Slide-out panel ── */}
-                    <AnimatePresence mode="wait">
-                        {openSection !== null && (
-                            <motion.aside
-                                key={openSection}
-                                className="chud-panel"
-                                initial={{ opacity: 0, x: -20, scale: 0.97 }}
-                                animate={{ opacity: 1, x: 0, scale: 1 }}
-                                exit={{ opacity: 0, x: -20, scale: 0.97 }}
-                                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                            >
                                 <div className="chud-panel-header">
                                     <h3 className="chud-panel-title">{SECTION_TABS.find(t => t.key === openSection)?.label}</h3>
                                 </div>
@@ -620,6 +590,69 @@ export default function ConfiguratorHUD({
                                                     );
                                                 })}
                                             </div>
+
+                                            <div className="chud-custom-finish">
+                                                <button
+                                                    onClick={() => setShowCustomBodyColor((prev) => !prev)}
+                                                    className="chud-custom-finish-toggle"
+                                                >
+                                                    <span className="flex items-center gap-2">
+                                                        <Palette size={14} />
+                                                        Custom
+                                                    </span>
+                                                    <span className="font-mono text-[12px] tracking-[0.08em] text-white/55">{carColor.toUpperCase()}</span>
+                                                </button>
+
+                                                <AnimatePresence initial={false}>
+                                                    {showCustomBodyColor && (
+                                                        <motion.div
+                                                            initial={{ height: 0, opacity: 0 }}
+                                                            animate={{ height: "auto", opacity: 1 }}
+                                                            exit={{ height: 0, opacity: 0 }}
+                                                            transition={{ duration: 0.2 }}
+                                                            className="overflow-hidden"
+                                                        >
+                                                            <div className="mt-3 space-y-3">
+                                                                <div
+                                                                    className="h-10 w-full rounded-lg border border-white/10"
+                                                                    style={{ background: customBodyHex }}
+                                                                />
+                                                                <label className="block text-[10px] uppercase tracking-[0.18em] text-white/45">
+                                                                    Hue Spectrum
+                                                                    <input
+                                                                        type="range"
+                                                                        min={0}
+                                                                        max={100}
+                                                                        value={customBodyHuePercent}
+                                                                        onChange={(event) => {
+                                                                            const nextPercent = Number(event.target.value);
+                                                                            setCustomBodyHuePercent(nextPercent);
+                                                                            const nextHue = Math.round((nextPercent / 100) * 360);
+                                                                            setCarColor(hslToHex(nextHue, 100, 50));
+                                                                        }}
+                                                                        className="configurator-hue-slider mt-2 h-2 w-full cursor-pointer appearance-none rounded-full"
+                                                                    />
+                                                                </label>
+
+                                                                <div className="chud-live-color">
+                                                                    <span>Live Color</span>
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span
+                                                                            className="h-4 w-4 rounded-full border border-white/20"
+                                                                            style={{ background: customBodyHex }}
+                                                                        />
+                                                                        <span className="font-mono text-[12px] tracking-[0.08em] text-white/65">{customBodyHex}</span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </motion.div>
+                                                    )}
+                                                </AnimatePresence>
+                                            </div>
+
+                                            <div className="chud-selected-finish">
+                                                {bodyColorMatch ? `Selected: ${bodyColorMatch.name}` : "Selected: Custom Body Color"}
+                                            </div>
                                         </div>
                                     )}
 
@@ -711,9 +744,59 @@ export default function ConfiguratorHUD({
                                         </div>
                                     )}
                                 </div>
-                            </motion.aside>
-                        )}
-                    </AnimatePresence>
+                                </motion.aside>
+                            )}
+                        </AnimatePresence>
+
+                        {/* ── Icon toolbar ── */}
+                        <motion.nav
+                            className="chud-toolbar"
+                            initial={{ opacity: 0, x: -28 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            exit={{ opacity: 0, x: -28 }}
+                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                            {SECTION_TABS.map((tab, i) => {
+                                const Icon = tab.icon;
+                                const isActive = openSection === tab.key;
+                                return (
+                                    <motion.button
+                                        key={tab.key}
+                                        className={`chud-icon-btn${isActive ? " chud-icon-btn--active" : ""}`}
+                                        onClick={() => setOpenSection((prev) => (prev === tab.key ? null : tab.key))}
+                                        initial={{ opacity: 0, scale: 0.7 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        transition={{ delay: 0.08 * i + 0.12, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                        aria-label={tab.label}
+                                    >
+                                        <Icon size={20} strokeWidth={1.5} />
+                                        <span className="chud-icon-label">
+                                            {tab.key === "finish" ? (
+                                                <>
+                                                    Rim
+                                                    <br />
+                                                    Color
+                                                </>
+                                            ) : tab.label}
+                                        </span>
+                                    </motion.button>
+                                );
+                            })}
+
+                            <div className="chud-toolbar-divider" />
+
+                            <motion.button
+                                className="chud-icon-btn chud-icon-btn--finalize"
+                                onClick={onOpenFinalize}
+                                initial={{ opacity: 0, scale: 0.7 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.5, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                aria-label="Finalize"
+                            >
+                                <span className="chud-finalize-text">Finalize</span>
+                            </motion.button>
+                        </motion.nav>
+                    </div>
 
                     {/* ── Bottom instruction ── */}
                     <motion.div

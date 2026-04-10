@@ -53,6 +53,7 @@ const DEV_UI_ENABLED = false;
 const DEV_LOGS_ENABLED = false;
 const LOCAL_DEV_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 const PORSCHE_911_V2_MODEL_KEY = "porsche/porsche_911_V2_(uncompressed).glb";
+const LEXUS_GX_550H_MODEL_KEY = "lexus/2023_lexus_gx_550_h_overtrail.glb";
 const OFFSET_DECIMAL_PATTERN = /^-?\d*(?:\.\d{0,6})?$/;
 
 type Car3DOption = {
@@ -1218,6 +1219,8 @@ function CarModel({
         const useGClassLegacyPaintFallback = modelPathKey === G_CLASS_MODEL_KEY && paintAllowlist.size === 0;
         const usePorsche911V2MaterialFallback =
             normalizeModelLookupKey(modelPathKey) === normalizeModelLookupKey(PORSCHE_911_V2_MODEL_KEY);
+        const useLexusGX550hMaterialFallback =
+            normalizeModelLookupKey(modelPathKey) === normalizeModelLookupKey(LEXUS_GX_550H_MODEL_KEY);
         paintableMaterials.current = [];
 
         /* Phase 1 — Data-driven material fixes (chrome, glass, rubber, etc.) */
@@ -1248,20 +1251,20 @@ function CarModel({
                 : mesh.material
                     ? [mesh.material]
                     : [];
-            const isPorsche911V2PaintMaterial =
-                usePorsche911V2MaterialFallback
+            const isModelScopedCarPaintMaterial =
+                (usePorsche911V2MaterialFallback || useLexusGX550hMaterialFallback)
                 && originalMaterials.some((material) => /carpaint/i.test(material.name ?? ""));
             const shouldEvaluateLegacyGClassPaint =
                 useGClassLegacyPaintFallback && !mesh.userData.__materialFixed && !exclusions.has(mesh.name);
 
             // Strict allowlist by default. For G-Class, preserve legacy body paint behavior
             // when no allowlist exists yet so the historical Nardo Grey base still applies.
-            if (isAllowlistedMesh || shouldEvaluateLegacyGClassPaint || isPorsche911V2PaintMaterial) {
+            if (isAllowlistedMesh || shouldEvaluateLegacyGClassPaint || isModelScopedCarPaintMaterial) {
                 const canPaintMaterial = (material: THREE.Material): boolean => {
                     if (!("color" in material) || !(material as THREE.MeshStandardMaterial).color?.isColor) {
                         return false;
                     }
-                    if (isAllowlistedMesh || isPorsche911V2PaintMaterial) {
+                    if (isAllowlistedMesh || isModelScopedCarPaintMaterial) {
                         return true;
                     }
                     const std = material as THREE.MeshStandardMaterial;
