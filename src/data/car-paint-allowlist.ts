@@ -144,6 +144,19 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "PorschelodA_Exterior_a_RegionA_1_Hard_NonTextured_NoSkin_Geo_lodA_Exterior_a_RegionA_1_Hard_NonTextured_NoSkin_Geo_Porsche_911TurboS992_PorschePorsche_911TurboS992_2021RegionA1_0",
     "PorschelodA_Exterior_a_RegionA_1_Hard_NonTextured_Skinned_Geo_lodA_Exterior_a_RegionA_1_Hard_NonTextured_Skinned_Geo_Porsche_911TurboS9_PorschePorsche_911TurboS992_2021RegionA1_0"
   ],
+  "porsche/porsche_911_V2_(uncompressed).glb": [
+    "Plane.002",
+    "Plane.003",
+    "Plane.004",
+    "Plane.029",
+    "Plane.030",
+    "Plane.032",
+    "Plane.037",
+    "Plane.038",
+    "Plane.039",
+    "Plane.046",
+    "Plane.051"
+  ],
   "lexus/2025_lexus_lx700h.glb": [
     "LX700hDOORLQ_012_DOORLQ_012_CarPaint_LX700hCarPaint1_0",
     "LX700hDOORLH_001_DOORLH_001_CarPaint_LX700hCarPaint1_0",
@@ -257,6 +270,7 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "_2bb9de70_ef04_4377_8335_6fb345753ef4__CarPaint_0",
     "_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0",
     "_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0",
+    "_6c068811_0bb1_41f3_8bc7_a1089782a774__CarPaint_0",
     "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0"
   ],
   "toyota/2025_toyota_land_cruiser_250-v1.glb": [
@@ -266,6 +280,7 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "_2bb9de70_ef04_4377_8335_6fb345753ef4__CarPaint_0",
     "_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0",
     "_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0",
+    "_6c068811_0bb1_41f3_8bc7_a1089782a774__CarPaint_0",
     "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0"
   ],
   "rr/rolls_royce_ghost_new.glb": [

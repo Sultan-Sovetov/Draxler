@@ -451,6 +451,21 @@ export function createFixedMaterial(
 //  Per-Car Fix Data
 // ══════════════════════════════════════════════════════════════════════
 
+const RS6_EXACT_COLOR_FIX: MaterialFix = {
+    preset: "custom",
+    preserveMaps: false,
+    overrides: {
+        color: "#ffffff",
+        metalness: 0.15,
+        roughness: 0.48,
+        clearcoat: 0.55,
+        clearcoatRoughness: 0.18,
+        envMapIntensity: 0.9,
+        emissive: "#000000",
+        emissiveIntensity: 0,
+    },
+};
+
 export const CAR_MATERIAL_FIXES: Record<string, CarMaterialFixConfig> = {
     /*
      * ── GLOBAL FALLBACK ──
@@ -508,6 +523,25 @@ export const CAR_MATERIAL_FIXES: Record<string, CarMaterialFixConfig> = {
                 preserveMaps: false,
             },
         },
+    },
+
+    // RS6 body paint: force neutral paint material so selected color is accurate.
+    "audi.glb": {
+        byMesh: {
+            Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            Hood_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            Trunk_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            Audi_RS6Avant_2020_Modified__CSBDoorLF_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            Audi_RS6Avant_2020_Modified__CSBDoorRF_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            Audi_RS6Avant_2020_Modified__CSBDoorLR_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            Audi_RS6Avant_2020_Modified__CSBDoorRR_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+        },
+        byMeshPattern: [
+            {
+                pattern: "^Audi_RS6Avant_2020_Modified__CSB(?::)?Door(?:LF|RF|LR|RR)_Paint_CarPaint1_0$",
+                fix: RS6_EXACT_COLOR_FIX,
+            },
+        ],
     },
 
     // ── Add more cars below — use "Log Meshes" in Leva to identify broken materials ──
