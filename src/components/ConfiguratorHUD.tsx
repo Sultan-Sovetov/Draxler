@@ -365,18 +365,66 @@ export default function ConfiguratorHUD({
         <AnimatePresence>
             {active && (
                 <>
-                    <div className="chud-control-stack">
-                        {/* ── Slide-out panel ── */}
-                        <AnimatePresence mode="wait">
-                            {openSection !== null && (
-                                <motion.aside
-                                    key={openSection}
-                                    className="chud-panel"
-                                    initial={{ opacity: 0, x: -20, scale: 0.97 }}
-                                    animate={{ opacity: 1, x: 0, scale: 1 }}
-                                    exit={{ opacity: 0, x: -20, scale: 0.97 }}
-                                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    {/* ── Icon toolbar ── */}
+                    <motion.nav
+                        className="chud-toolbar"
+                        initial={{ opacity: 0, x: -28 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -28 }}
+                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        {SECTION_TABS.map((tab, i) => {
+                            const Icon = tab.icon;
+                            const isActive = openSection === tab.key;
+                            return (
+                                <motion.button
+                                    key={tab.key}
+                                    className={`chud-icon-btn${isActive ? " chud-icon-btn--active" : ""}`}
+                                    onClick={() => setOpenSection((prev) => (prev === tab.key ? null : tab.key))}
+                                    initial={{ opacity: 0, scale: 0.7 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: 0.08 * i + 0.12, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                                    aria-label={tab.label}
                                 >
+                                    <Icon size={20} strokeWidth={1.5} />
+                                    <span className="chud-icon-label">
+                                        {tab.key === "finish" ? (
+                                            <>
+                                                Rim
+                                                <br />
+                                                Color
+                                            </>
+                                        ) : tab.label}
+                                    </span>
+                                </motion.button>
+                            );
+                        })}
+
+                        <div className="chud-toolbar-divider" />
+
+                        <motion.button
+                            className="chud-icon-btn chud-icon-btn--finalize"
+                            onClick={onOpenFinalize}
+                            initial={{ opacity: 0, scale: 0.7 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.5, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            aria-label="Finalize"
+                        >
+                            <span className="chud-finalize-text">Finalize</span>
+                        </motion.button>
+                    </motion.nav>
+
+                    {/* ── Slide-out panel ── */}
+                    <AnimatePresence mode="wait">
+                        {openSection !== null && (
+                            <motion.aside
+                                key={openSection}
+                                className="chud-panel"
+                                initial={{ opacity: 0, x: -20, scale: 0.97 }}
+                                animate={{ opacity: 1, x: 0, scale: 1 }}
+                                exit={{ opacity: 0, x: -20, scale: 0.97 }}
+                                transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                            >
                                 <div className="chud-panel-header">
                                     <h3 className="chud-panel-title">{SECTION_TABS.find(t => t.key === openSection)?.label}</h3>
                                 </div>
@@ -744,59 +792,9 @@ export default function ConfiguratorHUD({
                                         </div>
                                     )}
                                 </div>
-                                </motion.aside>
-                            )}
-                        </AnimatePresence>
-
-                        {/* ── Icon toolbar ── */}
-                        <motion.nav
-                            className="chud-toolbar"
-                            initial={{ opacity: 0, x: -28 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -28 }}
-                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                            {SECTION_TABS.map((tab, i) => {
-                                const Icon = tab.icon;
-                                const isActive = openSection === tab.key;
-                                return (
-                                    <motion.button
-                                        key={tab.key}
-                                        className={`chud-icon-btn${isActive ? " chud-icon-btn--active" : ""}`}
-                                        onClick={() => setOpenSection((prev) => (prev === tab.key ? null : tab.key))}
-                                        initial={{ opacity: 0, scale: 0.7 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{ delay: 0.08 * i + 0.12, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                                        aria-label={tab.label}
-                                    >
-                                        <Icon size={20} strokeWidth={1.5} />
-                                        <span className="chud-icon-label">
-                                            {tab.key === "finish" ? (
-                                                <>
-                                                    Rim
-                                                    <br />
-                                                    Color
-                                                </>
-                                            ) : tab.label}
-                                        </span>
-                                    </motion.button>
-                                );
-                            })}
-
-                            <div className="chud-toolbar-divider" />
-
-                            <motion.button
-                                className="chud-icon-btn chud-icon-btn--finalize"
-                                onClick={onOpenFinalize}
-                                initial={{ opacity: 0, scale: 0.7 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.5, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                                aria-label="Finalize"
-                            >
-                                <span className="chud-finalize-text">Finalize</span>
-                            </motion.button>
-                        </motion.nav>
-                    </div>
+                            </motion.aside>
+                        )}
+                    </AnimatePresence>
 
                     {/* ── Bottom instruction ── */}
                     <motion.div
