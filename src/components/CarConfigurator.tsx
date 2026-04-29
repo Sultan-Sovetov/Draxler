@@ -49,9 +49,8 @@ const BG = "#f2f2f5";
 const SUN = "#fff0dd";
 const DEV_RUNTIME_ENABLED = true;
 // UI toggle only: keep runtime true so wheel fitment logic remains active.
-const DEV_UI_ENABLED = false;
+const DEV_UI_ENABLED = true;
 const DEV_LOGS_ENABLED = false;
-const LOCAL_DEV_HOSTS = new Set(["localhost", "127.0.0.1", "::1", "[::1]"]);
 const PORSCHE_911_V2_MODEL_KEY = "porsche/porsche_911_V2_(uncompressed).glb";
 const LEXUS_GX_550H_MODEL_KEY = "lexus/2023_lexus_gx_550_h_overtrail.glb";
 const OFFSET_DECIMAL_PATTERN = /^-?\d*(?:\.\d{0,6})?$/;
@@ -724,10 +723,6 @@ const MODEL_SPECIFIC_MESHES_TO_REMOVE: Record<string, readonly string[]> = {
 
 const normalizeModelLookupKey = (value: string): string => {
     return decodeURIComponent(value ?? "").replace(/^\/car-models\//, "").trim().toLowerCase();
-};
-
-const isLocalDevHost = (hostname: string): boolean => {
-    return LOCAL_DEV_HOSTS.has(hostname.toLowerCase());
 };
 
 const formatOffsetSix = (value: number): string => {
@@ -2058,14 +2053,8 @@ export default function CarConfigurator() {
     const [carColor, setCarColor] = useState(
         DEFAULT_CAR.modelPath === G_CLASS_MODEL_PATH ? G_CLASS_BASE_COLOR : DEFAULT_CAR_COLOR
     );
-    const [isLocalDevEnvironment, setIsLocalDevEnvironment] = useState(false);
-    const showDevTools = DEV_UI_ENABLED && isLocalDevEnvironment;
+    const showDevTools = DEV_UI_ENABLED;
     const rimControlsStore = useCreateStore();
-
-    useEffect(() => {
-        if (typeof window === "undefined") return;
-        setIsLocalDevEnvironment(isLocalDevHost(window.location.hostname));
-    }, []);
 
     useEffect(() => {
         if (selectedCar.modelPath === G_CLASS_MODEL_PATH) {
