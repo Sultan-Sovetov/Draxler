@@ -70,26 +70,31 @@ export default function Footer() {
                     <div className="footer-links">
                         <Link href="/catalog" className="footer-link">Catalog</Link>
                         <Link href="/#configurator" className="footer-link">Configurator</Link>
-                        <Link href="/#contact" className="footer-link">Contact</Link>
+                        <a href="mailto:sales@draxlerwheels.com" className="footer-link">Contact</a>
                     </div>
 
                     <div className="footer-brand-assets">
                         <div className="footer-socials">
-                            <a href="#" className="footer-social-icon footer-social-icon--instagram" aria-label="Instagram">
+                            <a
+                                href="https://www.instagram.com/draxler.wheels?igsh=M2pjdHE4Y2ZqeHJy"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="footer-social-icon footer-social-icon--instagram"
+                                aria-label="Instagram"
+                            >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                                     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
                                     <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
                                 </svg>
                             </a>
-                            <a href="#" className="footer-social-icon footer-social-icon--linkedin" aria-label="LinkedIn">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                                    <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
-                                    <rect x="2" y="9" width="4" height="12" />
-                                    <circle cx="4" cy="4" r="2" />
-                                </svg>
-                            </a>
-                            <a href="#" className="footer-social-icon footer-social-icon--whatsapp" aria-label="WhatsApp">
+                            <a
+                                href="https://wa.me/77027543948"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="footer-social-icon footer-social-icon--whatsapp"
+                                aria-label="WhatsApp"
+                            >
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M3 21l1.65-3.8A9 9 0 1 1 12 21a8.96 8.96 0 0 1-3.95-.92L3 21z" />
                                     <path d="M9 10a.5.5 0 0 0 0 1a5 5 0 0 0 5 5a.5.5 0 0 0 1 0v-1.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.5a3 3 0 0 1-3-3h.5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H9z" />
@@ -114,7 +119,7 @@ export default function Footer() {
                                 <span>Mastercard</span>
                             </span>
                             <span className="footer-payment-badge footer-payment-badge--paypal">PayPal</span>
-                            <span className="footer-payment-badge footer-payment-badge--bybit">Bybit</span>
+                            <span className="footer-payment-badge footer-payment-badge--bybit">Crypto</span>
                             <span className="footer-payment-badge footer-payment-badge--wise">Wise</span>
                         </div>
                     </div>
@@ -126,12 +131,12 @@ export default function Footer() {
 
                 <aside className="footer-origin" aria-label="Production origin">
                     <div className="footer-divider footer-divider--origin" />
-                    <p className="footer-origin-label">Crafted in Kazakhstan</p>
+                    <p className="footer-origin-label">Our Factory</p>
                     <p className="footer-origin-text">
-                        From forged monoblocks to full bespoke commissions, every wheel is built in-house by our team in Kazakhstan.
+                        Liuyang Environmental Protection Technology Demonstration Park, Zhen Tou Town, Liuyang City, Changsha City, Hunan Province.
                     </p>
                     <p className="footer-origin-text footer-origin-text--secondary">
-                        Precision machining, hand finishing, and strict quality checks shape each set before shipment.
+                        Crafted in Kazakhstan &mdash; About our Factory.
                     </p>
                 </aside>
             </div>

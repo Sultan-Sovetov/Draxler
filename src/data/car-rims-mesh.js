@@ -10,7 +10,7 @@ RR: ["SM_Hub_R_0000_001_SM_Hub_R_0000_MAT_Tire_Hub_001"]
 "bmw_m5_2024.glb": {
 FL: ["Object_77", "Object_79"],
 RL: ["Object_272", "Object_268"],
-FR: ["Object_208"],
+FR: ["Object_208", "Object_210"],
 RR: ["Object_156"]
 },
 
@@ -71,7 +71,16 @@ RR: ["Object_496", "Object_493", "Object_499"]
 },
 
 "land_rover_range_rover_sport_-_2023.glb": {
-FL: ["Object_2603"],
+FL: [
+"Object_2603",
+"Object_2671", "Object_2675", "Object_2681", "Object_2687",
+"Object_2109", "Object_2111", "Object_2113", "Object_2115",
+"Object_2117", "Object_2119", "Object_2121", "Object_2123",
+"Object_2125", "Object_2127",
+"Object_2763", "Object_2765", "Object_2767",
+"Object_2673", "Object_2683", "Object_2679", "Object_2685",
+"Object_10339", "Object_10361"
+],
 RL: ["Object_2609"],
 FR: ["Object_2607"],
 RR: ["Object_2605"]
@@ -362,17 +371,18 @@ RR: ["rrghost_wheel_c003"]
 },
 
 "land_rover_defender-v1.glb": {
-FL: ["Object_195"],
-RL: ["Object_225"],
-FR: ["Object_233"],
-RR: ["Object_239"]
+FL: ["Object_195", "Object_199"],
+RL: ["Object_225", "Object_227"],
+FR: ["Object_233", "Object_237"],
+RR: ["Object_239", "Object_231"]
 },
 
 "2025_lexus_lx700h.glb": {
 FL: [
 "LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D_LX700hMETAL_CHROME_D1_0",
 "LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D3_LX700hBlack_Metal1_0",
-"LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D2_LX700hLogo1_0"
+"LX700hLZ_4_001_LZ_4_001_METAL_CHROME_D2_LX700hLogo1_0",
+"LX700hLZ_SCP_LZ_SCP_Black_Metal_LX700hBlack_Metal1_0"
 ],
 RL: [
 "LX700hLZ_4_002_LZ_4_002_METAL_CHROME_D_LX700hMETAL_CHROME_D1_0",
@@ -414,7 +424,7 @@ RR: ["wheel_stoc004_gls_black_chrome036_0", "wheel_stoc004_gls_kaki025_0", "whee
 
 "toyota_supra.glb": {
 FL: ["Plane074_GlossBlackpaint_0", "Plane074_metal_0"],
-RL: ["Plane018_GlossBlackpaint_0", "Plane018_GlossBlackpaint_0"],
+RL: ["Plane018_GlossBlackpaint_0", "Plane018_metal_0"],
 FR: ["Plane016_GlossBlackpaint_0", "Plane016_metal_0"],
 RR: ["Plane020_GlossBlackpaint_0", "Plane020_metal_0"]
 },
