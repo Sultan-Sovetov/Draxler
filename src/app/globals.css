@@ -1460,7 +1460,8 @@ html.lenis body {
 
 /* ========== ROADMAP ========== */
 .rdm-block {
-  padding: 5rem 0;
+  /* Reduced ~13% from 5rem to slim the block height while preserving layout. */
+  padding: 4.35rem 0;
   contain: layout style paint;
 }
 
@@ -1480,7 +1481,7 @@ html.lenis body {
   padding: 0 3rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 3.4rem;
   align-items: center;
 }
 
@@ -1495,7 +1496,7 @@ html.lenis body {
 .rdm-text {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.85rem;
 }
 
 .rdm-num {
@@ -1508,7 +1509,7 @@ html.lenis body {
 
 .rdm-title {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-size: clamp(1.75rem, 3.5vw, 3rem);
   font-weight: 800;
   line-height: 1.05;
   text-transform: uppercase;
@@ -1517,22 +1518,22 @@ html.lenis body {
 
 .rdm-desc {
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.95rem;
-  line-height: 1.75;
+  font-size: 0.9rem;
+  line-height: 1.6;
   opacity: 0.7;
   max-width: 480px;
 }
 
 .rdm-process-link {
-  margin-top: 0.5rem;
+  margin-top: 0.4rem;
   align-self: flex-start;
   font-family: Helvetica, Arial, sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   text-decoration: none;
-  padding: 0.75rem 2rem;
+  padding: 0.65rem 1.75rem;
   border: 1px solid currentColor;
   color: inherit;
   opacity: 0.82;
@@ -1551,7 +1552,8 @@ html.lenis body {
 .rdm-media {
   position: relative;
   overflow: hidden;
-  aspect-ratio: 4 / 3;
+  /* Slightly shorter aspect to bring inner image height down ~12%. */
+  aspect-ratio: 4 / 2.65;
   will-change: transform;
   cursor: pointer;
 }
@@ -2011,14 +2013,122 @@ html.lenis body {
 
 /* ========== CONFIGURATOR HUD (v2 — toolbar + slide panel) ========== */
 
-/* ── Vertical icon toolbar ── */
+/* ── Hover-reveal shell (acts as the hover trigger zone) ──
+   The shell is a transparent rectangle pinned to the left side of the
+   configurator. It captures mouseenter/leave so the HUD reveals itself when
+   the user approaches and tucks away when they move toward the car. To keep
+   the 3D scene as un-obstructed as possible we use a narrow strip when
+   collapsed, expanding only enough to cover the toolbar + panel when the user
+   is actually interacting. */
+.chud-shell {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 96px;
+  z-index: 30;
+  pointer-events: auto;
+  transition: width 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.chud-shell--visible {
+  width: 510px;
+}
+
+/* On touch devices the hover model doesn't apply; the shell only needs to
+   contain the toggle + visible HUD elements. */
+.chud-shell--touch {
+  width: 0;
+  pointer-events: none;
+}
+
+.chud-shell--touch.chud-shell--visible {
+  width: 100vw;
+  height: 100vh;
+  pointer-events: auto;
+}
+
+/* The toggle stays clickable even when the rest of the touch shell is
+   pointer-events: none. */
+.chud-shell--touch .chud-touch-toggle {
+  pointer-events: auto;
+}
+
+/* Mobile-only tap toggle (top-left of viewport). */
+.chud-touch-toggle {
+  position: fixed;
+  top: 1rem;
+  left: 1rem;
+  z-index: 36;
+  width: 42px;
+  height: 42px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 10, 14, 0.78);
+  backdrop-filter: blur(24px) saturate(1.4);
+  -webkit-backdrop-filter: blur(24px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.42);
+  transition: transform 0.2s ease, background 0.25s ease;
+}
+
+.chud-touch-toggle:active {
+  transform: scale(0.94);
+}
+
+.chud-touch-toggle:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.6);
+  outline-offset: 2px;
+}
+
+/* ── Current build summary (top of the left-stack) ──
+   Sits flush with the toolbar's left edge so Current Build / Vehicle / Sidebar
+   share the same vertical axis (Task 7 alignment). */
+.chud-current-build {
+  position: fixed;
+  top: 1.5rem;
+  left: 1.55rem;
+  z-index: 33;
+  width: min(320px, calc(100% - 3rem));
+  padding: 0.85rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(10, 10, 14, 0.82);
+  backdrop-filter: blur(32px) saturate(1.4);
+  -webkit-backdrop-filter: blur(32px) saturate(1.4);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.3);
+  will-change: opacity, transform;
+}
+
+.chud-current-build__label {
+  display: block;
+  font-size: 0.58rem;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: rgba(205, 205, 221, 0.55);
+  margin-bottom: 0.4rem;
+}
+
+.chud-current-build__title {
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: rgba(249, 249, 252, 0.92);
+  line-height: 1.35;
+  margin: 0;
+}
+
+/* ── Vertical icon toolbar ──
+   Top-anchored just below Current Build so the three blocks share the same
+   left edge and a continuous vertical line. */
 .chud-toolbar {
   position: fixed;
   left: 1.55rem;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  height: fit-content;
+  top: calc(1.5rem + 78px);
   width: 68px;
   z-index: 32;
   display: flex;
@@ -2034,6 +2144,7 @@ html.lenis body {
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 0 0.5px rgba(255, 255, 255, 0.06) inset;
+  will-change: opacity, transform;
 }
 
 /* ── Square icon button ── */
@@ -2128,14 +2239,13 @@ html.lenis body {
   color: #fff;
 }
 
-/* ── Slide-out panel ── */
+/* ── Slide-out panel ──
+   Top-anchored so its top edge lines up with the toolbar's top edge — keeps
+   the whole HUD column aligned on the same horizontal baseline. */
 .chud-panel {
   position: fixed;
   left: calc(1.55rem + 68px + 0.6rem);
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  height: fit-content;
+  top: calc(1.5rem + 78px);
   z-index: 31;
   width: 370px;
   max-height: calc(100vh - 10rem);
@@ -2151,6 +2261,7 @@ html.lenis body {
     0 0 0 0.5px rgba(255, 255, 255, 0.05) inset;
   color: #fff;
   overflow: hidden;
+  will-change: opacity, transform;
 }
 
 /* ── Panel header ── */
@@ -2543,6 +2654,50 @@ html.lenis body {
 
 /* ── Mobile responsive ── */
 @media (max-width: 768px) {
+  /* Touch-mode shell only needs to take real space when actually open. */
+  .chud-shell {
+    width: 0;
+    pointer-events: none;
+  }
+
+  .chud-shell--visible {
+    width: 100vw;
+    height: 100vh;
+    pointer-events: auto;
+  }
+
+  /* Re-enable the toggle even when the rest of the shell is pass-through. */
+  .chud-shell .chud-touch-toggle {
+    pointer-events: auto;
+  }
+
+  .chud-touch-toggle {
+    width: 40px;
+    height: 40px;
+    top: 0.85rem;
+    left: 0.85rem;
+  }
+
+  /* Current build pill becomes a compact top-center bar on phones to leave
+     room for the touch toggle. */
+  .chud-current-build {
+    left: 4rem;
+    right: 0.85rem;
+    top: 0.85rem;
+    width: auto;
+    padding: 0.6rem 0.8rem;
+    border-radius: 14px;
+  }
+
+  .chud-current-build__label {
+    margin-bottom: 0.25rem;
+    font-size: 0.5rem;
+  }
+
+  .chud-current-build__title {
+    font-size: 0.78rem;
+  }
+
   .chud-toolbar {
     left: 0;
     right: 0;
@@ -3128,29 +3283,31 @@ html.lenis body {
   width: 53px;
   height: 53px;
   border-radius: 999px;
-  background: #000;
+  /* WhatsApp brand green */
+  background: #25D366;
   border: none;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   z-index: 150;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
   opacity: 1;
   transform: translateY(0) scale(1);
-  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.25s ease;
+  transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.25s ease, background 0.25s ease;
 }
 
 .whatsapp-floating-btn:hover {
+  background: #1EBE57;
   transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.36);
+  box-shadow: 0 10px 30px rgba(37, 211, 102, 0.45);
 }
 
 .whatsapp-floating-btn__icon-wrap {
-  width: 29px;
-  height: 29px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: #fff;
-  color: #000;
+  background: transparent;
+  color: #ffffff;
   display: inline-flex;
   align-items: center;
   justify-content: center;

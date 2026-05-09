@@ -66,11 +66,11 @@ export default function Home() {
           )}
         </div>
         {/* <WheelShowcase /> */}
-        <HomeCatalogPreview />
-        <Roadmap />
         <ParallaxDivider src="/media/background_2.webp" compact>
           <ForgingFeatures />
         </ParallaxDivider>
+        <Roadmap />
+        <HomeCatalogPreview />
         {/* <ParallaxDivider reduced>
           <GlobalBespoke />
         </ParallaxDivider> */}

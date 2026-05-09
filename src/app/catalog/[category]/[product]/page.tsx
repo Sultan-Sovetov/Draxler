@@ -45,7 +45,6 @@ const SEO_SECTIONS: SeoSection[] = [
                 <ul>
                     <li>Monoblock wheels</li>
                     <li>2-piece and 3-piece modular wheels</li>
-                    <li>Duoblock wheels</li>
                     <li>Beadlock wheels for drag racing and off-road applications</li>
                 </ul>
             </>

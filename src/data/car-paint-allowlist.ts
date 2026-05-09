@@ -271,7 +271,9 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0",
     "_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0",
     "_6c068811_0bb1_41f3_8bc7_a1089782a774__CarPaint_0",
-    "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0"
+    "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0",
+    "_1811d776_ef04_4524_ae2c_baac6e1afae0__CarPaint_N2_0",
+    "76085_60160_01_shell_CarPaint_N2_0"
   ],
   "toyota/2025_toyota_land_cruiser_250-v1.glb": [
     "_150cda98_1ce1_4669_8db6_f9db82877b7f__CarPaint_0",
@@ -281,7 +283,9 @@ export const CAR_PAINT_ALLOWLIST: Record<string, string[]> = {
     "_a54e0edc_0498_4ebd_b373_6d7e5c414d11__CarPaint_0",
     "_ac6643ac_feff_4c4f_a5b9_91d2e4df2d97__CarPaint_0",
     "_6c068811_0bb1_41f3_8bc7_a1089782a774__CarPaint_0",
-    "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0"
+    "_b53a94a6_c7df_4e78_9557_6b864c50fe97__CarPaint_N2_0",
+    "_1811d776_ef04_4524_ae2c_baac6e1afae0__CarPaint_N2_0",
+    "76085_60160_01_shell_CarPaint_N2_0"
   ],
   "rr/rolls_royce_ghost_new.glb": [
     "rrghost_door_FL_rrghost_paint_0",

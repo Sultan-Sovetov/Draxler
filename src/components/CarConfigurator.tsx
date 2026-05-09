@@ -2370,21 +2370,9 @@ export default function CarConfigurator() {
                 onSelectRimUrl={(url) => setSelectedRimUrl(url)}
                 carColor={carColor}
                 setCarColor={setCarColor}
+                selectedModelLabel={selectedModel}
+                selectedWheelLabel={selectedWheelModel}
             />
-
-            <AnimatePresence>
-                {isActive && !showFinalize && (
-                    <motion.div
-                        className="car-config-summary"
-                        initial={{ opacity: 0, y: -12 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -8 }}
-                    >
-                        <span className="car-config-summary-label">Current Build</span>
-                        <h4>Your {selectedModel} on {selectedWheelModel}</h4>
-                    </motion.div>
-                )}
-            </AnimatePresence>
 
             {/* Preparing overlay – localized to this section */}
             <AnimatePresence>
