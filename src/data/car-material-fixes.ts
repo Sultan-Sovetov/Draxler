@@ -466,6 +466,45 @@ const RS6_EXACT_COLOR_FIX: MaterialFix = {
     },
 };
 
+/**
+ * Realistic metallic silver for brake discs. Slightly darker / less polished than
+ * chrome so the disc reads as cast/forged rotor metal — not white plastic.
+ */
+const BRAKE_DISC_SILVER: MaterialFix = {
+    preset: "custom",
+    preserveMaps: false,
+    overrides: {
+        color: "#c4c8cf",
+        metalness: 0.95,
+        roughness: 0.22,
+        clearcoat: 0.6,
+        clearcoatRoughness: 0.18,
+        envMapIntensity: 1.6,
+        emissive: "#000000",
+        emissiveIntensity: 0,
+    },
+};
+
+/**
+ * Body-paint fix for cars whose factory paint material is too metallic, causing
+ * the "White" body color to render as silver. Lower metalness lets pure white
+ * read as bright white without losing the lacquer look on coloured paint.
+ */
+const NEUTRAL_PAINT_FIX: MaterialFix = {
+    preset: "custom",
+    preserveMaps: false,
+    overrides: {
+        color: "#ffffff",
+        metalness: 0.18,
+        roughness: 0.42,
+        clearcoat: 0.7,
+        clearcoatRoughness: 0.12,
+        envMapIntensity: 1.0,
+        emissive: "#000000",
+        emissiveIntensity: 0,
+    },
+};
+
 export const CAR_MATERIAL_FIXES: Record<string, CarMaterialFixConfig> = {
     /*
      * ── GLOBAL FALLBACK ──
@@ -526,6 +565,7 @@ export const CAR_MATERIAL_FIXES: Record<string, CarMaterialFixConfig> = {
     },
 
     // RS6 body paint: force neutral paint material so selected color is accurate.
+    // Brake discs: switch dark factory rotors to realistic metallic silver.
     "audi.glb": {
         byMesh: {
             Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
@@ -535,13 +575,80 @@ export const CAR_MATERIAL_FIXES: Record<string, CarMaterialFixConfig> = {
             Audi_RS6Avant_2020_Modified__CSBDoorRF_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
             Audi_RS6Avant_2020_Modified__CSBDoorLR_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
             Audi_RS6Avant_2020_Modified__CSBDoorRR_Paint_CarPaint1_0: RS6_EXACT_COLOR_FIX,
+            // Brake discs — were rendering nearly black; now realistic silver.
+            polySurface28_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
+            polySurface30_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
+            polySurface31_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
+            polySurface33_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
+            polySurface34_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
+            polySurface36_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
+            polySurface37_DISK_BRAKE_DISK_0: BRAKE_DISC_SILVER,
         },
         byMeshPattern: [
             {
                 pattern: "^Audi_RS6Avant_2020_Modified__CSB(?::)?Door(?:LF|RF|LR|RR)_Paint_CarPaint1_0$",
                 fix: RS6_EXACT_COLOR_FIX,
             },
+            // Catch any additional disc meshes named polySurfaceN_DISK_BRAKE_DISK_0
+            {
+                pattern: "^polySurface\\d+_DISK_BRAKE_DISK_0$",
+                fix: BRAKE_DISC_SILVER,
+            },
         ],
+    },
+
+    // R8 body paint — high-metalness factory material made "White" look silver.
+    "2019_audi_r8_coupe.glb": {
+        byMesh: {
+            r8LOD_A_DOOR_LEFT_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+            r8LOD_A_DOOR_RIGHT_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+            r8LOD_A_BODY_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+            r8LOD_A_BONNETCAM_BODY_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+            r8LOD_A_FRONTBUMPER_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+            r8LOD_A_BONNETCAM_HOOD_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+            r8LOD_A_REARBUMPER_mm_ext_r8Vehicle_Exterior_mm_ext1_0: NEUTRAL_PAINT_FIX,
+        },
+    },
+
+    // A6 body paint — same fix so "White" reads as a true bright white.
+    "audi_a6_c8_limousine.glb": {
+        byMesh: {
+            Object_82: NEUTRAL_PAINT_FIX,
+            Object_98: NEUTRAL_PAINT_FIX,
+            Object_113: NEUTRAL_PAINT_FIX,
+            Object_125: NEUTRAL_PAINT_FIX,
+            Object_136: NEUTRAL_PAINT_FIX,
+        },
+    },
+
+    // Porsche 911 V2 — brake discs.
+    "porsche_911_V2_(uncompressed).glb": {
+        byMesh: {
+            Mesh_49: BRAKE_DISC_SILVER,
+            Mesh_56: BRAKE_DISC_SILVER,
+            Mesh_63: BRAKE_DISC_SILVER,
+            Mesh_70: BRAKE_DISC_SILVER,
+        },
+    },
+
+    // Porsche Cayenne — brake disc material.
+    "porsche_cayenne.glb": {
+        byMesh: {
+            Material2_26: BRAKE_DISC_SILVER,
+        },
+        byMaterialPattern: [
+            { pattern: "^Material2_26$", fix: BRAKE_DISC_SILVER },
+        ],
+    },
+
+    // Dodge Challenger SRT Hellcat — brake discs.
+    "dodge_challenger_srt_hellcat__free.glb": {
+        byMesh: {
+            Object_39: BRAKE_DISC_SILVER,
+            Object_47: BRAKE_DISC_SILVER,
+            Object_55: BRAKE_DISC_SILVER,
+            Object_63: BRAKE_DISC_SILVER,
+        },
     },
 
     // ── Add more cars below — use "Log Meshes" in Leva to identify broken materials ──

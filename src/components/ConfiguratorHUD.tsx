@@ -1,9 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Car, CircleDot, Paintbrush } from "lucide-react";
+import { Palette, Car, CircleDot, Paintbrush, Menu, X as XIcon } from "lucide-react";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
 import { catalogCategories } from "@/lib/catalog-data";
 
@@ -251,6 +251,8 @@ export default function ConfiguratorHUD({
     onSelectRimUrl,
     carColor,
     setCarColor,
+    selectedModelLabel,
+    selectedWheelLabel,
 }: {
     active: boolean;
     onSelectWheelModel: (wheel: string) => void;
@@ -264,8 +266,61 @@ export default function ConfiguratorHUD({
     onSelectRimUrl: (rimUrl: string | null) => void;
     carColor: string;
     setCarColor: (color: string) => void;
+    selectedModelLabel?: string;
+    selectedWheelLabel?: string;
 }) {
     const [openSection, setOpenSection] = useState<"vehicle" | "wheels" | "cars" | "color" | "finish" | null>("vehicle");
+
+    /* ── Hover-to-reveal logic + mobile fallback ───────────────────────────────
+       The HUD is hidden by default so it doesn't block the 3D car. When the
+       user hovers near the left edge (or over the HUD itself) the toolbar +
+       panel + Current Build summary fade in together. Touch devices can't hover
+       so we expose a tap-to-toggle button instead. */
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const [isPointerInZone, setIsPointerInZone] = useState(false);
+    const [touchOpen, setTouchOpen] = useState(false);
+    const hoverTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        // Use the touch UX whenever (a) the device is hover/touch-incapable, OR
+        // (b) the viewport is narrow enough that the hover-strip would cover too
+        // much of the canvas. This keeps the HUD reachable on narrow desktop
+        // browsers (≤768px) where matchMedia('(hover:none)') is still false.
+        const mql = window.matchMedia("(hover: none), (pointer: coarse), (max-width: 768px)");
+        const update = () => setIsTouchDevice(mql.matches);
+        update();
+        mql.addEventListener?.("change", update);
+        return () => mql.removeEventListener?.("change", update);
+    }, []);
+
+    const handleZoneEnter = useCallback(() => {
+        if (hoverTimerRef.current) {
+            clearTimeout(hoverTimerRef.current);
+            hoverTimerRef.current = null;
+        }
+        setIsPointerInZone(true);
+    }, []);
+
+    const handleZoneLeave = useCallback(() => {
+        if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+        // Small delay so quick mouse-jitter doesn't flicker the HUD.
+        hoverTimerRef.current = setTimeout(() => setIsPointerInZone(false), 140);
+    }, []);
+
+    useEffect(() => () => {
+        if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    }, []);
+
+    const hudVisible = active && (isTouchDevice ? touchOpen : isPointerInZone);
+
+    // When the configurator is inactive, never show the HUD or any of its parts.
+    useEffect(() => {
+        if (!active) {
+            setIsPointerInZone(false);
+            setTouchOpen(false);
+        }
+    }, [active]);
     const [selectedBrand, setSelectedBrand] = useState<string>(carGroups[0]?.brand ?? "");
     const [openVehicleBrand, setOpenVehicleBrand] = useState<string | null>(carGroups[0]?.brand ?? null);
     const [selectedWheelCategory, setSelectedWheelCategory] = useState<(typeof WHEEL_CATEGORIES)[number]>("Off-Road");
@@ -361,17 +416,53 @@ export default function ConfiguratorHUD({
         { key: "finish" as const, label: "Rim Color", icon: Paintbrush },
     ];
 
+    /* Build label fallback so the summary always renders something readable. */
+    const currentVehicleLabel = selectedModelLabel ?? "Vehicle";
+    const currentWheelLabel = selectedWheelLabel ?? selectedWheelModel;
+
     return (
         <AnimatePresence>
             {active && (
-                <>
+                <div
+                    className={`chud-shell${hudVisible ? " chud-shell--visible" : ""}${isTouchDevice ? " chud-shell--touch" : ""}`}
+                    onMouseEnter={isTouchDevice ? undefined : handleZoneEnter}
+                    onMouseLeave={isTouchDevice ? undefined : handleZoneLeave}
+                    aria-hidden={!hudVisible}
+                >
+                    {/* ── Mobile-only tap toggle (top-left, doesn't block car) ── */}
+                    {isTouchDevice && (
+                        <button
+                            type="button"
+                            className="chud-touch-toggle"
+                            onClick={() => setTouchOpen((v) => !v)}
+                            aria-label={touchOpen ? "Hide configurator" : "Show configurator"}
+                            aria-expanded={touchOpen}
+                        >
+                            {touchOpen ? <XIcon size={18} strokeWidth={1.7} /> : <Menu size={18} strokeWidth={1.7} />}
+                        </button>
+                    )}
+
+                    {/* ── Current build summary (aligned to left edge, top of stack) ── */}
+                    <motion.div
+                        className="chud-current-build"
+                        initial={false}
+                        animate={hudVisible ? { opacity: 1, x: 0, pointerEvents: "auto" } : { opacity: 0, x: -16, pointerEvents: "none" }}
+                        transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        <span className="chud-current-build__label">Current Build</span>
+                        <h4 className="chud-current-build__title">
+                            Your {currentVehicleLabel} on {currentWheelLabel}
+                        </h4>
+                    </motion.div>
+
                     {/* ── Icon toolbar ── */}
                     <motion.nav
                         className="chud-toolbar"
-                        initial={{ opacity: 0, x: -28 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: -28 }}
-                        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        initial={false}
+                        animate={hudVisible
+                            ? { opacity: 1, x: 0, pointerEvents: "auto" }
+                            : { opacity: 0, x: -28, pointerEvents: "none" }}
+                        transition={{ duration: 0.34, ease: [0.22, 1, 0.36, 1] }}
                     >
                         {SECTION_TABS.map((tab, i) => {
                             const Icon = tab.icon;
@@ -416,7 +507,7 @@ export default function ConfiguratorHUD({
 
                     {/* ── Slide-out panel ── */}
                     <AnimatePresence mode="wait">
-                        {openSection !== null && (
+                        {hudVisible && openSection !== null && (
                             <motion.aside
                                 key={openSection}
                                 className="chud-panel"
@@ -808,7 +899,7 @@ export default function ConfiguratorHUD({
                         <span className="opacity-40">|</span>
                         <span>Scroll to Zoom</span>
                     </motion.div>
-                </>
+                </div>
             )}
         </AnimatePresence>
     );

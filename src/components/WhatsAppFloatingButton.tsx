@@ -1,26 +1,25 @@
-const WHATSAPP_URL = "#";
+const WHATSAPP_URL = "https://wa.me/77027543948";
 
 export default function WhatsAppFloatingButton() {
     return (
         <a
             href={WHATSAPP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="whatsapp-floating-btn"
             aria-label="Open WhatsApp chat"
         >
             <span className="whatsapp-floating-btn__icon-wrap" aria-hidden="true">
                 <svg
                     className="whatsapp-floating-btn__icon"
-                    width="19"
-                    height="19"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.6"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 32 32"
+                    fill="#FFFFFF"
+                    xmlns="http://www.w3.org/2000/svg"
                 >
-                    <path d="M3 21l1.65-3.8A9 9 0 1 1 12 21a8.96 8.96 0 0 1-3.95-.92L3 21z" />
-                    <path d="M9 10a.5.5 0 0 0 0 1a5 5 0 0 0 5 5a.5.5 0 0 0 1 0v-1.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.5a3 3 0 0 1-3-3h.5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H9z" />
+                    <path d="M19.11 17.205c-.372 0-1.088 1.39-1.518 1.39a.63.63 0 0 1-.315-.1c-.802-.402-1.504-.817-2.163-1.447-.545-.516-1.146-1.29-1.46-1.963a.426.426 0 0 1-.073-.215c0-.33.99-.945.99-1.49 0-.143-.73-2.09-.832-2.335-.143-.372-.214-.487-.6-.487-.187 0-.36-.043-.53-.043-.302 0-.53.115-.746.315-.688.645-1.032 1.318-1.06 2.264v.114c-.015.99.472 1.977 1.017 2.78 1.23 1.82 2.506 3.41 4.554 4.34.616.287 2.035.888 2.722.888.847 0 2.265-.516 2.595-1.39.13-.345.187-.7.187-1.07 0-.626-2.94-1.43-2.95-1.43z" />
+                    <path d="M16.005 0C7.166 0 .002 7.165.002 16.004c0 2.762.7 5.36 1.93 7.625L.002 32l8.65-2.272a15.93 15.93 0 0 0 7.353 1.81c8.836 0 16.004-7.166 16.004-16.005C32.01 7.165 24.84 0 16.005 0zm0 29.07a13.04 13.04 0 0 1-6.66-1.823l-.477-.286-4.96 1.302 1.323-4.852-.31-.502a13.04 13.04 0 0 1-1.99-6.91c0-7.21 5.866-13.075 13.075-13.075 7.21 0 13.075 5.866 13.075 13.075 0 7.21-5.866 13.07-13.075 13.07z" />
                 </svg>
             </span>
         </a>
