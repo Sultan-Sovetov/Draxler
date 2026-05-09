@@ -35,18 +35,18 @@ type SignatureFinish = {
 };
 
 const SIGNATURE_FINISHES: SignatureFinish[] = [
-    { name: "Gloss Black",      hex: "#0A0A0A", value: "#0A0A0A|0.85|0.15|0" },
-    { name: "Matte Black",      hex: "#1A1A1A", value: "#1A1A1A|0.1|0.85|0" },
-    { name: "Satin Black",      hex: "#121212", value: "#121212|0.45|0.55|0" },
-    { name: "Dark Gunmetal",    hex: "#3B3B3F", value: "#3B3B3F|0.82|0.18|0" },
-    { name: "Gunmetal Silver",  hex: "#6D6D75", value: "#6D6D75|0.8|0.2|0" },
-    { name: "Silver Metallic",  hex: "#A8ADB7", value: "#A8ADB7|0.82|0.18|0" },
-    { name: "Bright Silver",    hex: "#C5C9D0", value: "#C5C9D0|0.88|0.12|0" },
-    { name: "Polished Silver",  hex: "#D8DCE2", value: "#D8DCE2|1.0|0.03|0.9", swatchStyle: { background: "linear-gradient(135deg,#bfc4cc 0%,#f0f2f5 40%,#d0d4da 60%,#eef0f3 100%)" } },
-    { name: "Arctic White",     hex: "#F3F4F8", value: "#F3F4F8|0.75|0.2|0" },
-    { name: "Bronze",           hex: "#7A5C3A", value: "#7A5C3A|0.85|0.18|0" },
-    { name: "Dark Bronze",      hex: "#4E3A25", value: "#4E3A25|0.82|0.22|0" },
-    { name: "Champagne Gold",   hex: "#B8A67E", value: "#B8A67E|0.88|0.15|0" },
+    { name: "Gloss Black", hex: "#0A0A0A", value: "#0A0A0A|0.85|0.15|0" },
+    { name: "Matte Black", hex: "#1A1A1A", value: "#1A1A1A|0.1|0.85|0" },
+    { name: "Satin Black", hex: "#121212", value: "#121212|0.45|0.55|0" },
+    { name: "Dark Gunmetal", hex: "#3B3B3F", value: "#3B3B3F|0.82|0.18|0" },
+    { name: "Gunmetal Silver", hex: "#6D6D75", value: "#6D6D75|0.8|0.2|0" },
+    { name: "Silver Metallic", hex: "#A8ADB7", value: "#A8ADB7|0.82|0.18|0" },
+    { name: "Bright Silver", hex: "#C5C9D0", value: "#C5C9D0|0.88|0.12|0" },
+    { name: "Polished Silver", hex: "#D8DCE2", value: "#D8DCE2|1.0|0.03|0.9", swatchStyle: { background: "linear-gradient(135deg,#bfc4cc 0%,#f0f2f5 40%,#d0d4da 60%,#eef0f3 100%)" } },
+    { name: "Arctic White", hex: "#F3F4F8", value: "#F3F4F8|0.75|0.2|0" },
+    { name: "Bronze", hex: "#7A5C3A", value: "#7A5C3A|0.85|0.18|0" },
+    { name: "Dark Bronze", hex: "#4E3A25", value: "#4E3A25|0.82|0.22|0" },
+    { name: "Champagne Gold", hex: "#B8A67E", value: "#B8A67E|0.88|0.15|0" },
 ];
 
 type CarBodyColor = {
@@ -235,7 +235,7 @@ const shouldExcludeVehicleModel = (brand: string, modelLabel: string) => {
     if (brand === "Mercedes-Benz" && normalized.includes("brabus 850")) return true;
 
     return normalized.includes("f-150") ||
-    normalized.includes("f 150");
+        normalized.includes("f 150");
 };
 
 export default function ConfiguratorHUD({
@@ -279,6 +279,28 @@ export default function ConfiguratorHUD({
         () => Math.round((hexToHsl(carColor).h / 360) * 100)
     );
 
+    const selectedCar = useMemo(() => {
+        for (const group of carGroups) {
+            const car = group.models.find(m => m.id === selectedCarId);
+            if (car) return { brand: group.brand, model: car };
+        }
+        return null;
+    }, [carGroups, selectedCarId]);
+
+    const excludedRims = useMemo(() => {
+        if (!selectedCar) return [];
+        const brand = selectedCar.brand;
+        const name = selectedCar.model.displayName;
+
+        if (brand === "Ferrari" && name === "SF90") return ["DRX-302", "DRX-304"];
+        if (brand === "Chevrolet" && name === "Corvette C8 Stingray (2019)") return ["DRX-304"];
+        if (brand === "Dodge / RAM" && name === "Challenger SRT Hellcat") return ["DRX-304"];
+        if (brand === "BMW" && name === "X5 xDrive40i (2024)") return ["DRX-213"];
+        if (brand === "Audi" && name === "A6") return ["DRX-314", "DRX-309", "DRX-306", "DRX-301", "DRX-302", "DRX-303", "DRX-304", "DRX-102", "DRX-105", "DRX-113", "DRX-114"];
+
+        return [];
+    }, [selectedCar]);
+
     const carBrands = useMemo<CarBrand[]>(
         () => carGroups
             .map((group) => ({
@@ -318,9 +340,16 @@ export default function ConfiguratorHUD({
     }, [active, onSelectWheelModel, selectedWheelModel]);
 
     const currentCategoryWheels = useMemo(
-        () => WHEEL_MODELS.filter((w) => w.category === selectedWheelCategory),
-        [selectedWheelCategory]
+        () => WHEEL_MODELS.filter((w) => w.category === selectedWheelCategory && !excludedRims.includes(w.id)),
+        [selectedWheelCategory, excludedRims]
     );
+
+    useEffect(() => {
+        if (selectedWheelModel && excludedRims.includes(selectedWheelModel)) {
+            setSelectedWheelModel("");
+            onSelectRimUrl(null);
+        }
+    }, [selectedCarId, excludedRims, selectedWheelModel, onSelectRimUrl]);
 
     useEffect(() => {
         const hsl = hexToHsl(selectedFinishColor.split("|")[0]);

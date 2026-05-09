@@ -1,7 +1,4 @@
-
-
-
-
+[
 
 
 {
@@ -33,9 +30,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "2021_ram_1500_trx.glb",
   "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
   "rimGlb": "DRX_201.glb",
@@ -64,9 +59,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "2021_ram_1500_trx.glb",
   "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
   "rimGlb": "DRX_203.glb",
@@ -95,9 +88,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "2021_ram_1500_trx.glb",
   "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
   "rimGlb": "DRX_207.glb",
@@ -126,9 +117,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "2021_ram_1500_trx.glb",
   "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
   "rimGlb": "DRX_208.glb",
@@ -157,9 +146,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "2021_ram_1500_trx.glb",
   "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
   "rimGlb": "DRX_210.glb",
@@ -188,9 +175,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "2021_ram_1500_trx.glb",
   "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
   "rimGlb": "DRX_213.glb",
@@ -219,9 +204,7 @@
     "offsetZFront": -0.003,
     "offsetZRear": 0.0054
   }
-}
-
-{
+},{
   "carGlb": "bmw_m5_2024.glb",
   "carModelPath": "/car-models/bmw/bmw_m5_2024.glb",
   "rimGlb": "DRX_302.glb",
@@ -252,9 +235,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "bmw_m5_2024.glb",
   "carModelPath": "/car-models/bmw/bmw_m5_2024.glb",
   "rimGlb": "DRX_307.glb",
@@ -285,9 +266,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_201.glb",
@@ -313,9 +292,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_202.glb",
@@ -341,9 +318,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_203.glb",
@@ -369,9 +344,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_204.glb",
@@ -397,9 +370,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_205.glb",
@@ -425,9 +396,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_207.glb",
@@ -453,9 +422,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_208.glb",
@@ -481,9 +448,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_210.glb",
@@ -509,9 +474,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_213.glb",
@@ -537,9 +500,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_102.glb",
@@ -565,9 +526,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_103.glb",
@@ -593,9 +552,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_106.glb",
@@ -621,9 +578,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_107.glb",
@@ -649,9 +604,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_110.glb",
@@ -677,9 +630,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_112.glb",
@@ -705,9 +656,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_114.glb",
@@ -733,9 +682,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_301.glb",
@@ -761,9 +708,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_304.glb",
@@ -789,10 +734,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_305.glb",
@@ -818,9 +760,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_306.glb",
@@ -846,9 +786,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_307.glb",
@@ -874,9 +812,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_309.glb",
@@ -902,9 +838,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_311.glb",
@@ -930,9 +864,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_312.glb",
@@ -958,9 +890,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
   "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
   "rimGlb": "DRX_314.glb",
@@ -986,9 +916,7 @@
     "offsetZFront": -0.0037,
     "offsetZRear": 0.0055
   }
-}
-
-{
+},{
   "carGlb": "audi_a6_c8_limousine.glb",
   "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
   "rimGlb": "DRX_311.glb",
@@ -1017,9 +945,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "audi_a6_c8_limousine.glb",
   "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
   "rimGlb": "DRX_307.glb",
@@ -1048,9 +974,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "audi_a6_c8_limousine.glb",
   "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
   "rimGlb": "DRX_305.glb",
@@ -1079,9 +1003,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "audi_a6_c8_limousine.glb",
   "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
   "rimGlb": "DRX_107.glb",
@@ -1110,9 +1032,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "land_rover_defender-v1.glb",
   "carModelPath": "/car-models/landrover/land_rover_defender-v1.glb",
   "rimGlb": "DRX_306.glb",
@@ -1141,9 +1061,7 @@
     "offsetZFront": 0,
     "offsetZRear": 0
   }
-}
-
-{
+},{
   "carGlb": "2019_lamborghini_huracan_evo.glb",
   "carModelPath": "/car-models/lamborghini/2019_lamborghini_huracan_evo.glb",
   "rimGlb": "DRX_203.glb",
@@ -1174,3 +1092,4 @@
   }
 }
 
+]

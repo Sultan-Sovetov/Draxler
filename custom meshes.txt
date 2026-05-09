@@ -1,4 +1,3 @@
-new calibration data needs to be added:
 {
   "carGlb": "mersedes-benz_s-class_w223_brabus_850 (1).glb",
   "carModelPath": "/car-models/mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb",
@@ -279,7 +278,7 @@ new calibration data needs to be added:
   }
 }
 
-  {
+{
   "carGlb": "mersedes-benz_s-class_w223_brabus_850 (1).glb",
   "carModelPath": "/car-models/mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb",
   "rimGlb": "DRX_114.glb",
@@ -559,7 +558,6 @@ new calibration data needs to be added:
   }
 }
 
-
 {
   "carGlb": "mersedes-benz_s-class_w223_brabus_850 (1).glb",
   "carModelPath": "/car-models/mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb",
@@ -700,7 +698,7 @@ new calibration data needs to be added:
   }
 }
 
-  {
+{
   "carGlb": "mersedes-benz_s-class_w223_brabus_850 (1).glb",
   "carModelPath": "/car-models/mercedes/mersedes-benz_s-class_w223_brabus_850 (1).glb",
   "rimGlb": "DRX_312.glb",
@@ -762,9 +760,1178 @@ new calibration data needs to be added:
     "scale": 0.96,
     "offsetY": 0,
     "rotYLeft": 90,
-    "rotYRight": 270,S
+    "rotYRight": 270,
     "offsetXLeft": -0.11,
     "offsetXRight": 0.11,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_202.glb",
+  "rimPath": "/car-models/rims/DRX_202.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.58,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00035,
+    "offsetXRight": -0.00035,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_201.glb",
+  "rimPath": "/car-models/rims/DRX_201.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.57005,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00073,
+    "offsetXRight": -0.00073,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_203.glb",
+  "rimPath": "/car-models/rims/DRX_203.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.58,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0007,
+    "offsetXRight": -0.0007,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_207.glb",
+  "rimPath": "/car-models/rims/DRX_207.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.57,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00069,
+    "offsetXRight": -0.00069,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_208.glb",
+  "rimPath": "/car-models/rims/DRX_208.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.575,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0006,
+    "offsetXRight": -0.0006,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_210.glb",
+  "rimPath": "/car-models/rims/DRX_210.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.58,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0007,
+    "offsetXRight": -0.0007,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "2021_ram_1500_trx.glb",
+  "carModelPath": "/car-models/dodge/2021_ram_1500_trx.glb",
+  "rimGlb": "DRX_213.glb",
+  "rimPath": "/car-models/rims/DRX_213.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface8441"
+    ],
+    "RL": [
+      "polySurface8441"
+    ],
+    "FR": [
+      "polySurface8441"
+    ],
+    "RR": [
+      "polySurface8441"
+    ]
+  },
+  "stats": {
+    "scale": 0.58,
+    "offsetY": 0.0045,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00095,
+    "offsetXRight": -0.00095,
+    "offsetZFront": -0.003,
+    "offsetZRear": 0.0054
+  }
+}
+
+{
+  "carGlb": "bmw_m5_2024.glb",
+  "carModelPath": "/car-models/bmw/bmw_m5_2024.glb",
+  "rimGlb": "DRX_302.glb",
+  "rimPath": "/car-models/rims/DRX_302.glb",
+  "wheelPositions": {
+    "FL": [
+      "Object_77",
+      "Object_79"
+    ],
+    "RL": [
+      "Object_272",
+      "Object_268"
+    ],
+    "FR": [
+      "Object_208"
+    ],
+    "RR": [
+      "Object_156"
+    ]
+  },
+  "stats": {
+    "scale": 0.89,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": -0.065,
+    "offsetXRight": 0.065,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "bmw_m5_2024.glb",
+  "carModelPath": "/car-models/bmw/bmw_m5_2024.glb",
+  "rimGlb": "DRX_307.glb",
+  "rimPath": "/car-models/rims/DRX_307.glb",
+  "wheelPositions": {
+    "FL": [
+      "Object_77",
+      "Object_79"
+    ],
+    "RL": [
+      "Object_272",
+      "Object_268"
+    ],
+    "FR": [
+      "Object_208"
+    ],
+    "RR": [
+      "Object_156"
+    ]
+  },
+  "stats": {
+    "scale": 0.9,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": -0.065,
+    "offsetXRight": 0.065,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_201.glb",
+  "rimPath": "/car-models/rims/DRX_201.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.64,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00025,
+    "offsetXRight": -0.00025,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_202.glb",
+  "rimPath": "/car-models/rims/DRX_202.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": -0.0001,
+    "offsetXRight": 0.0001,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_203.glb",
+  "rimPath": "/car-models/rims/DRX_203.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0003,
+    "offsetXRight": -0.0003,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_204.glb",
+  "rimPath": "/car-models/rims/DRX_204.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0004,
+    "offsetXRight": -0.0004,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_205.glb",
+  "rimPath": "/car-models/rims/DRX_205.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.68,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0003,
+    "offsetXRight": -0.0003,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_207.glb",
+  "rimPath": "/car-models/rims/DRX_207.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0001,
+    "offsetXRight": -0.0001,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_208.glb",
+  "rimPath": "/car-models/rims/DRX_208.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0001,
+    "offsetXRight": -0.0001,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_210.glb",
+  "rimPath": "/car-models/rims/DRX_210.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.652,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0002,
+    "offsetXRight": -0.0002,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_213.glb",
+  "rimPath": "/car-models/rims/DRX_213.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00045,
+    "offsetXRight": -0.00045,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_102.glb",
+  "rimPath": "/car-models/rims/DRX_102.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0042,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00025,
+    "offsetXRight": -0.00025,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_103.glb",
+  "rimPath": "/car-models/rims/DRX_103.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0042,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0001,
+    "offsetXRight": -0.0001,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_106.glb",
+  "rimPath": "/car-models/rims/DRX_106.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0042,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0002,
+    "offsetXRight": -0.0002,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_107.glb",
+  "rimPath": "/car-models/rims/DRX_107.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.66,
+    "offsetY": 0.0042,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0003,
+    "offsetXRight": -0.0003,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_110.glb",
+  "rimPath": "/car-models/rims/DRX_110.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0044,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0005,
+    "offsetXRight": -0.0005,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_112.glb",
+  "rimPath": "/car-models/rims/DRX_112.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0001,
+    "offsetXRight": -0.0001,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_114.glb",
+  "rimPath": "/car-models/rims/DRX_114.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.67,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00052,
+    "offsetXRight": -0.00052,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_301.glb",
+  "rimPath": "/car-models/rims/DRX_301.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.65,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00012,
+    "offsetXRight": -0.00012,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_304.glb",
+  "rimPath": "/car-models/rims/DRX_304.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0044,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0003,
+    "offsetXRight": -0.0003,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_305.glb",
+  "rimPath": "/car-models/rims/DRX_305.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0002,
+    "offsetXRight": -0.0002,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_306.glb",
+  "rimPath": "/car-models/rims/DRX_306.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.00065,
+    "offsetXRight": -0.00065,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_307.glb",
+  "rimPath": "/car-models/rims/DRX_307.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0004,
+    "offsetXRight": -0.0004,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_309.glb",
+  "rimPath": "/car-models/rims/DRX_309.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0005,
+    "offsetXRight": -0.0005,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_311.glb",
+  "rimPath": "/car-models/rims/DRX_311.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0004,
+    "offsetXRight": -0.0004,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_312.glb",
+  "rimPath": "/car-models/rims/DRX_312.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0002,
+    "offsetXRight": -0.0002,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "2023_lexus_gx_550_h_overtrail.glb",
+  "carModelPath": "/car-models/lexus/2023_lexus_gx_550_h_overtrail.glb",
+  "rimGlb": "DRX_314.glb",
+  "rimPath": "/car-models/rims/DRX_314.glb",
+  "wheelPositions": {
+    "FL": [
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No3_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No7_chrome_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No_Lrim_0",
+      "LALLgxgltfSceneMX_LZ_3MX_LZv3d_Proxy_Node_0_MX_LZMXv3d_Proxy_Node_0_MXLZ_1001v3d_Proxy_Node_0_LZ_1001LZ_1002v3d_Proxy_No6_chrome_0"
+    ],
+    "RL": [],
+    "FR": [],
+    "RR": []
+  },
+  "stats": {
+    "scale": 0.7,
+    "offsetY": 0.0043,
+    "rotYLeft": 270,
+    "rotYRight": 90,
+    "offsetXLeft": 0.0005,
+    "offsetXRight": -0.0005,
+    "offsetZFront": -0.0037,
+    "offsetZRear": 0.0055
+  }
+}
+
+{
+  "carGlb": "audi_a6_c8_limousine.glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
+  "rimGlb": "DRX_311.glb",
+  "rimPath": "/car-models/rims/DRX_311.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ]
+  },
+  "stats": {
+    "scale": 1.01,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.12,
+    "offsetXRight": -0.12,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "audi_a6_c8_limousine.glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
+  "rimGlb": "DRX_307.glb",
+  "rimPath": "/car-models/rims/DRX_307.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ]
+  },
+  "stats": {
+    "scale": 1.01,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.105,
+    "offsetXRight": -0.105,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "audi_a6_c8_limousine.glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
+  "rimGlb": "DRX_305.glb",
+  "rimPath": "/car-models/rims/DRX_305.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ]
+  },
+  "stats": {
+    "scale": 1.01,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.075,
+    "offsetXRight": -0.075,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "audi_a6_c8_limousine.glb",
+  "carModelPath": "/car-models/audi/audi_a6_c8_limousine.glb",
+  "rimGlb": "DRX_107.glb",
+  "rimPath": "/car-models/rims/DRX_107.glb",
+  "wheelPositions": {
+    "FL": [
+      "wheel_lfchild_a6_wheel_WHEEL_0"
+    ],
+    "RL": [
+      "wheel_lfchild001_a6_wheel_WHEEL_0"
+    ],
+    "FR": [
+      "wheel_lfchild002_a6_wheel_WHEEL_0"
+    ],
+    "RR": [
+      "wheel_lfchild003_a6_wheel_WHEEL_0"
+    ]
+  },
+  "stats": {
+    "scale": 1.03,
+    "offsetY": 0,
+    "rotYLeft": -90,
+    "rotYRight": 90,
+    "offsetXLeft": 0.08,
+    "offsetXRight": -0.08,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "land_rover_defender-v1.glb",
+  "carModelPath": "/car-models/landrover/land_rover_defender-v1.glb",
+  "rimGlb": "DRX_306.glb",
+  "rimPath": "/car-models/rims/DRX_306.glb",
+  "wheelPositions": {
+    "FL": [
+      "Object_195"
+    ],
+    "RL": [
+      "Object_225"
+    ],
+    "FR": [
+      "Object_233"
+    ],
+    "RR": [
+      "Object_239"
+    ]
+  },
+  "stats": {
+    "scale": 0.97,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": -0.035,
+    "offsetXRight": 0.035,
+    "offsetZFront": 0,
+    "offsetZRear": 0
+  }
+}
+
+{
+  "carGlb": "2019_lamborghini_huracan_evo.glb",
+  "carModelPath": "/car-models/lamborghini/2019_lamborghini_huracan_evo.glb",
+  "rimGlb": "DRX_203.glb",
+  "rimPath": "/car-models/rims/DRX_203.glb",
+  "wheelPositions": {
+    "FL": [
+      "polySurface102_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "RL": [
+      "polySurface256_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "FR": [
+      "polySurface179_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ],
+    "RR": [
+      "polySurface338_rims_TNRRims_127A20NaTNR_Rim127A_Material1_0"
+    ]
+  },
+  "stats": {
+    "scale": 0.99,
+    "offsetY": 0,
+    "rotYLeft": 90,
+    "rotYRight": 270,
+    "offsetXLeft": 0.00025,
+    "offsetXRight": -0.00025,
     "offsetZFront": 0,
     "offsetZRear": 0
   }
