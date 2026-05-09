@@ -283,7 +283,11 @@ export default function ConfiguratorHUD({
 
     useEffect(() => {
         if (typeof window === "undefined") return;
-        const mql = window.matchMedia("(hover: none), (pointer: coarse)");
+        // Use the touch UX whenever (a) the device is hover/touch-incapable, OR
+        // (b) the viewport is narrow enough that the hover-strip would cover too
+        // much of the canvas. This keeps the HUD reachable on narrow desktop
+        // browsers (≤768px) where matchMedia('(hover:none)') is still false.
+        const mql = window.matchMedia("(hover: none), (pointer: coarse), (max-width: 768px)");
         const update = () => setIsTouchDevice(mql.matches);
         update();
         mql.addEventListener?.("change", update);

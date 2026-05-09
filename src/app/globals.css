@@ -2654,22 +2654,10 @@ html.lenis body {
 
 /* ── Mobile responsive ── */
 @media (max-width: 768px) {
-  /* Touch-mode shell only needs to take real space when actually open. */
-  .chud-shell {
-    width: 0;
-    pointer-events: none;
-  }
-
-  .chud-shell--visible {
-    width: 100vw;
-    height: 100vh;
-    pointer-events: auto;
-  }
-
-  /* Re-enable the toggle even when the rest of the shell is pass-through. */
-  .chud-shell .chud-touch-toggle {
-    pointer-events: auto;
-  }
+  /* Shell sizing on narrow viewports is handled by the .chud-shell--touch
+     class (toggled by the JS touch/narrow-viewport detection). Adding
+     width-only rules here would cause a deadlock for narrow desktop browsers
+     where the JS keeps the hover model active. */
 
   .chud-touch-toggle {
     width: 40px;
