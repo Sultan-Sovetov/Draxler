@@ -461,8 +461,8 @@ export default function ConfiguratorHUD({
                             onClick={handleZoneEnter}
                             initial={false}
                             animate={hudVisible
-                                ? { opacity: 0, x: -16, pointerEvents: "none" }
-                                : { opacity: 1, x: 0, pointerEvents: "auto" }}
+                                ? { opacity: 0, x: -16, y: "-50%", pointerEvents: "none" }
+                                : { opacity: 1, x: 0, y: "-50%", pointerEvents: "auto" }}
                             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                             aria-label="Show configurator controls"
                         >
