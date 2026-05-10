@@ -49,7 +49,7 @@ const BG = "#f2f2f5";
 const SUN = "#fff0dd";
 const DEV_RUNTIME_ENABLED = true;
 // UI toggle only: keep runtime true so wheel fitment logic remains active.
-const DEV_UI_ENABLED = true;
+const DEV_UI_ENABLED = false;
 const DEV_LOGS_ENABLED = false;
 const PORSCHE_911_V2_MODEL_KEY = "porsche/porsche_911_V2_(uncompressed).glb";
 const LEXUS_GX_550H_MODEL_KEY = "lexus/2023_lexus_gx_550_h_overtrail.glb";
@@ -1860,7 +1860,7 @@ function CarModel({
                 )}
             </group>
 
-            {showDevTools && (
+            {showDevTools && DEV_UI_ENABLED && (
                 <Html fullscreen style={{ pointerEvents: "none" }}>
                     <div
                         style={{
@@ -2053,7 +2053,8 @@ export default function CarConfigurator() {
     const [carColor, setCarColor] = useState(
         DEFAULT_CAR.modelPath === G_CLASS_MODEL_PATH ? G_CLASS_BASE_COLOR : DEFAULT_CAR_COLOR
     );
-    const showDevTools = DEV_UI_ENABLED;
+    const showDevTools = DEV_RUNTIME_ENABLED;
+    const showDevUi = DEV_UI_ENABLED;
     const rimControlsStore = useCreateStore();
 
     useEffect(() => {
@@ -2215,7 +2216,7 @@ export default function CarConfigurator() {
 
     return (
         <section ref={configuratorRef} className="car-configurator-section" id="configurator">
-            {showDevTools && (
+            {showDevUi && (
                 <LevaPanel
                     store={rimControlsStore}
                     collapsed

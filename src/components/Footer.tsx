@@ -138,6 +138,14 @@ export default function Footer() {
                     <p className="footer-origin-text footer-origin-text--secondary">
                         Crafted in Kazakhstan &mdash; About our Factory.
                     </p>
+                    <div className="footer-origin-contact" aria-label="Factory contact details">
+                        <a href="tel:+77027543948" className="footer-origin-contact-link">
+                            +7 702 754 39 48
+                        </a>
+                        <a href="mailto:sales@draxlerwheels.com" className="footer-origin-contact-link">
+                            sales@draxlerwheels.com
+                        </a>
+                    </div>
                 </aside>
             </div>
         </footer>
