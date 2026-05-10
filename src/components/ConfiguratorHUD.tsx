@@ -318,7 +318,9 @@ export default function ConfiguratorHUD({
         if (!active || isTouchDevice || typeof window === "undefined") return;
 
         const handlePointerMove = (event: PointerEvent) => {
-            const revealWidth = isPointerInZone ? 510 : 128;
+            if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+
+            const revealWidth = isPointerInZone ? 490 : 96;
 
             if (event.clientX <= revealWidth) {
                 handleZoneEnter();
@@ -330,8 +332,9 @@ export default function ConfiguratorHUD({
             }
         };
 
-        window.addEventListener("pointermove", handlePointerMove, { passive: true });
-        return () => window.removeEventListener("pointermove", handlePointerMove);
+        const configSection = document.getElementById("configurator");
+        configSection?.addEventListener("pointermove", handlePointerMove, { passive: true });
+        return () => configSection?.removeEventListener("pointermove", handlePointerMove);
     }, [active, handleZoneEnter, handleZoneLeave, isPointerInZone, isTouchDevice]);
 
     // When the configurator is inactive, never show the HUD or any of its parts.
@@ -458,8 +461,8 @@ export default function ConfiguratorHUD({
                             onClick={handleZoneEnter}
                             initial={false}
                             animate={hudVisible
-                                ? { opacity: 0, x: -16, y: "-50%", pointerEvents: "none" }
-                                : { opacity: 1, x: 0, y: "-50%", pointerEvents: "auto" }}
+                                ? { opacity: 0, x: -16, pointerEvents: "none" }
+                                : { opacity: 1, x: 0, pointerEvents: "auto" }}
                             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                             aria-label="Show configurator controls"
                         >
