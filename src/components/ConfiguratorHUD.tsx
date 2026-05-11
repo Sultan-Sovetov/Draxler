@@ -314,6 +314,29 @@ export default function ConfiguratorHUD({
 
     const hudVisible = active && (isTouchDevice ? touchOpen : isPointerInZone);
 
+    useEffect(() => {
+        if (!active || isTouchDevice || typeof window === "undefined") return;
+
+        const handlePointerMove = (event: PointerEvent) => {
+            if (event.pointerType !== "mouse" && event.pointerType !== "pen") return;
+
+            const revealWidth = isPointerInZone ? 490 : 96;
+
+            if (event.clientX <= revealWidth) {
+                handleZoneEnter();
+                return;
+            }
+
+            if (isPointerInZone) {
+                handleZoneLeave();
+            }
+        };
+
+        const configSection = document.getElementById("configurator");
+        configSection?.addEventListener("pointermove", handlePointerMove, { passive: true });
+        return () => configSection?.removeEventListener("pointermove", handlePointerMove);
+    }, [active, handleZoneEnter, handleZoneLeave, isPointerInZone, isTouchDevice]);
+
     // When the configurator is inactive, never show the HUD or any of its parts.
     useEffect(() => {
         if (!active) {
@@ -427,8 +450,27 @@ export default function ConfiguratorHUD({
                     className={`chud-shell${hudVisible ? " chud-shell--visible" : ""}${isTouchDevice ? " chud-shell--touch" : ""}`}
                     onMouseEnter={isTouchDevice ? undefined : handleZoneEnter}
                     onMouseLeave={isTouchDevice ? undefined : handleZoneLeave}
-                    aria-hidden={!hudVisible}
+                    onPointerEnter={isTouchDevice ? undefined : handleZoneEnter}
+                    onPointerLeave={isTouchDevice ? undefined : handleZoneLeave}
                 >
+                    {!isTouchDevice && (
+                        <motion.button
+                            type="button"
+                            className="chud-edge-hint"
+                            onFocus={handleZoneEnter}
+                            onClick={handleZoneEnter}
+                            initial={false}
+                            animate={hudVisible
+                                ? { opacity: 0, x: -16, y: "-50%", pointerEvents: "none" }
+                                : { opacity: 1, x: 0, y: "-50%", pointerEvents: "auto" }}
+                            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                            aria-label="Show configurator controls"
+                        >
+                            <span className="chud-edge-hint__eyebrow">HUD</span>
+                            <span className="chud-edge-hint__text">Hover for controls</span>
+                        </motion.button>
+                    )}
+
                     {/* ── Mobile-only tap toggle (top-left, doesn't block car) ── */}
                     {isTouchDevice && (
                         <button
