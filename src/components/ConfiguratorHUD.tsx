@@ -495,8 +495,7 @@ export default function ConfiguratorHUD({
                             transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
                             aria-label="Show configurator controls"
                         >
-                            <span className="chud-edge-hint__eyebrow">HUD</span>
-                            <span className="chud-edge-hint__text">Hover for controls</span>
+                            <span className="chud-edge-hint__text">Hover to Control</span>
                         </motion.button>
                     )}
 
