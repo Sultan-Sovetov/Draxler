@@ -100,6 +100,18 @@ export default function CatalogPage() {
         });
 
         setDbProducts(newDbProducts);
+
+        // Auto-expand visible counts so ALL products (hardcoded + DB) are shown
+        setVisibleCounts((prev) => {
+          const updated = { ...prev };
+          catalogCategories.forEach((cat) => {
+            const totalProducts = cat.products.length + (newDbProducts[cat.slug]?.length || 0);
+            if (totalProducts > (updated[cat.slug] || ITEMS_PER_PAGE)) {
+              updated[cat.slug] = totalProducts;
+            }
+          });
+          return updated;
+        });
       }
     };
 
