@@ -7,7 +7,6 @@ import Image from "next/image";
 import gsap from "gsap";
 import { getCategoryBySlug, CatalogProduct } from "@/lib/catalog-data";
 import { supabase } from "@/lib/supabase";
-import type { DBProduct } from "@/app/catalog/page";
 
 export default function CatalogCategoryPage() {
     const params = useParams();
@@ -36,9 +35,9 @@ export default function CatalogCategoryPage() {
             }
 
             if (!error && data) {
-                const fetched = (data || []).map((p: any) => {
+                const fetched = (data || []).map((p: { title: string; description: string; parameters?: string; product_images?: { image_url: string }[] }) => {
                     let tags: string[] = [];
-                    try { if (p.parameters) tags = JSON.parse(p.parameters).tags || []; } catch(e){}
+                    try { if (p.parameters) tags = JSON.parse(p.parameters).tags || []; } catch { /* ignore */ }
                     const rawImages = p.product_images || [];
                     const imageUrls = rawImages.map((img: { image_url: string }) => img.image_url) || [];
                     return {

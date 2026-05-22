@@ -283,7 +283,7 @@ export default function ProductDetailPage() {
             } else if (!data) {
                 setIsNotFound(true);
             } else {
-                const found = data.find((p: any) => p.title.toLowerCase().replace(/\s+/g, '-') === productSlug.toLowerCase());
+                const found = data.find((p: DBProduct) => p.title.toLowerCase().replace(/\s+/g, '-') === productSlug.toLowerCase());
                 if (found) {
                     setDbProduct(found as DBProduct);
                 } else {
@@ -428,7 +428,7 @@ export default function ProductDetailPage() {
         );
     }
 
-    const { name, image, hoverImage, description, sizes } = resolvedProduct;
+    const { name, image, hoverImage, sizes } = resolvedProduct;
     const previewFinish: MetalFinish = selectedFinish;
 
     const displaySizes = sizes && sizes.length > 0 ? sizes : AVAILABLE_SIZES;

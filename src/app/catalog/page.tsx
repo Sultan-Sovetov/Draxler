@@ -81,7 +81,7 @@ export default function CatalogPage() {
             if (p.parameters) {
               tags = JSON.parse(p.parameters).tags || [];
             }
-          } catch (e) {}
+          } catch { /* ignore */ }
 
           const imageUrls = p.product_images?.map((img) => img.image_url) || [];
 
