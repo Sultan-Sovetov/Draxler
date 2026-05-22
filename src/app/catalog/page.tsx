@@ -61,7 +61,7 @@ export default function CatalogPage() {
       const { data, error } = await supabase
         .from("products")
         .select(`*, product_images ( image_url )`)
-        .order("created_at", { ascending: false });
+        .order("created_at", { ascending: true });
 
       if (error) {
         console.error("SUPABASE QUERY ERROR:", error.message, error.details, error.hint);

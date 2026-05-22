@@ -28,7 +28,7 @@ export default function CatalogCategoryPage() {
                 .from("products")
                 .select(`*, product_images ( image_url )`)
                 .eq("type", dbCat)
-                .order("created_at", { ascending: false });
+                .order("created_at", { ascending: true });
 
             if (error) {
                 console.error("SUPABASE QUERY ERROR:", error.message, error.details, error.hint);
