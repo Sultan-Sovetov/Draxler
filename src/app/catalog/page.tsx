@@ -12,7 +12,7 @@ import Footer from "@/components/Footer";
 export interface DBProduct {
   id: number;
   title: string;
-  type: "luxury" | "off-road" | "sport";
+  type: "luxury" | "off-road" | "sport" | "vip" | "offroad";
   product_images?: { image_url: string }[];
   description: string;
   parameters: string;
