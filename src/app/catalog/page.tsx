@@ -86,7 +86,7 @@ export default function CatalogPage() {
           const imageUrls = p.product_images?.map((img) => img.image_url) || [];
 
           const product: CatalogProduct = {
-            slug: p.title.toLowerCase().replace(/\s+/g, '-'),
+            slug: `${p.title.toLowerCase().replace(/\s+/g, '-')}-${p.id}`,
             name: p.title,
             image: imageUrls[0] || "/placeholder.png",
             hoverImage: imageUrls.length > 1 ? imageUrls[1] : (imageUrls[0] || "/placeholder.png"),
@@ -177,7 +177,7 @@ export default function CatalogPage() {
     }, pageRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [mergedCategories]);
 
   return (
     <div ref={pageRef} className="catalog-page">

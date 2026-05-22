@@ -35,13 +35,13 @@ export default function CatalogCategoryPage() {
             }
 
             if (!error && data) {
-                const fetched = (data || []).map((p: { title: string; description: string; parameters?: string; product_images?: { image_url: string }[] }) => {
+                const fetched = (data || []).map((p: { id: number; title: string; description: string; parameters?: string; product_images?: { image_url: string }[] }) => {
                     let tags: string[] = [];
                     try { if (p.parameters) tags = JSON.parse(p.parameters).tags || []; } catch { /* ignore */ }
                     const rawImages = p.product_images || [];
                     const imageUrls = rawImages.map((img: { image_url: string }) => img.image_url) || [];
                     return {
-                        slug: p.title.toLowerCase().replace(/\s+/g, '-'),
+                        slug: `${p.title.toLowerCase().replace(/\s+/g, '-')}-${p.id}`,
                         name: p.title,
                         image: imageUrls[0] || "/placeholder.png",
                         hoverImage: (imageUrls && imageUrls.length > 1) ? imageUrls[1] : (imageUrls[0] || "/placeholder.png"),

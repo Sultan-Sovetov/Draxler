@@ -273,17 +273,36 @@ export default function ProductDetailPage() {
 
         const fetchDbProduct = async () => {
             setIsLoadingDb(true);
-            const { data, error } = await supabase
+
+            // Try to extract the numeric DB id from the slug (e.g. "drx-101-42" → 42)
+            const idMatch = productSlug.match(/-(\d+)$/);
+            const dbId = idMatch ? parseInt(idMatch[1], 10) : null;
+
+            let query = supabase
                 .from("products")
                 .select(`*, product_images ( image_url )`);
+
+            if (dbId !== null) {
+                // Fetch by exact ID for precision
+                query = query.eq("id", dbId);
+            }
+
+            const { data, error } = await query;
 
             if (error) {
                 console.error("SUPABASE QUERY ERROR:", error.message, error.details, error.hint);
                 setIsNotFound(true);
-            } else if (!data) {
+            } else if (!data || data.length === 0) {
                 setIsNotFound(true);
             } else {
-                const found = data.find((p: DBProduct) => p.title.toLowerCase().replace(/\s+/g, '-') === productSlug.toLowerCase());
+                // If fetched by ID, use the first result; otherwise try slug-based match
+                let found: DBProduct | undefined;
+                if (dbId !== null) {
+                    found = data[0] as DBProduct;
+                } else {
+                    found = data.find((p: DBProduct) => p.title.toLowerCase().replace(/\s+/g, '-') === productSlug.toLowerCase());
+                }
+
                 if (found) {
                     setDbProduct(found as DBProduct);
                 } else {
