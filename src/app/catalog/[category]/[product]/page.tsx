@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { X, LoaderCircle, Check } from "lucide-react";
 import gsap from "gsap";
 import { getProductBySlug } from "@/lib/catalog-data";
+import { supabase } from "@/lib/supabase";
+import { DBProduct } from "@/app/catalog/page";
 import Footer from "@/components/Footer";
 
 /* ═══════════════════════════════════════════ */
@@ -176,7 +178,7 @@ function SeoAccordion({ section }: { section: SeoSection }) {
                 onClick={() => setOpen((v) => !v)}
                 aria-expanded={open}
             >
-                <span className="seo-accordion-title">{section.title}</span>
+                <span className="seo-accordion-title font-bold">{section.title}</span>
                 <span className="seo-accordion-icon">{open ? "–" : "+"}</span>
             </button>
             {open && <div className="seo-accordion-body">{section.content}</div>}
@@ -256,7 +258,64 @@ export default function ProductDetailPage() {
     const params = useParams();
     const categorySlug = params.category as string;
     const productSlug  = params.product as string;
-    const result = getProductBySlug(categorySlug, productSlug);
+    
+    const localResult = getProductBySlug(categorySlug, productSlug);
+
+    const [dbProduct, setDbProduct] = useState<DBProduct | null>(null);
+    const [isLoadingDb, setIsLoadingDb] = useState(!localResult);
+    const [isNotFound, setIsNotFound] = useState(false);
+
+    useEffect(() => {
+        if (localResult) {
+            setIsLoadingDb(false);
+            return;
+        }
+
+        const fetchDbProduct = async () => {
+            setIsLoadingDb(true);
+            const { data, error } = await supabase
+                .from("products")
+                .select(`*, product_images ( image_url )`);
+
+            if (error) {
+                console.error("SUPABASE QUERY ERROR:", error.message, error.details, error.hint);
+                setIsNotFound(true);
+            } else if (!data) {
+                setIsNotFound(true);
+            } else {
+                const found = data.find((p: any) => p.title.toLowerCase().replace(/\s+/g, '-') === productSlug.toLowerCase());
+                if (found) {
+                    setDbProduct(found as DBProduct);
+                } else {
+                    setIsNotFound(true);
+                }
+            }
+            setIsLoadingDb(false);
+        };
+
+        fetchDbProduct();
+    }, [localResult, productSlug]);
+
+    const resolvedProduct = localResult?.product || (dbProduct ? (() => {
+        let tags: string[] = [];
+        try {
+            if (dbProduct.parameters) tags = JSON.parse(dbProduct.parameters).tags || [];
+        } catch {}
+        const rawImages = dbProduct.product_images || [];
+        const imageUrls = rawImages.map((img: { image_url: string }) => img.image_url) || [];
+        return {
+            name: dbProduct.title,
+            image: imageUrls[0] || "/placeholder.png",
+            hoverImage: (imageUrls && imageUrls.length > 1) ? imageUrls[1] : (imageUrls[0] || "/placeholder.png"),
+            description: dbProduct.description,
+            sizes: Array.isArray(dbProduct.sizes) ? dbProduct.sizes : tags,
+        };
+    })() : null);
+
+    const resolvedCategory = localResult?.category || {
+        name: categorySlug === "vip" ? "Luxury Series" : categorySlug === "offroad" ? "Off-Road Series" : "Sport Series",
+        displayTitle: categorySlug === "vip" ? "L U X U R Y   S E R I E S" : categorySlug === "offroad" ? "O F F - R O A D   S E R I E S" : "S P O R T   S E R I E S",
+    };
 
     const [selectedFinish, setSelectedFinish] = useState<MetalFinish>(METAL_FINISHES[0]);
     const heroRef = useRef<HTMLDivElement>(null);
@@ -283,8 +342,8 @@ export default function ProductDetailPage() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    selectedCarModel: result?.product?.name ?? "N/A",
-                    selectedWheelModel: result?.product?.name ?? "N/A",
+                    selectedCarModel: resolvedProduct?.name ?? "N/A",
+                    selectedWheelModel: resolvedProduct?.name ?? "N/A",
                     customer: {
                         name: leadName.trim(),
                         email: leadEmail.trim(),
@@ -306,10 +365,12 @@ export default function ProductDetailPage() {
         } finally {
             setIsSubmitting(false);
         }
-    }, [leadEmail, leadName, leadPhone, result?.product?.name]);
+    }, [leadEmail, leadName, leadPhone, resolvedProduct?.name]);
 
     /* ── Entrance animations ── */
     useEffect(() => {
+        if (isLoadingDb || isNotFound || !resolvedProduct) return;
+
         const ctx = gsap.context(() => {
             const tl = gsap.timeline({ delay: 0.15 });
 
@@ -331,10 +392,12 @@ export default function ProductDetailPage() {
         });
 
         return () => ctx.revert();
-    }, [productSlug]);
+    }, [isLoadingDb, isNotFound, resolvedProduct]);
 
     /* ── Hero parallax on scroll ── */
     useEffect(() => {
+        if (isLoadingDb || isNotFound || !resolvedProduct) return;
+        
         const hero = heroRef.current;
         if (!hero) return;
 
@@ -349,10 +412,14 @@ export default function ProductDetailPage() {
         onScroll();
         window.addEventListener("scroll", onScroll, { passive: true });
         return () => window.removeEventListener("scroll", onScroll);
-    }, []);
+    }, [isLoadingDb, isNotFound, resolvedProduct]);
+
+    if (isLoadingDb) {
+        return <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center" }}><LoaderCircle className="spin" size={32} /></div>;
+    }
 
     /* ── 404 guard ── */
-    if (!result) {
+    if (isNotFound || !resolvedProduct) {
         return (
             <div className="catalog-not-found">
                 <h1>Product Not Found</h1>
@@ -361,13 +428,36 @@ export default function ProductDetailPage() {
         );
     }
 
-    const { product, category } = result;
+    const { name, image, hoverImage, description, sizes } = resolvedProduct;
     const previewFinish: MetalFinish = selectedFinish;
+
+    const displaySizes = sizes && sizes.length > 0 ? sizes : AVAILABLE_SIZES;
+
+    const dynamicSeoSections: SeoSection[] = SEO_SECTIONS.map((defaultSection, i) => {
+        if (!dbProduct) return defaultSection;
+
+        const sectionNum = i + 1;
+        const titleKey = `section_${sectionNum}_title` as keyof DBProduct;
+        const textKey = `section_${sectionNum}_text` as keyof DBProduct;
+
+        const dbTitle = dbProduct[titleKey] as string | undefined;
+        const dbText = dbProduct[textKey] as string | undefined;
+
+        return {
+            title: dbTitle || defaultSection.title,
+            defaultOpen: defaultSection.defaultOpen,
+            content: dbText ? (
+                <div className="whitespace-pre-wrap break-words">
+                    {dbText}
+                </div>
+            ) : defaultSection.content,
+        };
+    });
 
     return (
         <>
             {/* ===== TASK 1 — Slim Cinematic Header ===== */}
-            <section ref={heroRef} className="pdp-hero" aria-label={category.name}>
+            <section ref={heroRef} className="pdp-hero" aria-label={resolvedCategory.name}>
                 <div
                     className="pdp-hero-bg"
                     style={{
@@ -375,7 +465,7 @@ export default function ProductDetailPage() {
                     }}
                 />
                 <div className="pdp-hero-gradient" />
-                <span className="pdp-hero-series">{category.displayTitle}</span>
+                <span className="pdp-hero-series">{resolvedCategory.displayTitle}</span>
             </section>
 
             {/* ===== Breadcrumbs ===== */}
@@ -384,9 +474,9 @@ export default function ProductDetailPage() {
                 <span className="pdp-bc-sep">/</span>
                 <Link href="/catalog">Catalog</Link>
                 <span className="pdp-bc-sep">/</span>
-                <Link href={`/catalog/${categorySlug}`}>{category.name}</Link>
+                <Link href={`/catalog/${categorySlug}`}>{resolvedCategory.name}</Link>
                 <span className="pdp-bc-sep">/</span>
-                <span className="pdp-bc-active">{product.name}</span>
+                <span className="pdp-bc-active">{name}</span>
             </nav>
 
             {/* ===== TASK 2 — Split Screen Layout ===== */}
@@ -395,46 +485,43 @@ export default function ProductDetailPage() {
                 <div className="pdp-image-stack">
                     <div className="pdp-img-wrap">
                         <Image
-                            src={product.image}
-                            alt={`${product.name} — Front`}
+                            src={image}
+                            alt={`${name} — Front`}
                             width={1400}
                             height={1400}
                             sizes="(max-width: 1024px) 100vw, 50vw"
                             draggable={false}
                         />
                     </div>
-                    <div className="pdp-img-wrap">
-                        <Image
-                            src={product.hoverImage}
-                            alt={`${product.name} — Angle`}
-                            width={1400}
-                            height={1400}
-                            sizes="(max-width: 1024px) 100vw, 50vw"
-                            draggable={false}
-                        />
-                    </div>
+                    {image !== hoverImage && (
+                        <div className="pdp-img-wrap">
+                            <Image
+                                src={hoverImage}
+                                alt={`${name} — Angle`}
+                                width={1400}
+                                height={1400}
+                                sizes="(max-width: 1024px) 100vw, 50vw"
+                                draggable={false}
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Right — Sticky Details & Configurator */}
                 <div className="pdp-sticky-col">
                     {/* Title */}
                     <div className="pdp-info-block">
-                        <h1 className="pdp-title">{product.name}</h1>
-                    </div>
-
-                    {/* Description */}
-                    <div className="pdp-info-block">
-                        <p className="pdp-desc">{product.description}</p>
+                        <h1 className="pdp-title">{name}</h1>
                     </div>
 
                     {/* Available Sizes */}
                     <div className="pdp-info-block">
                         <div className="pdp-sizes-label">Available Sizes</div>
                         <div className="pdp-sizes-list">
-                            {AVAILABLE_SIZES.map((size, i) => (
+                            {displaySizes.map((size: string, i: number) => (
                                 <span key={size}>
                                     <span className="pdp-size">{size}</span>
-                                    {i < AVAILABLE_SIZES.length - 1 && (
+                                    {i < displaySizes.length - 1 && (
                                         <span className="pdp-size-sep">|</span>
                                     )}
                                 </span>
@@ -508,8 +595,8 @@ export default function ProductDetailPage() {
 
             {/* ===== SEO Content Sections ===== */}
             <div className="seo-section">
-                {SEO_SECTIONS.map((section) => (
-                    <SeoAccordion key={section.title} section={section} />
+                {dynamicSeoSections.map((section, idx) => (
+                    <SeoAccordion key={idx} section={section} />
                 ))}
             </div>
 
@@ -535,7 +622,7 @@ export default function ProductDetailPage() {
                             </button>
 
                             <h3>Request Quote</h3>
-                            <p>{product.name} — {previewFinish.label} ({previewFinish.hex.toUpperCase()})</p>
+                            <p>{name} — {previewFinish.label} ({previewFinish.hex.toUpperCase()})</p>
 
                             <div className="config-lead-step-content">
                                 <label>Name</label>

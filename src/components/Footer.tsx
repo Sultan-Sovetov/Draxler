@@ -70,7 +70,7 @@ export default function Footer() {
                     <div className="footer-links">
                         <Link href="/catalog" className="footer-link">Catalog</Link>
                         <Link href="/#configurator" className="footer-link">Configurator</Link>
-                        <a href="mailto:sales@draxlerwheels.com" className="footer-link">Contact</a>
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sales@draxlerwheels.com" target="_blank" rel="noopener noreferrer" className="footer-link">Contact</a>
                     </div>
 
                     <div className="footer-brand-assets">
@@ -135,14 +135,12 @@ export default function Footer() {
                     <p className="footer-origin-text">
                         Liuyang Environmental Protection Technology Demonstration Park, Zhen Tou Town, Liuyang City, Changsha City, Hunan Province.
                     </p>
-                    <p className="footer-origin-text footer-origin-text--secondary">
-                        Crafted in Kazakhstan &mdash; About our Factory.
-                    </p>
+  
                     <div className="footer-origin-contact" aria-label="Factory contact details">
                         <a href="tel:+77027543948" className="footer-origin-contact-link">
                             +7 702 754 39 48
                         </a>
-                        <a href="mailto:sales@draxlerwheels.com" className="footer-origin-contact-link">
+                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sales@draxlerwheels.com" target="_blank" rel="noopener noreferrer" className="footer-origin-contact-link">
                             sales@draxlerwheels.com
                         </a>
                     </div>

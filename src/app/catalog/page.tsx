@@ -1,12 +1,34 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { catalogCategories } from "@/lib/catalog-data";
+import { catalogCategories, CatalogProduct } from "@/lib/catalog-data";
+import { supabase } from "@/lib/supabase";
 import Footer from "@/components/Footer";
+
+export interface DBProduct {
+  id: number;
+  title: string;
+  type: "luxury" | "off-road" | "sport";
+  product_images?: { image_url: string }[];
+  description: string;
+  parameters: string;
+  created_at: string;
+  sizes?: string[];
+  section_1_title?: string;
+  section_1_text?: string;
+  section_2_title?: string;
+  section_2_text?: string;
+  section_3_title?: string;
+  section_3_text?: string;
+  section_4_title?: string;
+  section_4_text?: string;
+  section_5_title?: string;
+  section_5_text?: string;
+}
 
 if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
@@ -16,9 +38,73 @@ const ITEMS_PER_PAGE = 8; // 2 rows × 4 columns
 
 export default function CatalogPage() {
   const pageRef = useRef<HTMLDivElement>(null);
+  
+  const [dbProducts, setDbProducts] = useState<Record<string, CatalogProduct[]>>({
+    vip: [],
+    offroad: [],
+    sport: [],
+  });
+
+  const mergedCategories = useMemo(() => {
+    return catalogCategories.map((cat) => ({
+      ...cat,
+      products: [...cat.products, ...(dbProducts[cat.slug] || [])],
+    }));
+  }, [dbProducts]);
+
   const [visibleCounts, setVisibleCounts] = useState<Record<string, number>>(
     () => Object.fromEntries(catalogCategories.map((cat) => [cat.slug, ITEMS_PER_PAGE]))
   );
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select(`*, product_images ( image_url )`)
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("SUPABASE QUERY ERROR:", error.message, error.details, error.hint);
+        return;
+      }
+
+      if (data) {
+        const newDbProducts: Record<string, CatalogProduct[]> = {
+          vip: [],
+          offroad: [],
+          sport: [],
+        };
+
+        data.forEach((p: DBProduct) => {
+          let tags: string[] = [];
+          try {
+            if (p.parameters) {
+              tags = JSON.parse(p.parameters).tags || [];
+            }
+          } catch (e) {}
+
+          const imageUrls = p.product_images?.map((img) => img.image_url) || [];
+
+          const product: CatalogProduct = {
+            slug: p.title.toLowerCase().replace(/\s+/g, '-'),
+            name: p.title,
+            image: imageUrls[0] || "/placeholder.png",
+            hoverImage: imageUrls.length > 1 ? imageUrls[1] : (imageUrls[0] || "/placeholder.png"),
+            description: p.description,
+            sizes: Array.isArray(p.sizes) ? p.sizes : tags,
+          };
+
+          if (p.type === "luxury" || p.type === "vip") newDbProducts.vip.push(product);
+          else if (p.type === "off-road" || p.type === "offroad") newDbProducts.offroad.push(product);
+          else if (p.type === "sport") newDbProducts.sport.push(product);
+        });
+
+        setDbProducts(newDbProducts);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleShowMore = useCallback((slug: string) => {
     setVisibleCounts((prev) => {
@@ -38,6 +124,7 @@ export default function CatalogPage() {
             { opacity: 1, y: 0, duration: 0.7, stagger: 0.1, ease: "power3.out" }
           );
         }
+        ScrollTrigger.refresh();
       });
 
       return { ...prev, [slug]: newCount };
@@ -94,7 +181,7 @@ export default function CatalogPage() {
 
   return (
     <div ref={pageRef} className="catalog-page">
-      {catalogCategories.map((cat) => {
+      {mergedCategories.map((cat) => {
         const bgImage = categoryBackgroundBySlug[cat.slug] ?? "/catalog/luxury.jpg";
 
         return (
@@ -134,15 +221,17 @@ export default function CatalogPage() {
                       className="cat-product-img-default"
                       draggable={false}
                     />
-                    <Image
-                      src={product.hoverImage}
-                      alt={`${product.name} angle view`}
-                      width={1200}
-                      height={1200}
-                      sizes="(max-width: 960px) 100vw, (max-width: 1400px) 50vw, 25vw"
-                      className="cat-product-img-hover"
-                      draggable={false}
-                    />
+                    {product.image !== product.hoverImage && (
+                        <Image
+                        src={product.hoverImage}
+                        alt={`${product.name} angle view`}
+                        width={1200}
+                        height={1200}
+                        sizes="(max-width: 960px) 100vw, (max-width: 1400px) 50vw, 25vw"
+                        className="cat-product-img-hover"
+                        draggable={false}
+                        />
+                    )}
                   </div>
                   <div className="cat-product-info">
                     <span className="cat-product-name">{product.name}</span>
