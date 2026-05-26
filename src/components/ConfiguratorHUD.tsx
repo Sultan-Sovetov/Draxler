@@ -592,7 +592,10 @@ export default function ConfiguratorHUD({
 
                                 <div
                                     className="chud-panel-body configurator-scrollbar"
+                                    data-lenis-prevent="true"
                                     onWheel={(event) => event.stopPropagation()}
+                                    onTouchStart={(event) => event.stopPropagation()}
+                                    onTouchMove={(event) => event.stopPropagation()}
                                 >
                                     {/* ── Vehicle section ── */}
                                     {openSection === "vehicle" && (
@@ -721,7 +724,13 @@ export default function ConfiguratorHUD({
                                     {openSection === "cars" && (
                                         <div className="chud-section-content">
                                             <div className="chud-subsection-label">Brand / Model</div>
-                                            <div className="configurator-scrollbar max-h-[300px] space-y-2 overflow-y-auto pr-1 sm:max-h-[420px]">
+                                            <div 
+                                                className="configurator-scrollbar max-h-[300px] space-y-2 overflow-y-auto pr-1 sm:max-h-[420px]"
+                                                data-lenis-prevent="true"
+                                                onTouchStart={(event) => event.stopPropagation()}
+                                                onTouchMove={(event) => event.stopPropagation()}
+                                                onWheel={(event) => event.stopPropagation()}
+                                            >
                                                 {carGroups.map((group) => {
                                                     const isOpen = openCarBrand === group.brand;
 
