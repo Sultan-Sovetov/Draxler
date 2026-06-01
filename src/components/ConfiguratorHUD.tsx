@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useMemo, useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Palette, Car, CircleDot, Paintbrush, Menu, X as XIcon } from "lucide-react";
+import { Palette, Car, CircleDot, Paintbrush, Menu, X as XIcon, Download } from "lucide-react";
 import { CAR_RIM_MAPPINGS } from "../data/car-rims-mesh";
 import { catalogCategories } from "@/lib/catalog-data";
 
@@ -242,6 +242,9 @@ export default function ConfiguratorHUD({
     active,
     onSelectWheelModel,
     onOpenFinalize,
+    onSaveScreenshot,
+    isCapturingScreenshot,
+    hideHudForScreenshot,
     carGroups,
     selectedCarId,
     onSelectCarModel,
@@ -257,6 +260,9 @@ export default function ConfiguratorHUD({
     active: boolean;
     onSelectWheelModel: (wheel: string) => void;
     onOpenFinalize: () => void;
+    onSaveScreenshot?: () => void;
+    isCapturingScreenshot?: boolean;
+    hideHudForScreenshot?: boolean;
     carGroups: Car3DBrandGroup[];
     selectedCarId: string;
     onSelectCarModel: (car: Car3DOption) => void;
@@ -474,7 +480,7 @@ export default function ConfiguratorHUD({
 
     return (
         <AnimatePresence>
-            {active && (
+            {active && !hideHudForScreenshot && (
                 <div
                     className={`chud-shell${hudVisible ? " chud-shell--visible" : ""}${isTouchDevice ? " chud-shell--touch" : ""}`}
                     onMouseEnter={isTouchDevice ? undefined : handleZoneEnter}
@@ -562,6 +568,20 @@ export default function ConfiguratorHUD({
                         })}
 
                         <div className="chud-toolbar-divider" />
+
+                        <motion.button
+                            className="chud-icon-btn chud-icon-btn--save"
+                            onClick={onSaveScreenshot}
+                            disabled={isCapturingScreenshot}
+                            initial={{ opacity: 0, scale: 0.7 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: 0.42, duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                            aria-label="Save Screenshot"
+                            title="Save Screenshot"
+                        >
+                            <Download size={20} strokeWidth={1.5} />
+                            <span className="chud-icon-label">Save</span>
+                        </motion.button>
 
                         <motion.button
                             className="chud-icon-btn chud-icon-btn--finalize"

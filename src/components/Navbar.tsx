@@ -3,10 +3,22 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
 
-const NAV_ITEMS = [
-    // { label: "Bespoke", target: "bespoke" },
-    { label: "Catalog", target: "catalog" },
-    // { label: "Customization", target: "customization" },
+type NavItem = {
+    label: string;
+    target: string;
+    subItems?: { label: string; target: string }[];
+};
+
+const NAV_ITEMS: NavItem[] = [
+    {
+        label: "Catalog",
+        target: "catalog",
+        subItems: [
+            { label: "Luxury", target: "vip" },
+            { label: "Off-Road", target: "offroad" },
+            { label: "Sport", target: "sport" },
+        ],
+    },
     { label: "Configurator", target: "configurator" },
     { label: "Contact", target: "contact" },
 ];
@@ -22,6 +34,7 @@ export default function Navbar() {
     const lastScrollY = useRef(0);
     const pathname = usePathname();
     const isHome = pathname === "/";
+    const [openMobileAccordion, setOpenMobileAccordion] = useState<string | null>(null);
 
     // Listen for configurator-active event to force-hide navbar
     useEffect(() => {
@@ -78,6 +91,18 @@ export default function Navbar() {
     const scrollToTarget = useCallback((targetId: string) => {
         setMobileMenuOpen(false);
 
+        if (["vip", "offroad", "sport"].includes(targetId)) {
+            if (pathname === "/catalog") {
+                const target = document.getElementById(targetId);
+                if (!target) return;
+                const offset = target.getBoundingClientRect().top + window.scrollY - 56;
+                smoothScrollTo(offset, 1300);
+            } else {
+                window.location.href = `/catalog#${targetId}`;
+            }
+            return;
+        }
+
         /* "Catalog" always navigates to /catalog page */
         if (targetId === "catalog") {
             window.location.href = "/catalog";
@@ -94,7 +119,7 @@ export default function Navbar() {
 
         const offset = target.getBoundingClientRect().top + window.scrollY - 56;
         smoothScrollTo(offset, 1300);
-    }, [isHome, smoothScrollTo]);
+    }, [pathname, isHome, smoothScrollTo]);
 
     const handleLogoClick = useCallback(() => {
         setMobileMenuOpen(false);
@@ -189,13 +214,27 @@ export default function Navbar() {
 
                 <div className="navbar-links">
                     {NAV_ITEMS.map((item) => (
-                        <button
-                            key={item.target}
-                            className={`navbar-link navbar-link-btn ${activeSection === item.target ? "navbar-link--section-active" : ""}`}
-                            onClick={() => scrollToTarget(item.target)}
-                        >
-                            {item.label}
-                        </button>
+                        <div key={item.target} className="navbar-item-wrapper dropdown-wrapper">
+                            <button
+                                className={`navbar-link navbar-link-btn ${activeSection === item.target || (item.target === 'catalog' && pathname.startsWith('/catalog')) ? "navbar-link--section-active" : ""}`}
+                                onClick={() => scrollToTarget(item.target)}
+                            >
+                                {item.label}
+                            </button>
+                            {item.subItems && (
+                                <div className="navbar-dropdown">
+                                    {item.subItems.map((sub) => (
+                                        <button
+                                            key={sub.target}
+                                            className="navbar-dropdown-link"
+                                            onClick={() => scrollToTarget(sub.target)}
+                                        >
+                                            {sub.label}
+                                        </button>
+                                    ))}
+                                </div>
+                            )}
+                        </div>
                     ))}
                 </div>
 
@@ -216,13 +255,47 @@ export default function Navbar() {
 
             <div className={`navbar-mobile-menu ${mobileMenuOpen ? "is-open" : ""}`}>
                 {NAV_ITEMS.map((item) => (
-                    <button
-                        key={`mobile-${item.target}`}
-                        className={`navbar-mobile-link ${activeSection === item.target ? "navbar-link--section-active" : ""}`}
-                        onClick={() => scrollToTarget(item.target)}
-                    >
-                        {item.label}
-                    </button>
+                    <div key={`mobile-${item.target}`} className="navbar-mobile-item-wrapper">
+                        <div className="navbar-mobile-link-header">
+                            <button
+                                className={`navbar-mobile-link ${activeSection === item.target || (item.target === 'catalog' && pathname.startsWith('/catalog')) ? "navbar-link--section-active" : ""}`}
+                                onClick={() => scrollToTarget(item.target)}
+                            >
+                                {item.label}
+                            </button>
+                            {item.subItems && (
+                                <button 
+                                    className="navbar-mobile-accordion-toggle"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setOpenMobileAccordion(openMobileAccordion === item.target ? null : item.target);
+                                    }}
+                                >
+                                    <svg 
+                                        viewBox="0 0 24 24" 
+                                        width="24" 
+                                        height="24" 
+                                        className={`accordion-icon ${openMobileAccordion === item.target ? 'is-open' : ''}`}
+                                    >
+                                        <path fill="currentColor" d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z" />
+                                    </svg>
+                                </button>
+                            )}
+                        </div>
+                        {item.subItems && (
+                            <div className={`navbar-mobile-subitems ${openMobileAccordion === item.target ? "is-open" : ""}`}>
+                                {item.subItems.map((sub) => (
+                                    <button
+                                        key={`mobile-sub-${sub.target}`}
+                                        className="navbar-mobile-sublink"
+                                        onClick={() => scrollToTarget(sub.target)}
+                                    >
+                                        {sub.label}
+                                    </button>
+                                ))}
+                            </div>
+                        )}
+                    </div>
                 ))}
             </div>
         </nav>

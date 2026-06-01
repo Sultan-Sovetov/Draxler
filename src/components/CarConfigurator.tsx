@@ -34,6 +34,8 @@ import { CAR_PAINT_ALLOWLIST } from "../data/car-paint-allowlist";
 import { CAR_CALIBRATION_DATA } from "../data/CarCalibrationData";
 import { applyMaterialFixes, logMeshInventory } from "../data/car-material-fixes";
 import { IMPORTED_SNAPSHOT_RIM_CALIBRATIONS } from "../data/imported-snapshot-calibrations";
+import { ScreenshotCapture } from "./ScreenshotCapture";
+import { addWatermarkAndDownload, extractModelNames } from "../lib/screenshot-utils";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -2053,6 +2055,9 @@ export default function CarConfigurator() {
     const [carColor, setCarColor] = useState(
         DEFAULT_CAR.modelPath === G_CLASS_MODEL_PATH ? G_CLASS_BASE_COLOR : DEFAULT_CAR_COLOR
     );
+    const [shouldCaptureScreenshot, setShouldCaptureScreenshot] = useState(false);
+    const [isCapturingScreenshot, setIsCapturingScreenshot] = useState(false);
+    const [hideHudForScreenshot, setHideHudForScreenshot] = useState(false);
     const showDevTools = DEV_RUNTIME_ENABLED;
     const showDevUi = DEV_UI_ENABLED;
     const rimControlsStore = useCreateStore();
@@ -2145,6 +2150,59 @@ export default function CarConfigurator() {
         setIsActive(false);
         setIsPreparing(false);
         setShowFinalize(false);
+    }, []);
+
+    const handleSaveScreenshot = useCallback(async () => {
+        try {
+            setHideHudForScreenshot(true);
+            setIsCapturingScreenshot(true);
+
+            // Wait for next frame to ensure HUD is hidden before capturing
+            await new Promise((resolve) => {
+                requestAnimationFrame(() => {
+                    requestAnimationFrame(resolve);
+                });
+            });
+
+            // Trigger screenshot capture
+            setShouldCaptureScreenshot(true);
+        } catch (error) {
+            console.error("Screenshot error:", error);
+            setHideHudForScreenshot(false);
+            setIsCapturingScreenshot(false);
+        }
+    }, []);
+
+    const handleScreenshotCaptured = useCallback(
+        async (canvas: HTMLCanvasElement) => {
+            try {
+                const { carName, rimName } = extractModelNames(selectedCar, selectedWheelModel);
+
+                // Add watermark and download
+                await addWatermarkAndDownload(canvas, {
+                    carModel: carName,
+                    rimModel: rimName,
+                });
+
+                // Show HUD again
+                setHideHudForScreenshot(false);
+                setShouldCaptureScreenshot(false);
+            } catch (error) {
+                console.error("Error processing screenshot:", error);
+                setHideHudForScreenshot(false);
+                setShouldCaptureScreenshot(false);
+            } finally {
+                setIsCapturingScreenshot(false);
+            }
+        },
+        [selectedCar, selectedWheelModel]
+    );
+
+    const handleScreenshotError = useCallback((error: Error) => {
+        console.error("Screenshot capture error:", error);
+        setHideHudForScreenshot(false);
+        setShouldCaptureScreenshot(false);
+        setIsCapturingScreenshot(false);
     }, []);
 
     /* ── Scroll lock when configurator is active ── */
@@ -2284,6 +2342,13 @@ export default function CarConfigurator() {
                     />
                 )}
 
+                {/* Screenshot capture handler */}
+                <ScreenshotCapture
+                    shouldCapture={shouldCaptureScreenshot}
+                    onCaptureDone={handleScreenshotCaptured}
+                    onCaptureError={handleScreenshotError}
+                />
+
                 {/* Scene */}
                 <Suspense fallback={<ModelLoadingFallback />}>
                     <CarModel
@@ -2357,6 +2422,8 @@ export default function CarConfigurator() {
                 active={isActive}
                 onSelectWheelModel={(wheel) => setSelectedWheelModel(wheel)}
                 onOpenFinalize={() => setShowFinalize(true)}
+                onSaveScreenshot={handleSaveScreenshot}
+                isCapturingScreenshot={isCapturingScreenshot}
                 carGroups={CAR_3D_GROUPS}
                 selectedCarId={selectedCar.id}
                 onSelectCarModel={(car) => {
@@ -2373,6 +2440,7 @@ export default function CarConfigurator() {
                 setCarColor={setCarColor}
                 selectedModelLabel={selectedModel}
                 selectedWheelLabel={selectedWheelModel}
+                hideHudForScreenshot={hideHudForScreenshot}
             />
 
             {/* Preparing overlay – localized to this section */}

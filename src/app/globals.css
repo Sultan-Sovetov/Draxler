@@ -3552,6 +3552,78 @@ html.lenis body {
   color: var(--foreground);
 }
 
+/* === DROPDOWN (DESKTOP) === */
+.dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.navbar-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+  min-width: 150px;
+  text-align: center;
+}
+
+.dropdown-wrapper:hover .navbar-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
+.navbar-dropdown-link {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.75rem 1rem;
+  opacity: 0.6;
+  border-radius: 4px;
+  transition: opacity 0.25s, background 0.25s;
+}
+
+.navbar-dropdown-link:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.catalog-page .navbar-dropdown {
+  background: transparent;
+  border-color: transparent;
+}
+
+.catalog-page .navbar-dropdown-link {
+  color: #111;
+}
+
+.catalog-page .navbar-dropdown-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.catalog-page .navbar-dropdown-link:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
 .navbar-theme-toggle {
   background: none;
   border: 1px solid var(--accent-subtle);
@@ -3694,6 +3766,88 @@ html.lenis body {
   .navbar-mobile-link:hover {
     opacity: 1;
     transform: translateX(2px);
+  }
+
+  /* === MOBILE ACCORDION === */
+  .navbar-mobile-item-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .navbar-mobile-link-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .navbar-mobile-accordion-toggle {
+    background: none;
+    border: none;
+    color: var(--foreground);
+    opacity: 0.6;
+    padding: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s;
+  }
+  
+  .navbar-mobile-accordion-toggle:hover {
+    opacity: 1;
+  }
+  
+  .accordion-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  .accordion-icon.is-open {
+    transform: rotate(180deg);
+  }
+  
+  .navbar-mobile-subitems {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s;
+    margin-left: 1rem;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .navbar-mobile-subitems.is-open {
+    max-height: 300px;
+    opacity: 1;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .navbar-mobile-sublink {
+    border: none;
+    background: transparent;
+    color: var(--foreground);
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    text-align: left;
+    /* Sufficient height for touch target */
+    padding: 0.8rem 1rem;
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
+  }
+  
+  .navbar-mobile-sublink:hover {
+    opacity: 1;
+  }
+
+  /* Adjust color for light theme / catalog if needed */
+  .catalog-page .navbar-mobile-subitems {
+    border-left-color: rgba(0, 0, 0, 0.1);
+  }
+  .catalog-page .navbar-mobile-sublink {
+    color: #111;
   }
 }
 
@@ -4202,6 +4356,24 @@ html.lenis body {
   background: #000;
 }
 
+@media (max-width: 1200px) {
+  .cat-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 960px) {
+  .cat-product-grid {
+    grid-template-columns: repeat(2, 1fr); /* tablet */
+  }
+}
+
+@media (max-width: 600px) {
+  .cat-product-grid {
+    grid-template-columns: repeat(2, 1fr); /* mobile 2 columns */
+  }
+}
+
 .cat-product-grid--floating {
   position: relative;
   z-index: 3;
@@ -4424,7 +4596,7 @@ html.lenis body {
   }
 
   .cat-product-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .cat-product-grid--floating {
@@ -5345,7 +5517,8 @@ html.lenis body {
 }
 
 @media (max-width: 480px) {
-  .catalog-grid {
+  .catalog-grid,
+  .cat-product-grid {
     grid-template-columns: 1fr;
   }
 
