@@ -53,7 +53,7 @@ export async function addWatermarkAndDownload(
   // Line 3 (Bottom): "visit..."
   ctx.font = `300 ${linkFontSize}px ${fontFamily}`;
   ctx.fillStyle = "rgba(255, 255, 255, 0.65)";
-  if ('letterSpacing' in ctx) (ctx as any).letterSpacing = "0.5px";
+  if ('letterSpacing' in ctx) (ctx as unknown as { letterSpacing: string }).letterSpacing = "0.5px";
   ctx.fillText("visit draxlerwheels.com to see more", paddingX, currentY);
 
   currentY -= Math.round(linkFontSize * 1.8); // Space up
@@ -61,7 +61,7 @@ export async function addWatermarkAndDownload(
   // Line 2 (Middle): "G Class on DRX-301" - Main emphasis
   ctx.font = `500 ${descFontSize}px ${fontFamily}`;
   ctx.fillStyle = "#FFFFFF";
-  if ('letterSpacing' in ctx) (ctx as any).letterSpacing = "-0.2px"; // Tighter tracking for large text
+  if ('letterSpacing' in ctx) (ctx as unknown as { letterSpacing: string }).letterSpacing = "-0.2px"; // Tighter tracking for large text
   ctx.fillText(`${carModel} on ${rimModel}`, paddingX, currentY);
 
   currentY -= Math.round(descFontSize * 1.4); // Space up
@@ -69,7 +69,7 @@ export async function addWatermarkAndDownload(
   // Line 1 (Top): "Made in Draxler"
   ctx.font = `600 ${titleFontSize}px ${fontFamily}`;
   ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-  if ('letterSpacing' in ctx) (ctx as any).letterSpacing = "1.5px"; // Wide tracking for premium feel
+  if ('letterSpacing' in ctx) (ctx as unknown as { letterSpacing: string }).letterSpacing = "1.5px"; // Wide tracking for premium feel
   ctx.fillText("Made in Draxler", paddingX, currentY);
 
   // Reset shadow
