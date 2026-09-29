@@ -7,9 +7,9 @@ import styles from "./g-wagon.module.css";
 const CarConfigurator = dynamic(() => import("@/components/CarConfigurator"), { ssr: false });
 
 const images = {
-    blue: "https://forzaaa.com/cdn/shop/files/g63-offroad-2.jpg?v=1748949165&width=2560",
-    graphite: "https://r2.mbdesign.shop/cdn/width/2560/media/d1/c0/e0/1589391975/mercedes-g-klasse-24zoll-2d9vxldnzT06il.jpg?ts=1713635645",
-    green: "https://vossen.jp/wheel/S21-01/Mercedes-G63-AMG-Series-21-S21-02.jpg",
+    blue: "/projects/g-wagon-blue.jpg",
+    graphite: "/projects/g-wagon-graphite.jpg",
+    green: "/projects/g-wagon-green.jpg",
 };
 
 const gallery = [

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import styles from "./ProjectsCatalogPreview.module.css";
 
-const PROJECT_IMAGE = "https://r2.mbdesign.shop/cdn/width/2560/media/d1/c0/e0/1589391975/mercedes-g-klasse-24zoll-2d9vxldnzT06il.jpg?ts=1713635645";
+const PROJECT_IMAGE = "/projects/g-wagon-graphite.jpg";
 
 export default function ProjectsCatalogPreview() {
     return (
