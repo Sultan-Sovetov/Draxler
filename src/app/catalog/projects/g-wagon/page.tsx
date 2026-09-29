@@ -1,6 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
 import Footer from "@/components/Footer";
 import styles from "./g-wagon.module.css";
 
@@ -16,6 +17,13 @@ const gallery = [
     { src: images.graphite, label: "Mercedes-Benz on DRX-101", position: "center" },
     { src: images.green, label: "Mercedes-Benz on DRX-213", position: "center" },
     { src: images.blue, label: "Mercedes-Benz on DRX-305", position: "center" },
+];
+
+const featuredWheels = [
+    { model: "DRX-101", image: "/catalog/luxury/DRX_101_angle.png", description: "Forged mesh" },
+    { model: "DRX-102", image: "/catalog/luxury/DRX_102_angle.png", description: "Directional multi-spoke" },
+    { model: "DRX-103", image: "/catalog/luxury/DRX_103_angle.png", description: "Sculpted five-spoke" },
+    { model: "DRX-104", image: "/catalog/luxury/DRX_104_angle.png", description: "Precision twelve-spoke" },
 ];
 
 const questions = [
@@ -46,10 +54,15 @@ export default function GWagonProjectPage() {
                     <p>Every DRAXLER wheel is engineered around exact fitment. No visual compromise. No generic offsets.</p>
                 </div>
                 <div className={styles.rimFeature}>
-                    <div className={styles.rimCopy}><span>Featured forged architecture</span><strong>DRX-101</strong><p>Deep concavity, clean spoke tension and brake clearance resolved for the G‑Class.</p></div>
+                    <div className={styles.rimCopy}><span>Forged for the G‑Class</span><strong>Choose your<br />architecture.</strong><p>Explore four DRAXLER designs. Open any wheel to see its finishes, sizes and details.</p></div>
                     <div className={styles.rimVisuals}>
-                        <img src="/catalog/luxury/DRX_101_angle.png" alt="DRAXLER DRX-101 forged wheel" />
-                        <img src="/catalog/luxury/DRX_102_angle.png" alt="DRAXLER DRX-102 forged wheel" />
+                        {featuredWheels.map((wheel, index) => (
+                            <Link className={styles.rimCard} href={`/catalog/vip/${wheel.model.toLowerCase()}`} key={wheel.model}>
+                                <span className={styles.rimNumber}>0{index + 1}</span>
+                                <img src={wheel.image} alt={`${wheel.model} forged wheel`} />
+                                <span className={styles.rimCardInfo}><strong>{wheel.model}</strong><small>{wheel.description}</small><i>View wheel <b aria-hidden="true">↗</b></i></span>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             </section>
