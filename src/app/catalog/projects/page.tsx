@@ -1,7 +1,7 @@
 import Link from "next/link";
 import styles from "./projects.module.css";
 
-const PROJECT_IMAGE = "https://forzaaa.com/cdn/shop/files/g63-offroad-2.jpg?v=1748949165&width=2560";
+const PROJECT_IMAGE = "/projects/g-wagon%20blue.png";
 
 export default function ProjectsPage() {
     return (

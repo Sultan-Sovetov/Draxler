@@ -8,14 +8,14 @@ import styles from "./g-wagon.module.css";
 const CarConfigurator = dynamic(() => import("@/components/CarConfigurator"), { ssr: false });
 
 const images = {
-    blue: "/projects/g-wagon-blue.jpg",
+    blue: "/projects/g-wagon%20blue.png",
     graphite: "/projects/g-wagon-graphite.jpg",
     green: "/projects/g-wagon-green.jpg",
 };
 
 const gallery = [
-    { src: images.graphite, label: "Mercedes-Benz on DRX-101", position: "center" },
     { src: images.green, label: "Mercedes-Benz on DRX-213", position: "center" },
+    { src: images.graphite, label: "Mercedes-Benz on DRX-101", position: "center" },
     { src: images.blue, label: "Mercedes-Benz on DRX-305", position: "center" },
 ];
 
