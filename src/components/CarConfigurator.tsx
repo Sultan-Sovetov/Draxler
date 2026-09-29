@@ -2006,7 +2006,7 @@ function ModelLoadingFallback() {
 /* ================================================================== */
 /*  ReflectiveFloor                                                   */
 /* ================================================================== */
-function ReflectiveFloor() {
+function ReflectiveFloor({ color = BG }: { color?: string }) {
     return (
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.01, 0]} receiveShadow>
             <planeGeometry args={[80, 80]} />
@@ -2019,7 +2019,7 @@ function ReflectiveFloor() {
                 depthScale={1.2}
                 minDepthThreshold={0.4}
                 maxDepthThreshold={1.4}
-                color={BG}
+                color={color}
                 metalness={0.5}
                 mirror={0.5}
             />
@@ -2030,7 +2030,16 @@ function ReflectiveFloor() {
 /* ================================================================== */
 /*  Main export                                                       */
 /* ================================================================== */
-export default function CarConfigurator() {
+type CarConfiguratorProps = {
+    /** Keeps the full configurator unchanged by default; used by vehicle project pages. */
+    gWagonOnly?: boolean;
+    whiteBackground?: boolean;
+};
+
+export default function CarConfigurator({
+    gWagonOnly = false,
+    whiteBackground = false,
+}: CarConfiguratorProps) {
     const configuratorRef = useRef<HTMLElement>(null);
     const enterScrollTweenRef = useRef<gsap.core.Tween | null>(null);
     const scrollProgress = useRef(0);
@@ -2061,6 +2070,15 @@ export default function CarConfigurator() {
     const showDevTools = DEV_RUNTIME_ENABLED;
     const showDevUi = DEV_UI_ENABLED;
     const rimControlsStore = useCreateStore();
+    const visibleCarGroups = gWagonOnly
+        ? CAR_3D_GROUPS
+            .map((group) => ({
+                ...group,
+                models: group.models.filter((car) => car.modelPath === G_CLASS_MODEL_PATH),
+            }))
+            .filter((group) => group.models.length > 0)
+        : CAR_3D_GROUPS;
+    const sceneBackground = whiteBackground ? "#ffffff" : BG;
 
     useEffect(() => {
         if (selectedCar.modelPath === G_CLASS_MODEL_PATH) {
@@ -2273,7 +2291,11 @@ export default function CarConfigurator() {
     }, [email, name, phone, selectedModel, selectedWheelModel]);
 
     return (
-        <section ref={configuratorRef} className="car-configurator-section" id="configurator">
+        <section
+            ref={configuratorRef}
+            className={`car-configurator-section${whiteBackground ? " car-configurator-section--white" : ""}`}
+            id="configurator"
+        >
             {showDevUi && (
                 <LevaPanel
                     store={rimControlsStore}
@@ -2297,8 +2319,8 @@ export default function CarConfigurator() {
                 style={{ width: "100%", height: "100%" }}
             >
                 {/* Background + Fog */}
-                <color attach="background" args={[BG]} />
-                <fog attach="fog" args={[BG, 15, 60]} />
+                <color attach="background" args={[sceneBackground]} />
+                <fog attach="fog" args={[sceneBackground, 15, 60]} />
 
                 {/* Lighting */}
                 <SoftShadows size={25} samples={16} focus={0.5} />
@@ -2359,7 +2381,7 @@ export default function CarConfigurator() {
                         showDevTools={showDevTools}
                         controlsStore={rimControlsStore}
                     />
-                    <ReflectiveFloor />
+                    <ReflectiveFloor color={sceneBackground} />
                 </Suspense>
             </Canvas>
 
@@ -2424,7 +2446,7 @@ export default function CarConfigurator() {
                 onOpenFinalize={() => setShowFinalize(true)}
                 onSaveScreenshot={handleSaveScreenshot}
                 isCapturingScreenshot={isCapturingScreenshot}
-                carGroups={CAR_3D_GROUPS}
+                carGroups={visibleCarGroups}
                 selectedCarId={selectedCar.id}
                 onSelectCarModel={(car) => {
                     startTransition(() => {
