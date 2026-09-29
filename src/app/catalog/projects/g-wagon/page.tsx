@@ -13,11 +13,9 @@ const images = {
 };
 
 const gallery = [
-    { src: images.graphite, label: "Mercedes-Benz on DRX-101", position: "center 58%" },
-    { src: images.green, label: "Mercedes-Benz on DRX-213", position: "center 42%" },
+    { src: images.graphite, label: "Mercedes-Benz on DRX-101", position: "center" },
+    { src: images.green, label: "Mercedes-Benz on DRX-213", position: "center" },
     { src: images.blue, label: "Mercedes-Benz on DRX-305", position: "center" },
-    { src: images.graphite, label: "Mercedes-Benz on DRX-114", position: "right center" },
-    { src: images.green, label: "Mercedes-Benz on DRX-102", position: "left center" },
 ];
 
 const questions = [
@@ -49,7 +47,10 @@ export default function GWagonProjectPage() {
                 </div>
                 <div className={styles.rimFeature}>
                     <div className={styles.rimCopy}><span>Featured forged architecture</span><strong>DRX-101</strong><p>Deep concavity, clean spoke tension and brake clearance resolved for the G‑Class.</p></div>
-                    <img src="/catalog/luxury/DRX_101_angle.png" alt="DRAXLER DRX-101 forged wheel" />
+                    <div className={styles.rimVisuals}>
+                        <img src="/catalog/luxury/DRX_101_angle.png" alt="DRAXLER DRX-101 forged wheel" />
+                        <img src="/catalog/luxury/DRX_102_angle.png" alt="DRAXLER DRX-102 forged wheel" />
+                    </div>
                 </div>
             </section>
 
@@ -67,7 +68,7 @@ export default function GWagonProjectPage() {
 
             <section className={styles.configuratorSection} aria-labelledby="configurator-heading">
                 <div className={styles.sectionHeader}><span>03 / INTERACTIVE FITMENT</span><h2 id="configurator-heading">BUILD YOUR<br />G‑WAGON</h2><p>Only G‑Wagon. Every compatible DRAXLER wheel. Explore the stance before the first billet is cut.</p></div>
-                <div className={styles.configuratorFrame}><CarConfigurator gWagonOnly backgroundColor="#f3f3f1" /></div>
+                <div className={styles.configuratorFrame}><CarConfigurator gWagonOnly whiteBackground toneMappingExposure={1.26} /></div>
             </section>
 
             <section className={styles.editorial}>

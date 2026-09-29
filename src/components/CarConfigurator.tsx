@@ -2036,12 +2036,15 @@ type CarConfiguratorProps = {
     whiteBackground?: boolean;
     /** Allows a vehicle project to match its own page surface without changing the main configurator. */
     backgroundColor?: string;
+    /** Vehicle projects can tune exposure without affecting the main configurator. */
+    toneMappingExposure?: number;
 };
 
 export default function CarConfigurator({
     gWagonOnly = false,
     whiteBackground = false,
     backgroundColor,
+    toneMappingExposure = 1.1,
 }: CarConfiguratorProps) {
     const configuratorRef = useRef<HTMLElement>(null);
     const enterScrollTweenRef = useRef<gsap.core.Tween | null>(null);
@@ -2318,7 +2321,7 @@ export default function CarConfigurator({
                     far: 200,
                     position: CAM_START,
                 }}
-                gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.1 }}
+                gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure }}
                 style={{ width: "100%", height: "100%" }}
             >
                 {/* Background + Fog */}
