@@ -7,20 +7,17 @@ import styles from "./g-wagon.module.css";
 const CarConfigurator = dynamic(() => import("@/components/CarConfigurator"), { ssr: false });
 
 const images = {
-    hero: "https://audiocityusa.com/shop/gallery/1413143/Mercedes-AMG-G-Class%2BAMG-24-Road%2BForce-RF22-Gloss%2BBlack-4359.jpg",
-    rear: "https://audiocityusa.com/shop/gallery/1413143/Mercedes-AMG-G-Class%2BAMG-24-Road%2BForce-RF22-Gloss%2BBlack-9556.jpg",
-    detail: "https://audiocityusa.com/shop/gallery/1413143/Mercedes-AMG-G-Class%2BAMG-24-Road%2BForce-RF22-Gloss%2BBlack-6171.jpg",
     blue: "https://forzaaa.com/cdn/shop/files/g63-offroad-2.jpg?v=1748949165&width=2560",
     graphite: "https://r2.mbdesign.shop/cdn/width/2560/media/d1/c0/e0/1589391975/mercedes-g-klasse-24zoll-2d9vxldnzT06il.jpg?ts=1713635645",
     green: "https://vossen.jp/wheel/S21-01/Mercedes-G63-AMG-Series-21-S21-02.jpg",
 };
 
 const gallery = [
-    { src: images.hero, label: "Mercedes-Benz on DRX-101", position: "center" },
-    { src: images.rear, label: "Mercedes-Benz on DRX-213", position: "center" },
+    { src: images.graphite, label: "Mercedes-Benz on DRX-101", position: "center 58%" },
+    { src: images.green, label: "Mercedes-Benz on DRX-213", position: "center 42%" },
     { src: images.blue, label: "Mercedes-Benz on DRX-305", position: "center" },
-    { src: images.graphite, label: "Mercedes-Benz on DRX-114", position: "center" },
-    { src: images.green, label: "Mercedes-Benz on DRX-102", position: "center" },
+    { src: images.graphite, label: "Mercedes-Benz on DRX-114", position: "right center" },
+    { src: images.green, label: "Mercedes-Benz on DRX-102", position: "left center" },
 ];
 
 const questions = [
@@ -34,7 +31,7 @@ export default function GWagonProjectPage() {
     return (
         <main className={styles.page}>
             <section className={styles.hero}>
-                <img src={images.hero} alt="2022 Mercedes-AMG G 63 in the DRAXLER G-Wagon project" className={styles.heroImage} />
+                <img src={images.graphite} alt="Mercedes-AMG G 63 in the DRAXLER G-Wagon project" className={styles.heroImage} />
                 <div className={styles.heroShade} />
                 <div className={styles.heroType}>
                     <span>DRAXLER / OUR PROJECTS / 01</span>
@@ -70,7 +67,7 @@ export default function GWagonProjectPage() {
 
             <section className={styles.configuratorSection} aria-labelledby="configurator-heading">
                 <div className={styles.sectionHeader}><span>03 / INTERACTIVE FITMENT</span><h2 id="configurator-heading">BUILD YOUR<br />G‑WAGON</h2><p>Only G‑Wagon. Every compatible DRAXLER wheel. Explore the stance before the first billet is cut.</p></div>
-                <div className={styles.configuratorFrame}><CarConfigurator gWagonOnly whiteBackground /></div>
+                <div className={styles.configuratorFrame}><CarConfigurator gWagonOnly backgroundColor="#f3f3f1" /></div>
             </section>
 
             <section className={styles.editorial}>

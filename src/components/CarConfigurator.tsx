@@ -2034,11 +2034,14 @@ type CarConfiguratorProps = {
     /** Keeps the full configurator unchanged by default; used by vehicle project pages. */
     gWagonOnly?: boolean;
     whiteBackground?: boolean;
+    /** Allows a vehicle project to match its own page surface without changing the main configurator. */
+    backgroundColor?: string;
 };
 
 export default function CarConfigurator({
     gWagonOnly = false,
     whiteBackground = false,
+    backgroundColor,
 }: CarConfiguratorProps) {
     const configuratorRef = useRef<HTMLElement>(null);
     const enterScrollTweenRef = useRef<gsap.core.Tween | null>(null);
@@ -2078,7 +2081,7 @@ export default function CarConfigurator({
             }))
             .filter((group) => group.models.length > 0)
         : CAR_3D_GROUPS;
-    const sceneBackground = whiteBackground ? "#ffffff" : BG;
+    const sceneBackground = backgroundColor ?? (whiteBackground ? "#ffffff" : BG);
 
     useEffect(() => {
         if (selectedCar.modelPath === G_CLASS_MODEL_PATH) {
