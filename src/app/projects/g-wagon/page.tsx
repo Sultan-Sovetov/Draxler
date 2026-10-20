@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import styles from "./g-wagon.module.css";
+import FitmentGuide from "./FitmentGuide";
 
 const CarConfigurator = dynamic(() => import("@/components/CarConfigurator"), { ssr: false });
 
@@ -79,22 +80,24 @@ export default function GWagonProjectPage() {
                 </div>
             </section>
 
+            <FitmentGuide />
+
             <section className={styles.configuratorSection} aria-labelledby="configurator-heading">
-                <div className={styles.sectionHeader}><span>03 / INTERACTIVE FITMENT</span><h2 id="configurator-heading">BUILD YOUR<br />G‑WAGON</h2><p>Only G‑Wagon. Every compatible DRAXLER wheel. Explore the stance before the first billet is cut.</p></div>
+                <div className={styles.sectionHeader}><span>04 / INTERACTIVE FITMENT</span><h2 id="configurator-heading">BUILD YOUR<br />G‑WAGON</h2><p>Only G‑Wagon. Every compatible DRAXLER wheel. Explore the stance before the first billet is cut.</p></div>
                 <div className={styles.configuratorFrame}><CarConfigurator gWagonOnly whiteBackground toneMappingExposure={1.26} /></div>
             </section>
 
             <section className={styles.editorial}>
                 <div className={styles.editorialImage}><img src={images.graphite} alt="Mercedes G-Class with forged wheels" /></div>
-                <div className={styles.editorialCopy}><span>04 / ENGINEERED INDIVIDUALITY</span><h2>THE DETAIL<br />IS THE DESIGN.</h2><p>Wheel width, offset, centre bore and finish are not options added at the end. They are the starting point of a DRAXLER build.</p><p>For the G‑Class, the result is a composed silhouette that reads as factory-intentional — from the first glance to the final millimetre.</p></div>
+                <div className={styles.editorialCopy}><span>05 / ENGINEERED INDIVIDUALITY</span><h2>THE DETAIL<br />IS THE DESIGN.</h2><p>Wheel width, offset, centre bore and finish are not options added at the end. They are the starting point of a DRAXLER build.</p><p>For the G‑Class, the result is a composed silhouette that reads as factory-intentional — from the first glance to the final millimetre.</p></div>
             </section>
 
             <section className={styles.cta}>
-                <span>05 / YOUR BUILD</span><h2>MAKE IT<br />YOURS.</h2><p>Start with the G‑Wagon configurator, then let us engineer the final specification around your vehicle.</p><a href="#configurator">Configure G‑Wagon <b>↗</b></a><a href="#contact" className={styles.contactLink}>Speak to DRAXLER</a>
+                <span>06 / YOUR BUILD</span><h2>MAKE IT<br />YOURS.</h2><p>Start with the G‑Wagon configurator, then let us engineer the final specification around your vehicle.</p><a href="#configurator">Configure G‑Wagon <b>↗</b></a><a href="#contact" className={styles.contactLink}>Speak to DRAXLER</a>
             </section>
 
             <section className={styles.faq} aria-labelledby="faq-heading">
-                <div><span>06 / QUESTIONS</span><h2 id="faq-heading">Q&amp;A</h2></div>
+                <div><span>07 / QUESTIONS</span><h2 id="faq-heading">Q&amp;A</h2></div>
                 <div className={styles.questions}>{questions.map(([question, answer]) => <details key={question}><summary>{question}<span>+</span></summary><p>{answer}</p></details>)}</div>
             </section>
 

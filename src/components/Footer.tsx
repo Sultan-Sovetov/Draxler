@@ -69,6 +69,8 @@ export default function Footer() {
 
                     <div className="footer-links">
                         <Link href="/catalog" className="footer-link">Catalog</Link>
+                        <Link href="/projects" className="footer-link">Projects</Link>
+                        <Link href="/blog" className="footer-link">Blog</Link>
                         <Link href="/#configurator" className="footer-link">Configurator</Link>
                         <a href="https://mail.google.com/mail/?view=cm&fs=1&to=sales@draxlerwheels.com" target="_blank" rel="noopener noreferrer" className="footer-link">Contact</a>
                     </div>

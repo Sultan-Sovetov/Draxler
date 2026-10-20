@@ -2269,6 +2269,9 @@ export default function CarConfigurator({
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
+                    source: "3D configurator",
+                    intent: "Configurator quote",
+                    pageUrl: window.location.href,
                     selectedCarModel: selectedModel,
                     selectedWheelModel,
                     customer: {
@@ -2288,7 +2291,7 @@ export default function CarConfigurator({
                 setEmail("");
                 setPhone("");
                 setSubmitSuccess(false);
-            }, 1300);
+            }, 3600);
         } catch {
             setSubmitSuccess(false);
         } finally {
@@ -2532,6 +2535,12 @@ export default function CarConfigurator({
                                     onChange={(event) => setPhone(event.target.value)}
                                     placeholder="+1 (___) ___-____"
                                 />
+
+                                {submitSuccess && (
+                                    <p className="lead-success-inline" role="status">
+                                        Thank you — we have received your request and will contact you shortly.
+                                    </p>
+                                )}
 
                                 <div className="config-lead-actions">
                                     <button

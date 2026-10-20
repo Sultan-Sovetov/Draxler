@@ -6,6 +6,8 @@ import { usePathname } from "next/navigation";
 type NavItem = {
     label: string;
     target: string;
+    /** Items with their own page navigate there instead of scrolling. */
+    href?: string;
     subItems?: { label: string; target: string }[];
 };
 
@@ -19,7 +21,9 @@ const NAV_ITEMS: NavItem[] = [
             { label: "Sport", target: "sport" },
         ],
     },
+    { label: "Our Projects", target: "projects", href: "/projects" },
     { label: "Configurator", target: "configurator" },
+    { label: "Blog", target: "blog", href: "/blog" },
     { label: "Contact", target: "contact" },
 ];
 
@@ -35,6 +39,12 @@ export default function Navbar() {
     const pathname = usePathname();
     const isHome = pathname === "/";
     const [openMobileAccordion, setOpenMobileAccordion] = useState<string | null>(null);
+
+    const isItemActive = (item: NavItem) => {
+        if (item.target === "catalog") return pathname.startsWith("/catalog");
+        if (item.href) return pathname.startsWith(item.href);
+        return isHome && activeSection === item.target;
+    };
 
     // Listen for configurator-active event to force-hide navbar
     useEffect(() => {
@@ -106,6 +116,12 @@ export default function Navbar() {
         /* "Catalog" always navigates to /catalog page */
         if (targetId === "catalog") {
             window.location.href = "/catalog";
+            return;
+        }
+
+        const pageItem = NAV_ITEMS.find((item) => item.target === targetId && item.href);
+        if (pageItem?.href) {
+            window.location.href = pageItem.href;
             return;
         }
 
@@ -216,7 +232,7 @@ export default function Navbar() {
                     {NAV_ITEMS.map((item) => (
                         <div key={item.target} className="navbar-item-wrapper dropdown-wrapper">
                             <button
-                                className={`navbar-link navbar-link-btn ${activeSection === item.target || (item.target === 'catalog' && pathname.startsWith('/catalog')) ? "navbar-link--section-active" : ""}`}
+                                className={`navbar-link navbar-link-btn ${isItemActive(item) ? "navbar-link--section-active" : ""}`}
                                 onClick={() => scrollToTarget(item.target)}
                             >
                                 {item.label}
@@ -258,7 +274,7 @@ export default function Navbar() {
                     <div key={`mobile-${item.target}`} className="navbar-mobile-item-wrapper">
                         <div className="navbar-mobile-link-header">
                             <button
-                                className={`navbar-mobile-link ${activeSection === item.target || (item.target === 'catalog' && pathname.startsWith('/catalog')) ? "navbar-link--section-active" : ""}`}
+                                className={`navbar-mobile-link ${isItemActive(item) ? "navbar-link--section-active" : ""}`}
                                 onClick={() => scrollToTarget(item.target)}
                             >
                                 {item.label}

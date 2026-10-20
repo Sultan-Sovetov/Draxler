@@ -341,50 +341,88 @@ export default function ProductDetailPage() {
 
     /* ── Lead modal state ── */
     const [showLeadModal, setShowLeadModal] = useState(false);
+    const [leadIntent, setLeadIntent] = useState<"order" | "advice">("order");
+    const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [leadName, setLeadName] = useState("");
     const [leadEmail, setLeadEmail] = useState("");
     const [leadPhone, setLeadPhone] = useState("");
+    const [leadVehicle, setLeadVehicle] = useState("");
+    const [leadCompany, setLeadCompany] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState("");
+
+    const openLeadModal = useCallback((intent: "order" | "advice") => {
+        setLeadIntent(intent);
+        setSubmitError("");
+        setSubmitSuccess(false);
+        setShowLeadModal(true);
+    }, []);
 
     const handleCloseLead = useCallback(() => {
         setShowLeadModal(false);
-        setSubmitSuccess(false);
         setIsSubmitting(false);
-    }, []);
+        if (submitSuccess) {
+            setSubmitSuccess(false);
+            setLeadName("");
+            setLeadEmail("");
+            setLeadPhone("");
+            setLeadVehicle("");
+        }
+    }, [submitSuccess]);
 
-    const handleSubmitLead = useCallback(async () => {
-        if (!leadName.trim() || !leadEmail.trim() || !leadPhone.trim()) return;
+    useEffect(() => {
+        if (!showLeadModal) return;
+        const onKey = (event: KeyboardEvent) => {
+            if (event.key === "Escape") handleCloseLead();
+        };
+        window.addEventListener("keydown", onKey);
+        return () => window.removeEventListener("keydown", onKey);
+    }, [showLeadModal, handleCloseLead]);
+
+    const leadEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(leadEmail.trim());
+    const canSubmitLead = Boolean(leadName.trim() && leadEmailValid && leadPhone.replace(/\D/g, "").length >= 6);
+
+    const handleSubmitLead = useCallback(async (event?: React.FormEvent) => {
+        event?.preventDefault();
+        if (!canSubmitLead || isSubmitting) return;
         setIsSubmitting(true);
+        setSubmitError("");
         try {
             const res = await fetch("/api/configurator-lead", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    selectedCarModel: resolvedProduct?.name ?? "N/A",
-                    selectedWheelModel: resolvedProduct?.name ?? "N/A",
+                    source: "Catalog product page",
+                    intent: leadIntent === "order" ? "Order configuration" : "Fitment advice",
+                    pageUrl: window.location.href,
+                    selectedCarModel: leadVehicle.trim(),
+                    wheel: {
+                        model: resolvedProduct?.name ?? "N/A",
+                        category: resolvedCategory.name,
+                        finish: selectedFinish.label,
+                        finishHex: selectedFinish.hex.toUpperCase(),
+                        size: selectedSize ?? "Not selected",
+                    },
                     customer: {
                         name: leadName.trim(),
                         email: leadEmail.trim(),
                         phone: leadPhone.trim(),
                     },
+                    company: leadCompany,
                 }),
             });
-            if (!res.ok) throw new Error("Failed");
+            const data = await res.json().catch(() => null);
+            if (!res.ok || !data?.ok) {
+                throw new Error(data?.message || "We could not send your request. Please try again.");
+            }
             setSubmitSuccess(true);
-            setTimeout(() => {
-                setShowLeadModal(false);
-                setLeadName("");
-                setLeadEmail("");
-                setLeadPhone("");
-                setSubmitSuccess(false);
-            }, 1300);
-        } catch {
-            setSubmitSuccess(false);
+        } catch (error) {
+            setSubmitError(error instanceof Error ? error.message : "We could not send your request. Please try again.");
         } finally {
             setIsSubmitting(false);
         }
-    }, [leadEmail, leadName, leadPhone, resolvedProduct?.name]);
+    }, [canSubmitLead, isSubmitting, leadIntent, leadVehicle, resolvedProduct?.name, resolvedCategory.name, selectedFinish, selectedSize, leadName, leadEmail, leadPhone, leadCompany]);
 
     /* ── Entrance animations ── */
     useEffect(() => {
@@ -535,11 +573,18 @@ export default function ProductDetailPage() {
 
                     {/* Available Sizes */}
                     <div className="pdp-info-block">
-                        <div className="pdp-sizes-label">Available Sizes</div>
+                        <div className="pdp-sizes-label">Available Sizes<span className="pdp-sizes-selected">{selectedSize ? ` — Selected: ${selectedSize}` : " — Tap to select"}</span></div>
                         <div className="pdp-sizes-list">
                             {displaySizes.map((size: string, i: number) => (
                                 <span key={size}>
-                                    <span className="pdp-size">{size}</span>
+                                    <button
+                                        type="button"
+                                        className={`pdp-size pdp-size-btn ${selectedSize === size ? "is-active" : ""}`}
+                                        aria-pressed={selectedSize === size}
+                                        onClick={() => setSelectedSize(selectedSize === size ? null : size)}
+                                    >
+                                        {size}
+                                    </button>
                                     {i < displaySizes.length - 1 && (
                                         <span className="pdp-size-sep">|</span>
                                     )}
@@ -598,13 +643,13 @@ export default function ProductDetailPage() {
                     <div className="pdp-actions">
                         <button
                             className="pdp-btn-primary"
-                            onClick={() => setShowLeadModal(true)}
+                            onClick={() => openLeadModal("order")}
                         >
                             ORDER CONFIGURATION
                         </button>
                         <button
                             className="pdp-btn-secondary"
-                            onClick={() => setShowLeadModal(true)}
+                            onClick={() => openLeadModal("advice")}
                         >
                             REQUEST FITMENT ADVICE
                         </button>
@@ -630,67 +675,183 @@ export default function ProductDetailPage() {
                         onClick={handleCloseLead}
                     >
                         <motion.div
-                            className="config-lead-modal"
+                            className="config-lead-modal config-lead-modal--light"
+                            role="dialog"
+                            aria-modal="true"
+                            aria-labelledby="lead-modal-title"
                             initial={{ opacity: 0, y: 30, scale: 0.97 }}
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: 18, scale: 0.98 }}
+                            transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                             onClick={(e) => e.stopPropagation()}
+                            data-lenis-prevent
                         >
-                            <button className="config-lead-close" onClick={handleCloseLead}>
+                            <button className="config-lead-close" onClick={handleCloseLead} aria-label="Close">
                                 <X size={15} />
                             </button>
 
-                            <h3>Request Quote</h3>
-                            <p>{name} — {previewFinish.label} ({previewFinish.hex.toUpperCase()})</p>
-
-                            <div className="config-lead-step-content">
-                                <label>Name</label>
-                                <input
-                                    className="config-lead-input"
-                                    value={leadName}
-                                    onChange={(e) => setLeadName(e.target.value)}
-                                    placeholder="Your name"
-                                />
-
-                                <label>Email</label>
-                                <input
-                                    className="config-lead-input"
-                                    type="email"
-                                    value={leadEmail}
-                                    onChange={(e) => setLeadEmail(e.target.value)}
-                                    placeholder="name@email.com"
-                                />
-
-                                <label>Phone</label>
-                                <input
-                                    className="config-lead-input"
-                                    value={leadPhone}
-                                    onChange={(e) => setLeadPhone(e.target.value)}
-                                    placeholder="+1 (___) ___-____"
-                                />
-
-                                <div className="config-lead-actions">
-                                    <button
-                                        className="config-lead-submit"
-                                        onClick={handleSubmitLead}
-                                        disabled={!leadName.trim() || !leadEmail.trim() || !leadPhone.trim() || isSubmitting || submitSuccess}
+                            <AnimatePresence mode="wait" initial={false}>
+                                {submitSuccess ? (
+                                    <motion.div
+                                        key="success"
+                                        className="lead-success"
+                                        initial={{ opacity: 0, y: 16 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0 }}
+                                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                                     >
-                                        {isSubmitting ? (
-                                            <>
-                                                <LoaderCircle size={16} className="spin" />
-                                                <span>Sending...</span>
-                                            </>
-                                        ) : submitSuccess ? (
-                                            <>
-                                                <Check size={16} />
-                                                <span>Sent</span>
-                                            </>
-                                        ) : (
-                                            <span>Send Request</span>
-                                        )}
-                                    </button>
-                                </div>
-                            </div>
+                                        <motion.span
+                                            className="lead-success-icon"
+                                            initial={{ scale: 0.4, opacity: 0 }}
+                                            animate={{ scale: 1, opacity: 1 }}
+                                            transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
+                                        >
+                                            <Check size={26} />
+                                        </motion.span>
+                                        <span className="lead-eyebrow">Request received</span>
+                                        <h3 id="lead-modal-title">Thank you, {leadName.trim().split(" ")[0]}.</h3>
+                                        <p className="lead-success-copy">
+                                            We have received your request. A DRAXLER specialist will contact you shortly
+                                            by phone or email to confirm fitment, finish and pricing.
+                                        </p>
+                                        <dl className="lead-summary">
+                                            <div><dt>Wheel</dt><dd>{name}</dd></div>
+                                            <div><dt>Finish</dt><dd>{previewFinish.label}</dd></div>
+                                            <div><dt>Size</dt><dd>{selectedSize ?? "To be advised"}</dd></div>
+                                        </dl>
+                                        <button type="button" className="config-lead-submit lead-submit-dark" onClick={handleCloseLead}>
+                                            <span>Close</span>
+                                        </button>
+                                    </motion.div>
+                                ) : (
+                                    <motion.form
+                                        key="form"
+                                        onSubmit={handleSubmitLead}
+                                        initial={{ opacity: 0 }}
+                                        animate={{ opacity: 1 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.3 }}
+                                        noValidate
+                                    >
+                                        <span className="lead-eyebrow">{leadIntent === "order" ? "Order configuration" : "Fitment advice"}</span>
+                                        <h3 id="lead-modal-title">{leadIntent === "order" ? "Request Quote" : "Request Fitment Advice"}</h3>
+
+                                        <dl className="lead-summary">
+                                            <div><dt>Wheel</dt><dd>{name}</dd></div>
+                                            <div>
+                                                <dt>Finish</dt>
+                                                <dd><span className="lead-swatch" style={{ ...metalTileStyle(previewFinish), width: 14, height: 14 }} />{previewFinish.label}</dd>
+                                            </div>
+                                            <div><dt>Size</dt><dd>{selectedSize ?? "Choose below"}</dd></div>
+                                        </dl>
+
+                                        <div className="lead-size-row" role="group" aria-label="Wheel size">
+                                            {displaySizes.map((size: string) => (
+                                                <button
+                                                    key={size}
+                                                    type="button"
+                                                    className={`lead-size-chip ${selectedSize === size ? "is-active" : ""}`}
+                                                    aria-pressed={selectedSize === size}
+                                                    onClick={() => setSelectedSize(selectedSize === size ? null : size)}
+                                                >
+                                                    {size}
+                                                </button>
+                                            ))}
+                                        </div>
+
+                                        <div className="config-lead-step-content">
+                                            <label htmlFor="lead-name">Name</label>
+                                            <input
+                                                id="lead-name"
+                                                className="config-lead-input"
+                                                value={leadName}
+                                                onChange={(e) => setLeadName(e.target.value)}
+                                                placeholder="Your name"
+                                                autoComplete="name"
+                                                required
+                                            />
+
+                                            <label htmlFor="lead-email">Email</label>
+                                            <input
+                                                id="lead-email"
+                                                className="config-lead-input"
+                                                type="email"
+                                                value={leadEmail}
+                                                onChange={(e) => setLeadEmail(e.target.value)}
+                                                placeholder="name@email.com"
+                                                autoComplete="email"
+                                                required
+                                            />
+
+                                            <label htmlFor="lead-phone">Phone</label>
+                                            <input
+                                                id="lead-phone"
+                                                className="config-lead-input"
+                                                type="tel"
+                                                value={leadPhone}
+                                                onChange={(e) => setLeadPhone(e.target.value)}
+                                                placeholder="+1 (___) ___-____"
+                                                autoComplete="tel"
+                                                required
+                                            />
+
+                                            <label htmlFor="lead-vehicle">Vehicle <small>(optional)</small></label>
+                                            <input
+                                                id="lead-vehicle"
+                                                className="config-lead-input"
+                                                value={leadVehicle}
+                                                onChange={(e) => setLeadVehicle(e.target.value)}
+                                                placeholder="e.g. 2024 Mercedes-AMG G 63"
+                                            />
+
+                                            <input
+                                                className="lead-honeypot"
+                                                tabIndex={-1}
+                                                autoComplete="off"
+                                                aria-hidden="true"
+                                                value={leadCompany}
+                                                onChange={(e) => setLeadCompany(e.target.value)}
+                                                name="company"
+                                            />
+
+                                            <p className="lead-note">
+                                                Leave your details and our team will contact you shortly to confirm fitment and pricing. No payment is taken at this stage.
+                                            </p>
+
+                                            <AnimatePresence>
+                                                {submitError && (
+                                                    <motion.p
+                                                        className="lead-error"
+                                                        role="alert"
+                                                        initial={{ opacity: 0, height: 0 }}
+                                                        animate={{ opacity: 1, height: "auto" }}
+                                                        exit={{ opacity: 0, height: 0 }}
+                                                    >
+                                                        {submitError}
+                                                    </motion.p>
+                                                )}
+                                            </AnimatePresence>
+
+                                            <div className="config-lead-actions">
+                                                <button
+                                                    type="submit"
+                                                    className="config-lead-submit lead-submit-dark"
+                                                    disabled={!canSubmitLead || isSubmitting}
+                                                >
+                                                    {isSubmitting ? (
+                                                        <>
+                                                            <LoaderCircle size={16} className="spin" />
+                                                            <span>Sending...</span>
+                                                        </>
+                                                    ) : (
+                                                        <span>Send Request</span>
+                                                    )}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </motion.form>
+                                )}
+                            </AnimatePresence>
                         </motion.div>
                     </motion.div>
                 )}

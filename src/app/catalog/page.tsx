@@ -8,7 +8,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { catalogCategories, CatalogProduct } from "@/lib/catalog-data";
 import { supabase } from "@/lib/supabase";
 import Footer from "@/components/Footer";
-import ProjectsCatalogPreview from "@/components/ProjectsCatalogPreview";
 
 export interface DBProduct {
   id: number;
@@ -257,8 +256,6 @@ export default function CatalogPage() {
           </section>
         );
       })}
-
-      <ProjectsCatalogPreview />
 
       <div className="pdp-page-footer">
         <Footer />
