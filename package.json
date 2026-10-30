@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint src"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
@@ -18,7 +18,7 @@
     "gsap": "^3.14.2",
     "leva": "^0.10.1",
     "lucide-react": "^0.563.0",
-    "next": "14.2.35",
+    "next": "^16.4.3",
     "react": "^18",
     "react-dom": "^18",
     "three": "^0.160.0"
@@ -29,8 +29,8 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/three": "^0.160.0",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.35",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "^16.4.3",
     "meshoptimizer": "^1.0.1",
     "postcss": "^8",
     "tailwindcss": "^3.4.1",

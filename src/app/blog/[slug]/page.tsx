@@ -10,8 +10,8 @@ export function generateStaticParams() {
     return BLOG_POSTS.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-    const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const post = getPostBySlug((await params).slug);
     if (!post) return {};
     return {
         title: `${post.title} — DRAXLER Blog`,
@@ -49,8 +49,8 @@ function Block({ block }: { block: BlogBlock }) {
     }
 }
 
-export default function BlogArticlePage({ params }: { params: { slug: string } }) {
-    const post = getPostBySlug(params.slug);
+export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+    const post = getPostBySlug((await params).slug);
     if (!post) notFound();
 
     const index = BLOG_POSTS.findIndex((item) => item.slug === post.slug);

@@ -59,6 +59,7 @@ export default function Home() {
         <div ref={configSentinelRef}>
           {configNear ? <CarConfigurator /> : (
             <section
+              id="configurator"
               className="car-configurator-section"
               style={{ minHeight: "100vh" }}
               aria-hidden
