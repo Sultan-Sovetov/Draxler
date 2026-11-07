@@ -7,6 +7,7 @@ import styles from "./g-wagon.module.css";
 import FitmentGuide from "./FitmentGuide";
 
 const CarConfigurator = dynamic(() => import("@/components/CarConfigurator"), { ssr: false });
+const PolishedWheel = dynamic(() => import("@/components/PolishedWheel"), { ssr: false });
 
 const images = {
     blue: "/projects/g-wagon%20blue.png",
@@ -25,6 +26,8 @@ const featuredWheels = [
     { model: "DRX-102", image: "/catalog/luxury/DRX_102_angle.png", description: "Directional multi-spoke" },
     { model: "DRX-103", image: "/catalog/luxury/DRX_103_angle.png", description: "Sculpted five-spoke" },
     { model: "DRX-104", image: "/catalog/luxury/DRX_104_angle.png", description: "Precision twelve-spoke" },
+    { model: "DRX-106", image: "/catalog/luxury/DRX_106_angle.png", description: "Turbine disc" },
+    { model: "DRX-112", image: "/catalog/luxury/DRX_112_angle.png", description: "Seven split-spoke" },
 ];
 
 const questions = [
@@ -55,7 +58,7 @@ export default function GWagonProjectPage() {
                     <p>Every DRAXLER wheel is engineered around exact fitment. No visual compromise. No generic offsets.</p>
                 </div>
                 <div className={styles.rimFeature}>
-                    <div className={styles.rimCopy}><span>Forged for the G‑Class</span><strong>Choose your<br />architecture.</strong><p>Explore four DRAXLER designs. Open any wheel to see its finishes, sizes and details.</p></div>
+                    <div className={styles.rimCopy}><span>Forged for the G‑Class</span><strong>Choose your<br />architecture.</strong><p>Explore six DRAXLER designs. Open any wheel to see its finishes, sizes and details.</p></div>
                     <div className={styles.rimVisuals}>
                         {featuredWheels.map((wheel, index) => (
                             <Link className={styles.rimCard} href={`/catalog/vip/${wheel.model.toLowerCase()}`} key={wheel.model}>
@@ -93,7 +96,13 @@ export default function GWagonProjectPage() {
             </section>
 
             <section className={styles.cta}>
-                <span>06 / YOUR BUILD</span><h2>MAKE IT<br />YOURS.</h2><p>Start with the G‑Wagon configurator, then let us engineer the final specification around your vehicle.</p><a href="#configurator">Configure G‑Wagon <b>↗</b></a><a href="#contact" className={styles.contactLink}>Speak to DRAXLER</a>
+                <div className={styles.ctaCopy}>
+                    <span>06 / YOUR BUILD</span><h2>MAKE IT<br />YOURS.</h2><p>Start with the G‑Wagon configurator, then let us engineer the final specification around your vehicle.</p><a href="#configurator">Configure G‑Wagon <b>↗</b></a><a href="#contact" className={styles.contactLink}>Speak to DRAXLER</a>
+                </div>
+                <div className={styles.ctaVisual}>
+                    <PolishedWheel className={styles.ctaCanvas} />
+                    <span className={styles.ctaWheelLabel}>DRX-202 / Mirror polished</span>
+                </div>
             </section>
 
             <section className={styles.faq} aria-labelledby="faq-heading">

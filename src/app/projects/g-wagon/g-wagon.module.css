@@ -35,3 +35,33 @@
 @keyframes heroIn { from {opacity:.25;transform:scale(1.075)} to {opacity:1;transform:scale(1)} }
 @media(max-width:1100px){.rimFeature{grid-template-columns:.65fr 1.35fr}.rimCopy{padding:24px}.rimVisuals{grid-template-columns:repeat(2,minmax(0,1fr))}.rimCard img{height:clamp(174px,26.4vw,252px)}.rimCard:nth-child(3){border-left:0;border-top:1px solid rgba(0,0,0,.08)}.rimCard:nth-child(4){border-top:1px solid rgba(0,0,0,.08)}}
 @media(max-width:800px){.hero{min-height:590px}.heroShade{background:linear-gradient(0deg,rgba(0,0,0,.72),rgba(0,0,0,.04) 70%)}.intro{grid-template-columns:1fr}.introIndex{margin-bottom:-8px}.rimFeature{grid-column:1;grid-template-columns:1fr}.rimCopy{padding:28px 22px}.rimCopy strong br{display:none}.rimVisuals{order:-1;grid-template-columns:repeat(2,minmax(0,1fr))}.rimCard:nth-child(3){border-left:0;border-top:1px solid rgba(0,0,0,.08)}.rimCard:nth-child(4){border-top:1px solid rgba(0,0,0,.08)}.rimCard img{height:clamp(180px,48vw,264px)}.sectionHeader{grid-template-columns:1fr}.sectionHeader p{margin-top:5px}.gallery{grid-template-columns:1fr;grid-template-rows:repeat(3,64vw)}.galleryItem,.item0,.item1,.item2{grid-column:1;grid-row:auto}.editorial{grid-template-columns:1fr}.editorialImage{min-height:440px}.cta .contactLink{display:flex;width:max-content;margin:18px 0 0}.faq{grid-template-columns:1fr;gap:36px}.heroFoot{font-size:9px}.galleryItem figcaption{opacity:1;background:linear-gradient(0deg,rgba(0,0,0,.45),transparent 56%);align-items:end;justify-content:flex-start;padding:20px}.galleryItem figcaption b{display:none}}
+
+/* Six featured wheels: 3 × 2 on desktop, 2 × 3 below 1100px. */
+.rimVisuals { grid-template-columns:repeat(3,minmax(0,1fr)); }
+.rimCard img { height:clamp(170px,15.5vw,250px); }
+.rimCard:nth-child(4) { border-left:0; }
+.rimCard:nth-child(n+4) { border-top:1px solid rgba(0,0,0,.08); }
+
+/* CTA with the 3D DRX-202. The canvas is transparent, so the wheel sits on the section's own #f3f3f1. */
+.cta { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); align-items:center; gap:clamp(24px,4vw,72px); overflow:hidden; }
+.ctaCopy { position:relative; z-index:1; min-width:0; }
+.ctaCopy>span { font-size:10px; font-weight:800; letter-spacing:.19em; text-transform:uppercase; }
+.ctaVisual { position:relative; align-self:stretch; min-height:clamp(380px,40vw,620px); margin:calc(-1 * clamp(40px,6vw,90px)) 0; }
+.ctaCanvas { position:absolute; inset:0; }
+.ctaCanvas canvas { display:block; }
+.ctaWheelLabel { position:absolute; right:0; bottom:clamp(8px,2vw,24px); color:rgba(0,0,0,.42); font-size:9px; font-weight:800; letter-spacing:.18em; text-transform:uppercase; pointer-events:none; }
+
+@media(max-width:1100px){
+  .rimVisuals { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .rimCard:nth-child(4) { border-left:1px solid rgba(0,0,0,.08); }
+  .rimCard:nth-child(odd) { border-left:0; }
+  .rimCard:nth-child(n+3) { border-top:1px solid rgba(0,0,0,.08); }
+  .rimCard img { height:clamp(174px,24vw,240px); }
+  .cta .contactLink { display:flex; width:max-content; margin:18px 0 0; }
+}
+@media(max-width:800px){
+  .cta { grid-template-columns:1fr; gap:0; }
+  .ctaVisual { order:-1; min-height:clamp(300px,82vw,420px); margin:calc(-1 * clamp(40px,10vw,70px)) 0 8px; }
+  .ctaWheelLabel { right:auto; left:0; }
+  .rimCard img { height:clamp(160px,44vw,240px); }
+}
