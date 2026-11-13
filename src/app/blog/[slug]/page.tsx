@@ -5,19 +5,27 @@ import { notFound } from "next/navigation";
 import Footer from "@/components/Footer";
 import { BLOG_POSTS, BlogBlock, formatPostDate, getPostBySlug } from "@/lib/blog-data";
 import styles from "./article.module.css";
+import JsonLd from "@/components/JsonLd";
+import { SITE_NAME, absoluteUrl, assetUrl, breadcrumbLd, pageMetadata } from "@/lib/seo";
 
 export function generateStaticParams() {
     return BLOG_POSTS.map((post) => ({ slug: post.slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-    const post = getPostBySlug(params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+    const post = getPostBySlug((await params).slug);
     if (!post) return {};
-    return {
-        title: `${post.title} — DRAXLER Blog`,
+    return pageMetadata({
+        title: post.title,
         description: post.excerpt,
-        openGraph: { title: post.title, description: post.excerpt },
-    };
+        path: `/blog/${post.slug}`,
+        image: post.cover,
+        type: "article",
+        publishedTime: post.date,
+        authors: [post.author],
+        tags: post.tags,
+        keywords: post.tags,
+    });
 }
 
 function Block({ block }: { block: BlogBlock }) {
@@ -49,8 +57,8 @@ function Block({ block }: { block: BlogBlock }) {
     }
 }
 
-export default function BlogArticlePage({ params }: { params: { slug: string } }) {
-    const post = getPostBySlug(params.slug);
+export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+    const post = getPostBySlug((await params).slug);
     if (!post) notFound();
 
     const index = BLOG_POSTS.findIndex((item) => item.slug === post.slug);
@@ -59,9 +67,27 @@ export default function BlogArticlePage({ params }: { params: { slug: string } }
         ...BLOG_POSTS.filter((item) => item.slug !== post.slug && item.category !== post.category),
     ].slice(0, 3);
     const next = BLOG_POSTS[(index + 1) % BLOG_POSTS.length];
+    const path = `/blog/${post.slug}`;
+    const articleLd = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "@id": `${absoluteUrl(path)}#article`,
+        headline: post.title,
+        description: post.excerpt,
+        image: [assetUrl(post.cover)],
+        datePublished: post.date,
+        dateModified: post.date,
+        author: { "@type": "Organization", name: post.author, url: absoluteUrl("/") },
+        publisher: { "@id": `${absoluteUrl("/")}#organization`, "@type": "Organization", name: SITE_NAME },
+        mainEntityOfPage: absoluteUrl(path),
+        articleSection: post.category,
+        keywords: post.tags.join(", "),
+        inLanguage: "en",
+    };
 
     return (
         <main className={styles.page}>
+            <JsonLd data={[articleLd, breadcrumbLd([["Home", "/"], ["Blog", "/blog"], [post.title, path]])]} />
             <section className={styles.hero}>
                 <Image src={post.cover} alt={post.title} fill priority sizes="100vw" className={styles.heroImage} style={{ objectPosition: post.coverPosition ?? "center" }} />
                 <div className={styles.heroShade} />

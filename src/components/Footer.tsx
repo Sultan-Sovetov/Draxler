@@ -102,7 +102,7 @@ export default function Footer() {
                                     <path d="M9 10a.5.5 0 0 0 0 1a5 5 0 0 0 5 5a.5.5 0 0 0 1 0v-1.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v.5a3 3 0 0 1-3-3h.5a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5H9z" />
                                 </svg>
                             </a>
-                            <a href="#" className="footer-social-icon footer-social-icon--wechat" aria-label="WeChat">
+                            <span className="footer-social-icon footer-social-icon--wechat" role="img" aria-label="WeChat" title="WeChat">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M10.5 5C6.36 5 3 7.88 3 11.42c0 1.98 1.06 3.75 2.73 4.92L5 20l3.24-1.63c.72.18 1.48.27 2.26.27 4.14 0 7.5-2.88 7.5-6.42S14.64 5 10.5 5z" />
                                     <path d="M14.8 10.7c3.42 0 6.2 2.28 6.2 5.1 0 1.54-.84 2.93-2.16 3.86L19.2 23l-2.55-1.28c-.58.14-1.2.22-1.85.22-3.42 0-6.2-2.29-6.2-5.1 0-2.82 2.78-5.14 6.2-5.14z" />
@@ -111,7 +111,7 @@ export default function Footer() {
                                     <circle cx="13.1" cy="16.4" r="0.75" fill="currentColor" stroke="none" />
                                     <circle cx="16.9" cy="16.4" r="0.75" fill="currentColor" stroke="none" />
                                 </svg>
-                            </a>
+                            </span>
                         </div>
 
                         <div className="footer-payments" aria-label="Payment systems">

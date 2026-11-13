@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { usePathname } from "next/navigation";
+import Link from "next/link";
 
 type NavItem = {
     label: string;
@@ -44,6 +45,22 @@ export default function Navbar() {
         if (item.target === "catalog") return pathname.startsWith("/catalog");
         if (item.href) return pathname.startsWith(item.href);
         return isHome && activeSection === item.target;
+    };
+
+    /** Real URLs so crawlers (and middle-click / long-press) can follow the menu. */
+    const hrefFor = (target: string) => {
+        if (target === "catalog") return "/catalog";
+        if (["vip", "offroad", "sport"].includes(target)) return `/catalog#${target}`;
+        const page = NAV_ITEMS.find((item) => item.target === target && item.href);
+        if (page?.href) return page.href;
+        return `/#${target}`;
+    };
+
+    /** Keeps the existing smooth-scroll behaviour for normal clicks; modified clicks open natively. */
+    const onNavClick = (event: React.MouseEvent<HTMLAnchorElement>, target: string) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+        event.preventDefault();
+        scrollToTarget(target);
     };
 
     // Listen for configurator-active event to force-hide navbar
@@ -226,27 +243,40 @@ export default function Navbar() {
             className={`navbar ${(scrolled || !isHome) ? "navbar--glass" : ""} ${(hidden || forceHidden) ? "navbar--hidden" : ""}`}
         >
             <div className="navbar-inner">
-                <button className="navbar-logo navbar-logo-btn" onClick={handleLogoClick}>DRAXLER</button>
+                <Link
+                    href="/"
+                    className="navbar-logo navbar-logo-btn"
+                    aria-label="DRAXLER — home"
+                    onClick={(e) => {
+                        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+                        e.preventDefault();
+                        handleLogoClick();
+                    }}
+                >
+                    DRAXLER
+                </Link>
 
                 <div className="navbar-links">
                     {NAV_ITEMS.map((item) => (
                         <div key={item.target} className="navbar-item-wrapper dropdown-wrapper">
-                            <button
+                            <a
+                                href={hrefFor(item.target)}
                                 className={`navbar-link navbar-link-btn ${isItemActive(item) ? "navbar-link--section-active" : ""}`}
-                                onClick={() => scrollToTarget(item.target)}
+                                onClick={(e) => onNavClick(e, item.target)}
                             >
                                 {item.label}
-                            </button>
+                            </a>
                             {item.subItems && (
                                 <div className="navbar-dropdown">
                                     {item.subItems.map((sub) => (
-                                        <button
+                                        <a
                                             key={sub.target}
+                                            href={hrefFor(sub.target)}
                                             className="navbar-dropdown-link"
-                                            onClick={() => scrollToTarget(sub.target)}
+                                            onClick={(e) => onNavClick(e, sub.target)}
                                         >
                                             {sub.label}
-                                        </button>
+                                        </a>
                                     ))}
                                 </div>
                             )}
@@ -273,14 +303,18 @@ export default function Navbar() {
                 {NAV_ITEMS.map((item) => (
                     <div key={`mobile-${item.target}`} className="navbar-mobile-item-wrapper">
                         <div className="navbar-mobile-link-header">
-                            <button
+                            <a
+                                href={hrefFor(item.target)}
                                 className={`navbar-mobile-link ${isItemActive(item) ? "navbar-link--section-active" : ""}`}
-                                onClick={() => scrollToTarget(item.target)}
+                                onClick={(e) => onNavClick(e, item.target)}
                             >
                                 {item.label}
-                            </button>
+                            </a>
                             {item.subItems && (
-                                <button 
+                                <button
+                                    type="button"
+                                    aria-label={`Show ${item.label} categories`}
+                                    aria-expanded={openMobileAccordion === item.target}
                                     className="navbar-mobile-accordion-toggle"
                                     onClick={(e) => {
                                         e.stopPropagation();
@@ -301,13 +335,14 @@ export default function Navbar() {
                         {item.subItems && (
                             <div className={`navbar-mobile-subitems ${openMobileAccordion === item.target ? "is-open" : ""}`}>
                                 {item.subItems.map((sub) => (
-                                    <button
+                                    <a
                                         key={`mobile-sub-${sub.target}`}
+                                        href={hrefFor(sub.target)}
                                         className="navbar-mobile-sublink"
-                                        onClick={() => scrollToTarget(sub.target)}
+                                        onClick={(e) => onNavClick(e, sub.target)}
                                     >
                                         {sub.label}
-                                    </button>
+                                    </a>
                                 ))}
                             </div>
                         )}

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import Lenis from "@studio-freight/lenis";
+import { isPhone } from "@/lib/device";
 
 export default function LenisProvider({
     children,
@@ -11,6 +12,8 @@ export default function LenisProvider({
     const lenisRef = useRef<Lenis | null>(null);
 
     useEffect(() => {
+        // Phones scroll natively: no RAF loop, no smooth-scroll emulation.
+        if (isPhone()) return;
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const lenis = new Lenis({
             duration: 0.95,

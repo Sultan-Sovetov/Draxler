@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
+import { isPhone } from "@/lib/device";
 
 interface AeroLoaderProps {
     /** Called when the loader exit animation completes (only for full-page loader) */
@@ -12,8 +13,12 @@ interface AeroLoaderProps {
 
 export default function AeroLoader({ onComplete, inline = false }: AeroLoaderProps) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const BLINK_CYCLES = 3;
-    const BLINK_DURATION = 2.2;
+    // Desktop keeps the full brand intro; phones get a single short blink.
+    // Decided after mount so server and client markup match.
+    const [phone, setPhone] = useState<boolean | null>(null);
+    useEffect(() => setPhone(isPhone()), []);
+    const BLINK_CYCLES = phone ? 1 : 3;
+    const BLINK_DURATION = phone ? 1.1 : 2.2;
 
     useEffect(() => {
         if (inline) return;
@@ -27,6 +32,7 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
 
     useEffect(() => {
         if (!onComplete) return; // inline loaders don't auto-dismiss
+        if (phone === null) return;
 
         // Let blinking finish, then curtain-reveal out
         const visibleDuration = BLINK_CYCLES * BLINK_DURATION * 1000;
@@ -35,7 +41,7 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
 
             gsap.to(containerRef.current, {
                 y: "-100%",
-                duration: 1,
+                duration: phone ? 0.6 : 1,
                 ease: "power3.inOut",
                 onComplete: () => {
                     onComplete();
@@ -44,7 +50,7 @@ export default function AeroLoader({ onComplete, inline = false }: AeroLoaderPro
         }, visibleDuration);
 
         return () => clearTimeout(timer);
-    }, [onComplete]);
+    }, [onComplete, phone]); // eslint-disable-line react-hooks/exhaustive-deps
 
     const animationStyle = {
         animation: `aero-breathe ${BLINK_DURATION}s ease-in-out ${onComplete ? BLINK_CYCLES : "infinite"}`,

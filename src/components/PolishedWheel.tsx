@@ -9,21 +9,24 @@ const MODEL_URL = "/models/drx-202-web.glb";
 
 type Pointer = { x: number; y: number; active: boolean };
 
-/* Studio built from light panels: sharp reflections on chrome without loading an HDR file. */
+/*
+ * Soft product-photography studio: large diffused softboxes instead of hard strips,
+ * so a matte (satin) metal reads as machined aluminium rather than chrome.
+ */
 function StudioEnvironment() {
     return (
-        <Environment resolution={512} frames={1}>
-            {/* Dark studio + bright softboxes: the contrast is what reads as mirror polish. */}
-            <color attach="background" args={["#47484b"]} />
-            {/* Large soft fill behind the camera lifts the face to bright silver. */}
-            <Lightformer form="rect" intensity={1.1} position={[0, 0, 8]} rotation-y={Math.PI} scale={[14, 9, 1]} />
-            <Lightformer form="rect" intensity={6} position={[0, 5, -1]} rotation-x={Math.PI / 2} scale={[12, 1.4, 1]} />
-            <Lightformer form="rect" intensity={3.2} position={[-5, 1.5, 0]} rotation-y={Math.PI / 2} scale={[10, 0.5, 1]} />
-            <Lightformer form="rect" intensity={3.2} position={[5, -0.5, 0]} rotation-y={-Math.PI / 2} scale={[10, 0.5, 1]} />
-            <Lightformer form="rect" intensity={2.2} position={[-3, -1, 4]} rotation-y={Math.PI / 5} scale={[1.2, 8, 1]} />
-            <Lightformer form="rect" intensity={2.2} position={[3, 1, 4]} rotation-y={-Math.PI / 5} scale={[1.2, 8, 1]} />
-            <Lightformer form="ring" intensity={4} position={[2.5, 2.5, 5]} scale={1.4} />
-            <Lightformer form="rect" color="#f3f3f1" intensity={0.8} position={[0, -5, 1]} rotation-x={-Math.PI / 2} scale={[12, 4, 1]} />
+        <Environment resolution={256} frames={1}>
+            <color attach="background" args={["#232427"]} />
+            {/* Big overhead softbox — the main key, gives the face its gentle gradient. */}
+            <Lightformer form="rect" intensity={2.4} position={[0, 6, 1]} rotation-x={Math.PI / 2} scale={[14, 8, 1]} />
+            {/* Front-left key, slightly warm, like a large octabox. */}
+            <Lightformer form="rect" color="#fff6ec" intensity={1.6} position={[-5, 2, 5]} rotation-y={Math.PI / 4} scale={[6, 6, 1]} />
+            {/* Cool rim from the right separates the barrel from the background. */}
+            <Lightformer form="rect" color="#eef3ff" intensity={1.8} position={[6, 0.5, -1]} rotation-y={-Math.PI / 2} scale={[8, 3, 1]} />
+            {/* Low front fill keeps the spokes' undersides from going black. */}
+            <Lightformer form="rect" intensity={0.45} position={[0, -2, 7]} rotation-y={Math.PI} scale={[12, 4, 1]} />
+            {/* Floor bounce. */}
+            <Lightformer form="rect" color="#e9e6e1" intensity={0.45} position={[0, -6, 0]} rotation-x={-Math.PI / 2} scale={[14, 10, 1]} />
         </Environment>
     );
 }
@@ -37,14 +40,15 @@ function Wheel({ pointer, reducedMotion, onReady }: { pointer: React.MutableRefO
 
     const material = useMemo(
         () =>
+            // Satin / matte machined aluminium: metallic, but with a broad, soft highlight.
             new THREE.MeshPhysicalMaterial({
-                color: "#f5f6f8",
-                metalness: 1,
-                roughness: 0.06,
-                clearcoat: 1,
-                clearcoatRoughness: 0.03,
-                envMapIntensity: 1.25,
-                reflectivity: 1,
+                color: "#aeb1b5",
+                metalness: 0.92,
+                roughness: 0.4,
+                clearcoat: 0.12,
+                clearcoatRoughness: 0.6,
+                envMapIntensity: 1.15,
+                specularIntensity: 0.6,
             }),
         []
     );
@@ -99,7 +103,8 @@ function Wheel({ pointer, reducedMotion, onReady }: { pointer: React.MutableRefO
 
     return (
         <>
-            <pointLight ref={glint} position={[1.5, 1.6, 2.6]} intensity={22} distance={9} color="#ffffff" />
+            {/* Soft travelling highlight that follows the cursor (no hard chrome hotspot). */}
+            <pointLight ref={glint} position={[1.5, 1.6, 2.6]} intensity={7} distance={10} decay={1.6} color="#fffaf3" />
             <group ref={group} scale={fit}>
                 <primitive object={model} />
             </group>
@@ -171,8 +176,9 @@ export default function PolishedWheel({ className }: { className?: string }) {
                     onCreated={({ gl }) => gl.setClearColor(0x000000, 0)}
                     style={{ background: "transparent", touchAction: "pan-y", opacity: loaded ? 1 : 0, transition: "opacity 1.1s cubic-bezier(.22,1,.36,1)" }}
                 >
-                    <ambientLight intensity={0.25} />
-                    <directionalLight position={[3, 4, 5]} intensity={1.4} />
+                    <hemisphereLight args={["#f4f2ee", "#1c1d20", 0.3]} />
+                    <directionalLight position={[-3, 4, 5]} intensity={1.1} color="#fff4e8" />
+                    <directionalLight position={[4, -1, -3]} intensity={0.6} color="#dfe8ff" />
                     <Suspense fallback={null}>
                         <StudioEnvironment />
                         <Wheel pointer={pointer} reducedMotion={reducedMotion} onReady={handleReady} />

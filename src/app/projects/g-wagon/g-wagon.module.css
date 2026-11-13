@@ -65,3 +65,4 @@
   .ctaWheelLabel { right:auto; left:0; }
   .rimCard img { height:clamp(160px,44vw,240px); }
 }
+.ctaStatic { object-fit:contain; padding:8%; mix-blend-mode:multiply; }

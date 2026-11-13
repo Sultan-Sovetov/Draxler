@@ -6366,3 +6366,95 @@ html.lenis body {
     color: #111;
   }
 }
+
+/* Nav items are real links now (crawlable); keep the former button box model. */
+a.navbar-logo-btn,
+a.navbar-link-btn { display: inline-block; text-decoration: none; }
+a.navbar-dropdown-link { display: block; }
+a.navbar-mobile-link,
+a.navbar-mobile-sublink { display: inline-block; text-decoration: none; }
+
+/* ═══════════════════════════════════════════════════════════
+   PHONE-ONLY SIMPLIFICATION
+   Same palette and typography; lighter motion, no WebGL.
+   Applies only to touch phones (narrow + coarse pointer + no hover),
+   so desktop — including narrow desktop windows — is unchanged.
+   ═══════════════════════════════════════════════════════════ */
+.m-config {
+  padding: 64px 16px 72px;
+  font-family: Helvetica, Arial, sans-serif;
+}
+.m-config--dark { background: #0b0b0b; color: #fff; }
+.m-config--light { background: #fff; color: #0b0b0b; border-top: 1px solid rgba(0, 0, 0, 0.08); border-bottom: 1px solid rgba(0, 0, 0, 0.08); }
+.m-config-label {
+  display: block;
+  margin-bottom: 22px;
+  font-size: 11px;
+  font-weight: 300;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+.m-config-media {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #151515;
+}
+.m-config-media img { object-fit: cover; filter: grayscale(0.16) contrast(1.06) saturate(0.8); }
+.m-config-badge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 7px 11px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 999px;
+  color: #fff;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  background: rgba(0, 0, 0, 0.28);
+}
+.m-config-title {
+  margin: 30px 0 14px;
+  font-size: clamp(40px, 13vw, 64px);
+  font-weight: 300;
+  line-height: 0.92;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+.m-config-copy { max-width: 420px; margin: 0 0 26px; font-size: 15px; line-height: 1.6; opacity: 0.7; }
+.m-config-actions { display: flex; flex-wrap: wrap; gap: 14px 26px; }
+.m-config-link {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
+  min-height: 44px;
+  border-bottom: 1px solid currentColor;
+  color: inherit;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.m-config-link--muted { opacity: 0.62; }
+
+.phone-only { display: none; }
+
+@media (max-width: 767px) and (hover: none) and (pointer: coarse) {
+  .phone-only { display: block; }
+  .desktop-only { display: none !important; }
+
+  /* Hover-driven rim dock has no meaning on touch — skip it. */
+  .gallery-limitless-rims { display: none; }
+
+  /* Calmer, cheaper motion: no long transitions on large images. */
+  .home-catalog-image,
+  .catalog-card img,
+  .cat-product-card img { transition-duration: 0.3s !important; }
+
+  /* Fixed-attachment parallax backgrounds repaint on every scroll frame on phones. */
+  .parallax-divider { background-attachment: scroll !important; }
+}

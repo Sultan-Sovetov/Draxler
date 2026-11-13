@@ -4,6 +4,7 @@ import { useEffect, useRef, useMemo } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import HeroSlider from "./HeroSlider";
+import { isPhone } from "@/lib/device";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -38,6 +39,8 @@ export default function Hero() {
     useEffect(() => {
         const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         const isSmallScreen = window.matchMedia("(max-width: 900px)").matches;
+        // Phones have a ~1.7s loader instead of ~7.6s, so the title arrives sooner.
+        const introShift = isPhone() ? -1.9 : 0;
         const section = sectionRef.current;
         const video = videoRef.current;
         const content = contentRef.current;
@@ -89,7 +92,7 @@ export default function Hero() {
                     duration: 0.06,
                     stagger: 0.04,
                     ease: "power2.out",
-                    delay: 3.0,
+                    delay: 3.0 + introShift,
                     force3D: true,
                     onComplete() {
                         // Remove will-change after animation to free GPU layers
@@ -107,7 +110,7 @@ export default function Hero() {
                     opacity: 0,
                     duration: 1,
                     ease: "power3.out",
-                    delay: 3.55,
+                    delay: 3.55 + introShift,
                 });
             }
 
@@ -115,7 +118,7 @@ export default function Hero() {
                 gsap.from(scrollInd, {
                     opacity: 0,
                     duration: 1,
-                    delay: 4.2,
+                    delay: 4.2 + introShift,
                 });
             }
         });

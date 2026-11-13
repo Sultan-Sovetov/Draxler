@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import LimitlessDockRow from "@/components/LimitlessDockRow";
+import { useIsPhone } from "@/lib/device";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(ScrollTrigger);
@@ -42,6 +43,34 @@ export default function Gallery() {
     const [playingStates, setPlayingStates] = useState<boolean[]>([false, false, false]);
     const [visible, setVisible] = useState(false);
     const [isTouchDevice, setIsTouchDevice] = useState(false);
+    const isPhone = useIsPhone();
+
+    // Phones: only the video actually on screen plays (instead of all three at once).
+    useEffect(() => {
+        if (!isPhone || !visible) return;
+        const videos = videoRefs.current.filter((v): v is HTMLVideoElement => Boolean(v));
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    const video = entry.target as HTMLVideoElement;
+                    const index = videoRefs.current.indexOf(video);
+                    if (entry.isIntersecting) {
+                        video.play().catch(() => undefined);
+                    } else {
+                        video.pause();
+                    }
+                    setPlayingStates((prev) => {
+                        const next = [...prev];
+                        next[index] = entry.isIntersecting;
+                        return next;
+                    });
+                });
+            },
+            { threshold: 0.6 }
+        );
+        videos.forEach((v) => observer.observe(v));
+        return () => observer.disconnect();
+    }, [isPhone, visible]);
 
     useEffect(() => {
         const media = window.matchMedia("(hover: none), (pointer: coarse)");
@@ -210,7 +239,7 @@ export default function Gallery() {
                                 muted
                                 loop
                                 playsInline
-                                autoPlay={isTouchDevice && visible}
+                                autoPlay={isTouchDevice && visible && isPhone === false}
                                 preload="metadata"
                             />
                             <div className={`gallery-pillar-pause-dim${playingStates[index] ? ' is-playing' : ''}`} />
